@@ -399,7 +399,7 @@ const LandingPage = () => {
               <h4 className="text-xl font-bold mb-4">Wael Abdeldayem</h4>
               <p className="text-gray-400 mb-2">Licensed Mortgage Loan Officer</p>
               <p className="text-sm text-gray-400">
-                Licensed in New Jersey. NMLS ID: [Your NMLS ID]
+                NMLS ID: 2171794
               </p>
               <div className="mt-4">
                 <img 
