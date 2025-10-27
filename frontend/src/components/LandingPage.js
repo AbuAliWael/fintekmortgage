@@ -478,7 +478,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="https://www.linkedin.com/in/wael-abdeldayem"
+                  href="https://www.linkedin.com/in/waelabdeldayem"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
@@ -489,7 +489,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="https://www.facebook.com/share/17W3b8mwoE/"
+                  href="https://www.facebook.com/profile.php?id=61571413733848"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
