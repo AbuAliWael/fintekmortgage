@@ -114,13 +114,15 @@ const LandingPage = () => {
               >
                 Calculator
               </button>
-              <button
-                onClick={() => navigate('/login')}
+              <a
+                href="https://181106.my1003app.com/2171794/register?time=1742858528979"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-                data-testid="nav-login-button"
+                data-testid="nav-application-button"
               >
-                Loan Officer Login
-              </button>
+                Complete Application
+              </a>
             </div>
           </div>
         </div>
