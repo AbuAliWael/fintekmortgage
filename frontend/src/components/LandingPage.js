@@ -300,6 +300,56 @@ const LandingPage = () => {
         </div>
       </div>
 
+      {/* Daily Mortgage Insights Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide">Today's Expert Advice</span>
+            <h3 className="text-3xl font-bold text-gray-900 mt-2">Daily Mortgage Insights</h3>
+            <p className="text-gray-600 mt-2">Professional guidance to help you make informed decisions</p>
+          </div>
+          
+          {dailyInsight ? (
+            <div className="bg-white rounded-2xl shadow-xl p-8" data-testid="daily-insight">
+              <div className="flex items-center justify-between mb-4">
+                <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold capitalize">
+                  {dailyInsight.category}
+                </span>
+                <span className="text-sm text-gray-500">
+                  {new Date(dailyInsight.date).toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
+                </span>
+              </div>
+              <h4 className="text-2xl font-bold text-gray-900 mb-4">{dailyInsight.title}</h4>
+              <p className="text-gray-700 leading-relaxed text-lg">{dailyInsight.content}</p>
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <p className="text-sm text-gray-600 italic">
+                  💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Loan Officer
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+              <div className="animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6 mx-auto"></div>
+              </div>
+            </div>
+          )}
+          
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-600">
+              New insights published daily • Based on current market trends and buyer questions
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">Why Choose Us?</h3>
