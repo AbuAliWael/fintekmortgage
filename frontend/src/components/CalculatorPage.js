@@ -257,9 +257,41 @@ const CalculatorPage = () => {
               {result ? (
                 <div className="space-y-4">
                   <div className="bg-blue-50 rounded-lg p-6">
-                    <div className="text-sm text-gray-600 mb-1">Monthly Payment</div>
+                    <div className="text-sm text-gray-600 mb-1">Estimated Monthly Payment</div>
                     <div className="text-4xl font-bold text-blue-600">${result.monthly_payment.toLocaleString()}</div>
+                    <p className="text-xs text-gray-600 mt-2">
+                      Using {result.applied_rate}% rate {result.points_used > 0 ? `(${result.points_used} point${result.points_used > 1 ? 's' : ''} buydown)` : '(base market rate)'}
+                    </p>
                   </div>
+                  
+                  {/* Points Cost if applicable */}
+                  {result.points_used > 0 && (
+                    <div className="bg-green-50 border border-green-300 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-green-800 mb-2">💰 Rate Buydown Summary</h4>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-700">Points Purchased:</span>
+                          <span className="font-semibold">{result.points_used}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-700">Upfront Cost:</span>
+                          <span className="font-semibold text-green-700">${result.points_cost.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-700">Rate Reduction:</span>
+                          <span className="font-semibold">-{(result.points_used * 0.25).toFixed(2)}%</span>
+                        </div>
+                        <div className="flex justify-between border-t border-green-200 pt-2 mt-2">
+                          <span className="text-gray-700">Original Rate:</span>
+                          <span>{result.base_rate}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-700 font-semibold">Your Rate:</span>
+                          <span className="font-bold text-green-700">{result.applied_rate}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   
                   {/* PMI Warning if applicable */}
                   {result.has_pmi && (
