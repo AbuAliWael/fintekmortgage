@@ -970,6 +970,169 @@ async def get_dashboard_analytics():
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
 
 
+# ==================== EMAIL CAMPAIGN ROUTES ====================
+@api_router.post("/campaigns", response_model=EmailCampaign)
+async def create_campaign(campaign: EmailCampaignCreate, current_user: User = Depends(get_current_user)):
+    """Create a new email campaign"""
+    try:
+        campaign_doc = EmailCampaign(
+            name=campaign.name,
+            subject=campaign.subject,
+            body=campaign.body,
+            created_by=current_user.email
+        )
+        doc = campaign_doc.model_dump()
+        doc['created_at'] = doc['created_at'].isoformat()
+        await db.email_campaigns.insert_one(doc)
+        return campaign_doc
+    except Exception as e:
+        logger.error(f"Campaign creation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Campaign creation error: {str(e)}")
+
+
+@api_router.get("/campaigns", response_model=List[EmailCampaign])
+async def get_campaigns(current_user: User = Depends(get_current_user)):
+    """Get all email campaigns"""
+    try:
+        campaigns = await db.email_campaigns.find(
+            {"created_by": current_user.email},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(100)
+        
+        for campaign in campaigns:
+            if isinstance(campaign.get('created_at'), str):
+                campaign['created_at'] = datetime.fromisoformat(campaign['created_at'])
+        
+        return campaigns
+    except Exception as e:
+        logger.error(f"Get campaigns error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Get campaigns error: {str(e)}")
+
+
+@api_router.post("/campaigns/{campaign_id}/send")
+async def send_campaign(campaign_id: str, request: SendCampaignRequest, current_user: User = Depends(get_current_user)):
+    """Send personalized emails to multiple recipients"""
+    try:
+        # Get campaign
+        campaign = await db.email_campaigns.find_one({"id": campaign_id})
+        if not campaign:
+            raise HTTPException(status_code=404, detail="Campaign not found")
+        
+        sent_count = 0
+        errors = []
+        
+        # Send emails to each recipient (personalized)
+        for recipient in request.recipients:
+            try:
+                # Personalize subject and body
+                personalized_subject = campaign['subject'].replace('{first_name}', recipient.first_name).replace('{last_name}', recipient.last_name)
+                personalized_body = campaign['body'].replace('{first_name}', recipient.first_name).replace('{last_name}', recipient.last_name)
+                
+                # Add chatbot button to email
+                email_html = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                        .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                        .button {{ display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 8px; margin-top: 20px; }}
+                        .footer {{ margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }}
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <p>{personalized_body.replace(chr(10), '<br>')}</p>
+                        
+                        <a href="{os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:3000').replace('/api', '')}" class="button">
+                            💬 Chat with AI Assistant
+                        </a>
+                        
+                        <div class="footer">
+                            <p>Wael Abdeldayem - Licensed Mortgage Loan Broker<br>
+                            NMLS #2171794<br>
+                            Email: Wael@BarrettFinancial.com</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+                
+                # Send email via Resend
+                params = {
+                    "from": "Wael Abdeldayem <onboarding@resend.dev>",
+                    "to": [recipient.email],
+                    "subject": personalized_subject,
+                    "html": email_html,
+                }
+                
+                email_response = resend.Emails.send(params)
+                
+                # Track email sent
+                await db.campaign_emails.insert_one({
+                    "id": str(uuid.uuid4()),
+                    "campaign_id": campaign_id,
+                    "recipient_email": recipient.email,
+                    "recipient_name": f"{recipient.first_name} {recipient.last_name}",
+                    "sent_at": datetime.now(timezone.utc).isoformat(),
+                    "email_id": email_response.get('id'),
+                    "status": "sent"
+                })
+                
+                sent_count += 1
+                
+            except Exception as email_error:
+                logger.error(f"Error sending to {recipient.email}: {str(email_error)}")
+                errors.append({
+                    "email": recipient.email,
+                    "error": str(email_error)
+                })
+        
+        # Update campaign stats
+        await db.email_campaigns.update_one(
+            {"id": campaign_id},
+            {
+                "$set": {
+                    "status": "sent",
+                    "total_recipients": len(request.recipients),
+                    "sent_count": sent_count
+                }
+            }
+        )
+        
+        return {
+            "success": True,
+            "sent_count": sent_count,
+            "total_recipients": len(request.recipients),
+            "errors": errors
+        }
+        
+    except Exception as e:
+        logger.error(f"Send campaign error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Send campaign error: {str(e)}")
+
+
+@api_router.get("/campaigns/{campaign_id}/stats")
+async def get_campaign_stats(campaign_id: str, current_user: User = Depends(get_current_user)):
+    """Get campaign statistics"""
+    try:
+        campaign = await db.email_campaigns.find_one({"id": campaign_id}, {"_id": 0})
+        if not campaign:
+            raise HTTPException(status_code=404, detail="Campaign not found")
+        
+        # Get emails sent
+        emails_sent = await db.campaign_emails.find({"campaign_id": campaign_id}).to_list(1000)
+        
+        return {
+            "campaign": campaign,
+            "emails_sent": len(emails_sent),
+            "recipients": emails_sent
+        }
+    except Exception as e:
+        logger.error(f"Get campaign stats error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Get campaign stats error: {str(e)}")
+
+
 # ==================== MAIN ROUTES ====================
 @api_router.get("/")
 async def root():
