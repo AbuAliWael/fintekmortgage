@@ -451,21 +451,18 @@ const LandingPage = () => {
                 />
                 <div>
                   <h4 className="text-xl font-bold">Wael Abdeldayem</h4>
-                  <p className="text-gray-400 text-sm">Licensed Mortgage Loan Officer</p>
+                  <p className="text-gray-400 text-sm">Licensed Mortgage Loan Broker</p>
                 </div>
               </div>
               <p className="text-sm text-gray-400">
                 NMLS ID: 2171794
               </p>
-              <div className="mt-4 inline-flex items-center bg-white px-3 py-2 rounded" title="Equal Housing Opportunity">
-                <svg className="h-10 w-10 text-blue-900" viewBox="0 0 100 100" fill="currentColor">
-                  <path d="M50 10L10 40v50h30V60h20v30h30V40L50 10zm0 8.66L82 38v44H68V54H32v28H18V38l32-19.34z"/>
-                  <rect x="40" y="32" width="8" height="8"/>
-                  <rect x="52" y="32" width="8" height="8"/>
-                  <rect x="40" y="44" width="8" height="8"/>
-                  <rect x="52" y="44" width="8" height="8"/>
-                </svg>
-                <span className="ml-2 text-blue-900 text-xl font-bold">=</span>
+              <div className="mt-4">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_mort-calc-plus/artifacts/pt12nlux_image.png" 
+                  alt="Equal Housing Opportunity" 
+                  className="h-12"
+                />
               </div>
             </div>
             <div>
