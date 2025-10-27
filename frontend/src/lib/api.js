@@ -58,7 +58,10 @@ export const partnerAPI = {
 
 // AI Chat APIs
 export const chatAPI = {
-  sendMessage: (data) => apiClient.post('/ai/chat', data),
+  send: async (data) => {
+    const response = await apiClient.post('/ai/chat', data);
+    return response.data;
+  },
   getHistory: (sessionId) => apiClient.get(`/ai/chat-history/${sessionId}`),
 };
 
