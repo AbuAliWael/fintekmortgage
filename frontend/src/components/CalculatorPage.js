@@ -45,9 +45,10 @@ const CalculatorPage = () => {
   const handleCalculate = async () => {
     setLoading(true);
     try {
+      const effectiveRate = parseFloat(getEffectiveRate());
       const response = await calculatorAPI.payment({
         loan_amount: parseFloat(paymentData.loan_amount),
-        interest_rate: parseFloat(paymentData.interest_rate),
+        interest_rate: effectiveRate,
         loan_term_years: parseInt(paymentData.loan_term_years),
         down_payment: parseFloat(paymentData.down_payment) || 0,
         property_value: parseFloat(paymentData.property_value) || parseFloat(paymentData.loan_amount),
@@ -55,7 +56,13 @@ const CalculatorPage = () => {
         home_insurance_annual: parseFloat(paymentData.home_insurance_annual) || 0,
         hoa_monthly: parseFloat(paymentData.hoa_monthly) || 0
       });
-      setResult(response.data);
+      setResult({
+        ...response.data,
+        applied_rate: effectiveRate,
+        base_rate: marketRates[paymentData.loan_term_years],
+        points_cost: parseFloat(calculatePointsCost()),
+        points_used: ratePoints
+      });
     } catch (error) {
       console.error('Calculation error:', error);
       alert('Error calculating. Please check your inputs.');
