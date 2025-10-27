@@ -438,7 +438,7 @@ const LandingPage = () => {
             </div>
             <div>
               <h5 className="font-semibold mb-4">Contact</h5>
-              <p className="text-gray-400">Email: [Your Email]</p>
+              <p className="text-gray-400">Email: Wael@BarrettFinancial.com</p>
               <p className="text-gray-400">Phone: [Your Phone]</p>
               <p className="text-sm text-gray-400 mt-4">
                 Office located in New Jersey
