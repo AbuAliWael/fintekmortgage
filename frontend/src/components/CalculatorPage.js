@@ -200,7 +200,7 @@ const CalculatorPage = () => {
 
               <button
                 onClick={handleCalculate}
-                disabled={loading || !paymentData.loan_amount || !paymentData.interest_rate}
+                disabled={loading || !paymentData.loan_amount}
                 className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400"
                 data-testid="calc-submit-button"
               >
