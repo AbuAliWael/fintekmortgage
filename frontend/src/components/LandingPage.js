@@ -478,7 +478,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="https://linkedin.com/in/wael-abdeldayem-2171794"
+                  href="https://www.linkedin.com/in/wael-abdeldayem-8b0044164/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
