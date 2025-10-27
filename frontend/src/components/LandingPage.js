@@ -532,9 +532,6 @@ const LandingPage = () => {
             <div>
               <h5 className="font-semibold mb-4">Contact</h5>
               <p className="text-gray-400">Email: Wael@BarrettFinancial.com</p>
-              <p className="text-sm text-gray-400 mt-4">
-                NMLS #2171794
-              </p>
             </div>
           </div>
           
