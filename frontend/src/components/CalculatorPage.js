@@ -80,15 +80,10 @@ const CalculatorPage = () => {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h4 className="text-sm font-semibold text-blue-900 mb-2">Current Market Rate</h4>
                 <div className="text-2xl font-bold text-blue-600">
-                  {getEffectiveRate()}%
-                  {ratePoints > 0 && (
-                    <span className="text-sm text-green-600 ml-2">
-                      (with {ratePoints} point{ratePoints > 1 ? 's' : ''})
-                    </span>
-                  )}
+                  {getCurrentRate()}%
                 </div>
                 <p className="text-xs text-gray-600 mt-2">
-                  Base rate: {marketRates[paymentData.loan_term_years]}% for {paymentData.loan_term_years}-year fixed*
+                  {paymentData.loan_term_years}-year fixed rate*
                 </p>
                 <p className="text-xs text-gray-500 mt-2 italic">
                   *Rate shown is the national average as of today. Your actual rate may vary based on credit score, 
