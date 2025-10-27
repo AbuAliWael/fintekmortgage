@@ -760,8 +760,10 @@ async def calculate_mortgage_payment(calc_data: MortgageCalculation):
     try:
         # Calculate monthly payment
         loan_amount = calc_data.loan_amount
+        property_value = calc_data.property_value or calc_data.loan_amount
+        
         if calc_data.down_payment and calc_data.down_payment > 0:
-            loan_amount = (calc_data.property_value or calc_data.loan_amount) - calc_data.down_payment
+            loan_amount = property_value - calc_data.down_payment
         
         monthly_rate = calc_data.interest_rate / 100 / 12
         num_payments = calc_data.loan_term_years * 12
@@ -772,21 +774,39 @@ async def calculate_mortgage_payment(calc_data: MortgageCalculation):
         else:
             monthly_pi = loan_amount * (monthly_rate * (1 + monthly_rate)**num_payments) / ((1 + monthly_rate)**num_payments - 1)
         
-        # Add taxes, insurance, HOA
+        # Calculate down payment percentage
+        down_payment_percent = 0
+        if calc_data.down_payment and property_value:
+            down_payment_percent = (calc_data.down_payment / property_value) * 100
+        
+        # Calculate PMI (Private Mortgage Insurance) if down payment < 20%
+        monthly_pmi = 0
+        has_pmi = False
+        if down_payment_percent < 20 and down_payment_percent > 0:
+            # PMI typically ranges from 0.5% to 1% of loan amount annually
+            # Using 0.75% as average
+            pmi_rate = 0.0075
+            monthly_pmi = (loan_amount * pmi_rate) / 12
+            has_pmi = True
+        
+        # Add taxes, insurance, HOA, and PMI
         monthly_tax = (calc_data.property_tax_annual or 0) / 12
         monthly_insurance = (calc_data.home_insurance_annual or 0) / 12
         monthly_hoa = calc_data.hoa_monthly or 0
         
-        total_monthly = monthly_pi + monthly_tax + monthly_insurance + monthly_hoa
+        total_monthly = monthly_pi + monthly_tax + monthly_insurance + monthly_hoa + monthly_pmi
         
         # Calculate total interest
         total_paid = monthly_pi * num_payments
         total_interest = total_paid - loan_amount
         
-        # Down payment percentage
-        down_payment_percent = 0
-        if calc_data.down_payment and calc_data.property_value:
-            down_payment_percent = (calc_data.down_payment / calc_data.property_value) * 100
+        # Calculate total PMI paid over loan life (until 20% equity reached)
+        # Assuming PMI drops at 78% LTV (22% equity)
+        total_pmi = 0
+        if has_pmi:
+            # Estimate months until 22% equity (simplified calculation)
+            months_with_pmi = min(num_payments, 84)  # Typically 7 years max, but varies
+            total_pmi = monthly_pmi * months_with_pmi
         
         return {
             "monthly_payment": round(total_monthly, 2),
@@ -794,11 +814,15 @@ async def calculate_mortgage_payment(calc_data: MortgageCalculation):
             "monthly_tax": round(monthly_tax, 2),
             "monthly_insurance": round(monthly_insurance, 2),
             "monthly_hoa": round(monthly_hoa, 2),
+            "monthly_pmi": round(monthly_pmi, 2),
+            "has_pmi": has_pmi,
             "total_loan_amount": round(loan_amount, 2),
             "total_interest": round(total_interest, 2),
             "total_paid": round(total_paid, 2),
+            "total_pmi": round(total_pmi, 2),
             "down_payment": calc_data.down_payment or 0,
-            "down_payment_percent": round(down_payment_percent, 2)
+            "down_payment_percent": round(down_payment_percent, 2),
+            "property_value": round(property_value, 2)
         }
     except Exception as e:
         logger.error(f"Mortgage calculation error: {str(e)}")
