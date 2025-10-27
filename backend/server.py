@@ -1044,7 +1044,7 @@ async def send_campaign(campaign_id: str, request: SendCampaignRequest, current_
                     <div class="container">
                         <p>{personalized_body.replace(chr(10), '<br>')}</p>
                         
-                        <a href="{os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:3000').replace('/api', '')}" class="button">
+                        <a href="{os.environ.get('FRONTEND_URL', os.environ.get('REACT_APP_BACKEND_URL', '').replace('/api', ''))}" class="button">
                             💬 Chat with AI Assistant
                         </a>
                         
