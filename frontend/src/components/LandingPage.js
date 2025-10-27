@@ -563,7 +563,7 @@ const LandingPage = () => {
               To verify licensing, visit: <a href="https://www.nmlsconsumeraccess.org/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">www.nmlsconsumeraccess.org</a>
             </p>
             <p className="text-center pt-4">
-              &copy; 2025 Wael Abdeldayem - Licensed Mortgage Loan Officer. All rights reserved.
+              &copy; 2025 Wael Abdeldayem - Licensed Mortgage Loan Broker. All rights reserved.
             </p>
           </div>
         </div>
