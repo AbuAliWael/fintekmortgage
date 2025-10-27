@@ -98,18 +98,13 @@ const LandingPage = () => {
               />
               <div>
                 <h1 className="text-2xl font-bold text-blue-600">Wael Abdeldayem</h1>
-                <p className="text-xs text-gray-600">Licensed Mortgage Loan Officer</p>
+                <p className="text-xs text-gray-600">Licensed Mortgage Loan Broker</p>
               </div>
-              <div className="flex items-center bg-blue-900 px-2 py-1 rounded" title="Equal Housing Opportunity">
-                <svg className="h-7 w-7 text-white" viewBox="0 0 100 100" fill="currentColor">
-                  <path d="M50 10L10 40v50h30V60h20v30h30V40L50 10zm0 8.66L82 38v44H68V54H32v28H18V38l32-19.34z"/>
-                  <rect x="40" y="32" width="8" height="8"/>
-                  <rect x="52" y="32" width="8" height="8"/>
-                  <rect x="40" y="44" width="8" height="8"/>
-                  <rect x="52" y="44" width="8" height="8"/>
-                </svg>
-                <span className="ml-1 text-white text-xs font-semibold">=</span>
-              </div>
+              <img 
+                src="https://customer-assets.emergentagent.com/job_mort-calc-plus/artifacts/pt12nlux_image.png" 
+                alt="Equal Housing Opportunity" 
+                className="h-8"
+              />
             </div>
             <div className="flex space-x-4">
               <button
