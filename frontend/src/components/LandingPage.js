@@ -108,23 +108,50 @@ const LandingPage = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-5xl font-bold text-gray-900 mb-6">
-              Get Your Dream Home Loan in <span className="text-blue-600">48 Hours</span>
+              Get Your Dream Home Loan with <span className="text-blue-600">Expert Guidance</span>
             </h2>
             <p className="text-xl text-gray-600 mb-8">
-              Fast approvals, competitive rates, and personalized service. Let us help you achieve homeownership.
+              Fast approvals, competitive rates, and personalized service from a licensed mortgage professional.
             </p>
+            
+            {/* Current Market Rates */}
+            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                📊 Current Market Rates
+                <span className="ml-2 text-xs text-gray-500">(Updated Daily)</span>
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-700">30-Year Fixed (Conventional)</span>
+                  <span className="text-lg font-bold text-blue-600">{rates.conventional_30}%*</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-700">15-Year Fixed (Conventional)</span>
+                  <span className="text-lg font-bold text-blue-600">{rates.conventional_15}%*</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-700">Non-QM Programs</span>
+                  <span className="text-sm font-semibold text-gray-600">{rates.nonQM}</span>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-4">
+                *Rates are national averages and subject to change. Your actual rate depends on credit score, 
+                loan amount, down payment, and property location. Contact us for a personalized quote.
+              </p>
+            </div>
+
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">3.5%</div>
-                <div className="text-sm text-gray-600">Starting Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">48hrs</div>
+                <div className="text-3xl font-bold text-blue-600">Fast</div>
                 <div className="text-sm text-gray-600">Quick Approval</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">99%</div>
-                <div className="text-sm text-gray-600">Satisfaction</div>
+                <div className="text-3xl font-bold text-blue-600">Licensed</div>
+                <div className="text-sm text-gray-600">NJ & Federal</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-600">Expert</div>
+                <div className="text-sm text-gray-600">Guidance</div>
               </div>
             </div>
           </div>
