@@ -467,7 +467,7 @@ const LandingPage = () => {
               <h5 className="font-semibold mb-4">Connect With Me</h5>
               <div className="flex space-x-4 mb-4">
                 <a 
-                  href="https://www.instagram.com/wael_abdeldayem_loan_officer/"
+                  href="https://instagram.com/wael_abdeldayem_loan_officer"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
@@ -478,7 +478,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="https://www.linkedin.com/in/waelabdeldayem"
+                  href="https://linkedin.com/in/wael-abdeldayem-2171794"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
@@ -489,7 +489,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="https://www.facebook.com/profile.php?id=61571413733848"
+                  href="https://facebook.com/waelabdeldayem.loangofficer"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
