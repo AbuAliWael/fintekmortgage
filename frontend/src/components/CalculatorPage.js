@@ -7,7 +7,6 @@ const CalculatorPage = () => {
   const [calcType, setCalcType] = useState('payment');
   const [paymentData, setPaymentData] = useState({
     loan_amount: '',
-    interest_rate: '',
     loan_term_years: '30',
     down_payment: '',
     property_value: '',
@@ -17,6 +16,31 @@ const CalculatorPage = () => {
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [ratePoints, setRatePoints] = useState(0); // Points to buy down rate
+  
+  // Market rates (should match landing page rates)
+  const marketRates = {
+    30: 6.19, // 30-year fixed
+    15: 5.65, // 15-year fixed
+    20: 5.90  // 20-year fixed (interpolated)
+  };
+  
+  // Calculate rate with points buydown
+  // Typically 1 point = 0.25% rate reduction
+  const getEffectiveRate = () => {
+    const baseRate = marketRates[paymentData.loan_term_years] || 6.19;
+    const rateReduction = ratePoints * 0.25;
+    return (baseRate - rateReduction).toFixed(3);
+  };
+  
+  const calculatePointsCost = () => {
+    if (!paymentData.loan_amount || ratePoints === 0) return 0;
+    const loanAmount = parseFloat(paymentData.loan_amount);
+    const propertyValue = parseFloat(paymentData.property_value) || loanAmount;
+    const downPayment = parseFloat(paymentData.down_payment) || 0;
+    const actualLoanAmount = propertyValue - downPayment;
+    return (actualLoanAmount * (ratePoints / 100)).toFixed(2);
+  };
 
   const handleCalculate = async () => {
     setLoading(true);
