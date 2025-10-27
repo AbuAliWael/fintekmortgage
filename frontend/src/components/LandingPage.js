@@ -112,7 +112,7 @@ const LandingPage = () => {
                 className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                 data-testid="nav-calculator-button"
               >
-                Calculator
+                Mortgage Calculator
               </button>
               <a
                 href="https://181106.my1003app.com/2171794/register?time=1742858528979"
