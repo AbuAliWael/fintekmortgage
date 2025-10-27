@@ -1,0 +1,225 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { calculatorAPI } from '@/lib/api';
+
+const CalculatorPage = () => {
+  const navigate = useNavigate();
+  const [calcType, setCalcType] = useState('payment');
+  const [paymentData, setPaymentData] = useState({
+    loan_amount: '',
+    interest_rate: '',
+    loan_term_years: '30',
+    down_payment: '',
+    property_value: '',
+    property_tax_annual: '',
+    home_insurance_annual: '',
+    hoa_monthly: ''
+  });
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleCalculate = async () => {
+    setLoading(true);
+    try {
+      const response = await calculatorAPI.payment({
+        loan_amount: parseFloat(paymentData.loan_amount),
+        interest_rate: parseFloat(paymentData.interest_rate),
+        loan_term_years: parseInt(paymentData.loan_term_years),
+        down_payment: parseFloat(paymentData.down_payment) || 0,
+        property_value: parseFloat(paymentData.property_value) || parseFloat(paymentData.loan_amount),
+        property_tax_annual: parseFloat(paymentData.property_tax_annual) || 0,
+        home_insurance_annual: parseFloat(paymentData.home_insurance_annual) || 0,
+        hoa_monthly: parseFloat(paymentData.hoa_monthly) || 0
+      });
+      setResult(response.data);
+    } catch (error) {
+      console.error('Calculation error:', error);
+      alert('Error calculating. Please check your inputs.');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            <h1 className="text-2xl font-bold text-blue-600">MortgageMaster Calculator</h1>
+            <button onClick={() => navigate('/')} className="text-gray-700 hover:text-blue-600">
+              ← Back to Home
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Mortgage Calculator</h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Loan Information</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Loan Amount</label>
+                  <input
+                    type="number"
+                    value={paymentData.loan_amount}
+                    onChange={(e) => setPaymentData({...paymentData, loan_amount: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., 300000"
+                    data-testid="calc-loan-amount"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={paymentData.interest_rate}
+                    onChange={(e) => setPaymentData({...paymentData, interest_rate: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., 6.5"
+                    data-testid="calc-interest-rate"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Loan Term (Years)</label>
+                  <select
+                    value={paymentData.loan_term_years}
+                    onChange={(e) => setPaymentData({...paymentData, loan_term_years: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    data-testid="calc-loan-term"
+                  >
+                    <option value="15">15 years</option>
+                    <option value="20">20 years</option>
+                    <option value="30">30 years</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Down Payment</label>
+                  <input
+                    type="number"
+                    value={paymentData.down_payment}
+                    onChange={(e) => setPaymentData({...paymentData, down_payment: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Optional"
+                    data-testid="calc-down-payment"
+                  />
+                </div>
+              </div>
+
+              <h3 className="text-lg font-semibold mt-6 mb-4">Additional Costs (Optional)</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Property Tax (Annual)</label>
+                  <input
+                    type="number"
+                    value={paymentData.property_tax_annual}
+                    onChange={(e) => setPaymentData({...paymentData, property_tax_annual: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Optional"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Home Insurance (Annual)</label>
+                  <input
+                    type="number"
+                    value={paymentData.home_insurance_annual}
+                    onChange={(e) => setPaymentData({...paymentData, home_insurance_annual: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Optional"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">HOA Fees (Monthly)</label>
+                  <input
+                    type="number"
+                    value={paymentData.hoa_monthly}
+                    onChange={(e) => setPaymentData({...paymentData, hoa_monthly: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Optional"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={handleCalculate}
+                disabled={loading || !paymentData.loan_amount || !paymentData.interest_rate}
+                className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400"
+                data-testid="calc-submit-button"
+              >
+                {loading ? 'Calculating...' : 'Calculate Payment'}
+              </button>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Results</h3>
+              {result ? (
+                <div className="space-y-4">
+                  <div className="bg-blue-50 rounded-lg p-6">
+                    <div className="text-sm text-gray-600 mb-1">Monthly Payment</div>
+                    <div className="text-4xl font-bold text-blue-600">${result.monthly_payment.toLocaleString()}</div>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Principal & Interest</span>
+                      <span className="font-semibold">${result.monthly_principal_interest.toLocaleString()}</span>
+                    </div>
+                    {result.monthly_tax > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Property Tax</span>
+                        <span className="font-semibold">${result.monthly_tax.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {result.monthly_insurance > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Home Insurance</span>
+                        <span className="font-semibold">${result.monthly_insurance.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {result.monthly_hoa > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">HOA Fees</span>
+                        <span className="font-semibold">${result.monthly_hoa.toLocaleString()}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Total Loan Amount</span>
+                      <span className="font-semibold">${result.total_loan_amount.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Total Interest Paid</span>
+                      <span className="font-semibold">${result.total_interest.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Total Amount Paid</span>
+                      <span className="font-semibold">${result.total_paid.toLocaleString()}</span>
+                    </div>
+                    {result.down_payment > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Down Payment</span>
+                        <span className="font-semibold">${result.down_payment.toLocaleString()} ({result.down_payment_percent}%)</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-gray-50 rounded-lg p-12 text-center">
+                  <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  <p className="text-gray-500">Enter loan details and click Calculate to see results</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CalculatorPage;
