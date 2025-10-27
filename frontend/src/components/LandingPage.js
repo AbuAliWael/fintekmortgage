@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leadAPI } from '@/lib/api';
 
@@ -15,6 +15,27 @@ const LandingPage = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [rates, setRates] = useState({
+    conventional_30: '6.19',
+    conventional_15: '5.65',
+    nonQM: 'Call for Quote'
+  });
+
+  useEffect(() => {
+    // Fetch current market rates on component mount
+    // Note: Replace with actual API integration for live rates
+    const fetchRates = async () => {
+      try {
+        // Placeholder for API-Ninjas or other rate API
+        // In production, call your backend endpoint that fetches from rate API
+        const currentDate = new Date().toLocaleDateString();
+        console.log('Rates updated:', currentDate);
+      } catch (error) {
+        console.error('Error fetching rates:', error);
+      }
+    };
+    fetchRates();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
