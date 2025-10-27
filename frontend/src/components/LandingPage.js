@@ -549,6 +549,20 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
+
+      {/* AI Chatbot Button */}
+      {!isChatOpen && (
+        <button
+          onClick={() => setIsChatOpen(true)}
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-3 z-40 animate-pulse"
+        >
+          <span className="text-2xl">💬</span>
+          <span className="font-semibold">Chat with AI Assistant</span>
+        </button>
+      )}
+
+      {/* AI Chatbot */}
+      {isChatOpen && <AIChatbot onClose={() => setIsChatOpen(false)} />}
     </div>
   );
 };
