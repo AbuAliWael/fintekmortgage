@@ -72,9 +72,17 @@ const LandingPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-blue-600">MortgageMaster</h1>
+          <div className="flex justify-between h-20 items-center">
+            <div className="flex items-center space-x-4">
+              <div>
+                <h1 className="text-2xl font-bold text-blue-600">Wael Abdeldayem</h1>
+                <p className="text-xs text-gray-600">Licensed Mortgage Loan Officer</p>
+              </div>
+              <img 
+                src="https://www.hud.gov/sites/dfiles/Main/images/eho_logo_english.jpg" 
+                alt="Equal Housing Opportunity" 
+                className="h-8"
+              />
             </div>
             <div className="flex space-x-4">
               <button
