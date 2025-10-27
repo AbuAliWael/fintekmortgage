@@ -20,6 +20,8 @@ const LandingPage = () => {
     conventional_15: '5.65',
     nonQM: 'Call for Quote'
   });
+  const [dailyInsight, setDailyInsight] = useState(null);
+  const [calendlyUrl] = useState('https://calendly.com/waelabdali/consultation'); // Update this after Calendly setup
 
   useEffect(() => {
     // Fetch current market rates on component mount
@@ -35,6 +37,21 @@ const LandingPage = () => {
       }
     };
     fetchRates();
+    
+    // Fetch daily mortgage insight
+    const fetchDailyInsight = async () => {
+      try {
+        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+        const response = await fetch(`${BACKEND_URL}/api/insights/latest`);
+        if (response.ok) {
+          const data = await response.json();
+          setDailyInsight(data);
+        }
+      } catch (error) {
+        console.error('Error fetching daily insight:', error);
+      }
+    };
+    fetchDailyInsight();
   }, []);
 
   const handleSubmit = async (e) => {
