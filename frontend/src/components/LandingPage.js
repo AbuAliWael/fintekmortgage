@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leadAPI } from '@/lib/api';
+import AIChatbot from './AIChatbot';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
