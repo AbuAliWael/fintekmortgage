@@ -362,7 +362,7 @@ const LandingPage = () => {
                     className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
                   />
                   <p className="text-sm text-gray-600 italic">
-                    💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Loan Officer
+                    💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Loan Broker
                   </p>
                 </div>
               </div>
