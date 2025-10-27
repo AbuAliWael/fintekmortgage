@@ -129,6 +129,20 @@ const LandingPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
+            {/* Professional Photo and Intro */}
+            <div className="flex items-center space-x-4 mb-8">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                alt="Wael Abdeldayem - Licensed Mortgage Loan Officer"
+                className="h-24 w-24 rounded-full object-cover border-4 border-blue-600 shadow-lg"
+              />
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Wael Abdeldayem</h2>
+                <p className="text-blue-600 font-semibold">Licensed Mortgage Loan Officer</p>
+                <p className="text-sm text-gray-600">NMLS #2171794</p>
+              </div>
+            </div>
+            
             <h2 className="text-5xl font-bold text-gray-900 mb-6">
               Get Your Dream Home Loan with <span className="text-blue-600">Expert Guidance</span>
             </h2>
