@@ -247,6 +247,22 @@ class ChatRequest(BaseModel):
     lead_id: Optional[str] = None
 
 
+class DailyInsight(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    content: str
+    category: str  # affordability, rates, refinancing, programs, tips
+    date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    published: bool = True
+
+
+class DailyInsightCreate(BaseModel):
+    title: str
+    content: str
+    category: str
+
+
 class MortgageCalculation(BaseModel):
     loan_amount: float
     interest_rate: float
