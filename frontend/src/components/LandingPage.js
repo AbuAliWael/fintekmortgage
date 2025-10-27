@@ -467,7 +467,7 @@ const LandingPage = () => {
               accordance with New Jersey law.
             </p>
             <p>
-              <strong>Licensing Information:</strong> Licensed in New Jersey. NMLS ID: [Your NMLS ID]. 
+              <strong>Licensing Information:</strong> NMLS ID: 2171794. 
               To verify licensing, visit: <a href="https://www.nmlsconsumeraccess.org/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">www.nmlsconsumeraccess.org</a>
             </p>
             <p className="text-center pt-4">
