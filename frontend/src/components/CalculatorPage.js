@@ -85,11 +85,33 @@ const CalculatorPage = () => {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Mortgage Calculator</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Mortgage Payment Calculator</h2>
+          <p className="text-sm text-gray-600 mb-6">Calculate your estimated monthly payment using current market rates</p>
 
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">Loan Information</h3>
+              
+              {/* Rate Display Box */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h4 className="text-sm font-semibold text-blue-900 mb-2">Current Market Rate</h4>
+                <div className="text-2xl font-bold text-blue-600">
+                  {getEffectiveRate()}%
+                  {ratePoints > 0 && (
+                    <span className="text-sm text-green-600 ml-2">
+                      (with {ratePoints} point{ratePoints > 1 ? 's' : ''})
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  Base rate: {marketRates[paymentData.loan_term_years]}% for {paymentData.loan_term_years}-year fixed*
+                </p>
+                <p className="text-xs text-gray-500 mt-2 italic">
+                  *Rate shown is the national average as of today. Your actual rate may vary based on credit score, 
+                  loan-to-value ratio, property location, and other factors. This calculator provides an estimate only.
+                </p>
+              </div>
+              
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Loan Amount</label>
@@ -103,28 +125,16 @@ const CalculatorPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={paymentData.interest_rate}
-                    onChange={(e) => setPaymentData({...paymentData, interest_rate: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., 6.5"
-                    data-testid="calc-interest-rate"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Loan Term (Years)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Loan Term</label>
                   <select
                     value={paymentData.loan_term_years}
                     onChange={(e) => setPaymentData({...paymentData, loan_term_years: e.target.value})}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     data-testid="calc-loan-term"
                   >
-                    <option value="15">15 years</option>
-                    <option value="20">20 years</option>
-                    <option value="30">30 years</option>
+                    <option value="15">15 years ({marketRates[15]}%)</option>
+                    <option value="20">20 years (~{marketRates[20]}%)</option>
+                    <option value="30">30 years ({marketRates[30]}%)</option>
                   </select>
                 </div>
                 <div>
