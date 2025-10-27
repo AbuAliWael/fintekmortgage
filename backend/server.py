@@ -1049,7 +1049,7 @@ async def send_campaign(campaign_id: str, request: SendCampaignRequest, current_
                         </a>
                         
                         <div class="footer">
-                            <p>Wael Abdeldayem - Licensed Mortgage Loan Broker<br>
+                            <p>Wael Abdeldayem - Licensed Mortgage Broker<br>
                             NMLS #2171794<br>
                             Email: Wael@BarrettFinancial.com</p>
                         </div>
