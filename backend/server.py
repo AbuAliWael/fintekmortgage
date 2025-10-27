@@ -279,6 +279,38 @@ class MortgageCalculation(BaseModel):
     hoa_monthly: Optional[float] = 0
 
 
+class EmailCampaign(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    subject: str
+    body: str
+    created_by: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    status: str = "draft"  # draft, sent, scheduled
+    total_recipients: int = 0
+    sent_count: int = 0
+    opened_count: int = 0
+    clicked_count: int = 0
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+
+class EmailCampaignCreate(BaseModel):
+    name: str
+    subject: str
+    body: str
+
+
+class EmailRecipient(BaseModel):
+    email: str
+    first_name: str
+    last_name: str
+
+
+class SendCampaignRequest(BaseModel):
+    campaign_id: str
+    recipients: List[EmailRecipient]
+
+
 # ==================== HELPER FUNCTIONS ====================
 def create_access_token(data: dict):
     to_encode = data.copy()
