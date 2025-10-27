@@ -106,6 +106,20 @@ const CalculatorPage = () => {
                     placeholder="Optional"
                     data-testid="calc-down-payment"
                   />
+                  <p className="text-xs text-gray-600 mt-1">
+                    💡 Put down 20%+ to avoid PMI (Private Mortgage Insurance)
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Property Value</label>
+                  <input
+                    type="number"
+                    value={paymentData.property_value}
+                    onChange={(e) => setPaymentData({...paymentData, property_value: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Required for PMI calculation"
+                    data-testid="calc-property-value"
+                  />
                 </div>
               </div>
 
