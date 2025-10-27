@@ -14,6 +14,7 @@ from pathlib import Path
 import uuid
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from enum import Enum
+import resend
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -34,6 +35,10 @@ JWT_EXPIRATION_MINUTES = int(os.environ.get('JWT_EXPIRATION_MINUTES', '10080'))
 
 # LLM Configuration
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
+
+# Resend Configuration
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+resend.api_key = RESEND_API_KEY
 
 # Create the main app
 app = FastAPI()
