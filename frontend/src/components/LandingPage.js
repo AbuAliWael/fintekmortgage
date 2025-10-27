@@ -100,7 +100,7 @@ const LandingPage = () => {
               />
               <div>
                 <h1 className="text-2xl font-bold text-blue-600">Wael Abdeldayem</h1>
-                <p className="text-xs text-gray-600">Licensed Mortgage Loan Broker</p>
+                <p className="text-xs text-gray-600">Licensed Mortgage Broker</p>
               </div>
               <img 
                 src="https://customer-assets.emergentagent.com/job_mort-calc-plus/artifacts/pt12nlux_image.png" 
@@ -137,12 +137,12 @@ const LandingPage = () => {
             <div className="flex items-center space-x-4 mb-8">
               <img 
                 src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
-                alt="Wael Abdeldayem - Licensed Mortgage Loan Broker"
+                alt="Wael Abdeldayem - Licensed Mortgage Broker"
                 className="h-24 w-24 rounded-full object-cover border-4 border-blue-600 shadow-lg"
               />
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Wael Abdeldayem</h2>
-                <p className="text-blue-600 font-semibold">Licensed Mortgage Loan Broker</p>
+                <p className="text-blue-600 font-semibold">Licensed Mortgage Broker</p>
                 <p className="text-sm text-gray-600">NMLS #2171794</p>
               </div>
             </div>
@@ -364,7 +364,7 @@ const LandingPage = () => {
                     className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
                   />
                   <p className="text-sm text-gray-600 italic">
-                    💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Loan Broker
+                    💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Broker
                   </p>
                 </div>
               </div>
@@ -435,7 +435,7 @@ const LandingPage = () => {
                 />
                 <div>
                   <h4 className="text-xl font-bold">Wael Abdeldayem</h4>
-                  <p className="text-gray-400 text-sm">Licensed Mortgage Loan Broker</p>
+                  <p className="text-gray-400 text-sm">Licensed Mortgage Broker</p>
                 </div>
               </div>
               <p className="text-sm text-gray-400">
@@ -544,7 +544,7 @@ const LandingPage = () => {
               To verify licensing, visit: <a href="https://www.nmlsconsumeraccess.org/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">www.nmlsconsumeraccess.org</a>
             </p>
             <p className="text-center pt-4">
-              &copy; 2025 Wael Abdeldayem - Licensed Mortgage Loan Broker. All rights reserved.
+              &copy; 2025 Wael Abdeldayem - Licensed Mortgage Broker. All rights reserved.
             </p>
           </div>
         </div>
