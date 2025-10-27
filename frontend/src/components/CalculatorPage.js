@@ -164,6 +164,50 @@ const CalculatorPage = () => {
                 </div>
               </div>
 
+              <h3 className="text-lg font-semibold mt-6 mb-4">Rate Buydown Option</h3>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                <p className="text-sm text-green-800 mb-3">
+                  <strong>💰 Lower Your Rate with Points:</strong> You can pay "points" upfront to reduce your interest rate. 
+                  Each point costs 1% of your loan amount and typically reduces your rate by 0.25%.
+                </p>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Buy Down Rate (Points): {ratePoints}
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="3"
+                    step="0.5"
+                    value={ratePoints}
+                    onChange={(e) => setRatePoints(parseFloat(e.target.value))}
+                    className="w-full"
+                    data-testid="points-slider"
+                  />
+                  <div className="flex justify-between text-xs text-gray-600 mt-1">
+                    <span>0 points</span>
+                    <span>1.5 points</span>
+                    <span>3 points</span>
+                  </div>
+                </div>
+                {ratePoints > 0 && (
+                  <div className="mt-3 p-3 bg-white rounded border border-green-300">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-700">Points Cost:</span>
+                      <span className="font-semibold text-green-700">${calculatePointsCost().toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-700">Rate Reduction:</span>
+                      <span className="font-semibold text-green-700">-{(ratePoints * 0.25).toFixed(2)}%</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-700">New Rate:</span>
+                      <span className="font-bold text-green-700">{getEffectiveRate()}%</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <h3 className="text-lg font-semibold mt-6 mb-4">Additional Costs (Optional)</h3>
               <div className="space-y-4">
                 <div>
