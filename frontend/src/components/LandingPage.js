@@ -443,7 +443,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="[LINKEDIN_URL]"
+                  href="https://www.linkedin.com/in/wael-abdeldayem"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
@@ -454,7 +454,7 @@ const LandingPage = () => {
                   </svg>
                 </a>
                 <a 
-                  href="[FACEBOOK_URL]"
+                  href="https://www.facebook.com/share/17W3b8mwoE/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
