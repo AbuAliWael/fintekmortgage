@@ -415,7 +415,7 @@ const LandingPage = () => {
                 </svg>
               </div>
               <h4 className="text-xl font-semibold mb-2">Expert Guidance</h4>
-              <p className="text-gray-600">Our experienced loan officers guide you through every step of the process.</p>
+              <p className="text-gray-600">Our experienced loan brokers guide you through every step of the process.</p>
             </div>
           </div>
         </div>
