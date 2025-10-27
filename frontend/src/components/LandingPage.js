@@ -353,9 +353,16 @@ const LandingPage = () => {
               <h4 className="text-2xl font-bold text-gray-900 mb-4">{dailyInsight.title}</h4>
               <p className="text-gray-700 leading-relaxed text-lg">{dailyInsight.content}</p>
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-600 italic">
-                  💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Loan Officer
-                </p>
+                <div className="flex items-center space-x-3">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                    alt="Wael Abdeldayem"
+                    className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
+                  />
+                  <p className="text-sm text-gray-600 italic">
+                    💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Loan Officer
+                  </p>
+                </div>
               </div>
             </div>
           ) : (
