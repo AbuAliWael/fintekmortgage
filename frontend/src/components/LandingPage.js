@@ -21,7 +21,7 @@ const LandingPage = () => {
     nonQM: 'Call for Quote'
   });
   const [dailyInsight, setDailyInsight] = useState(null);
-  const [calendlyUrl] = useState('https://calendly.com/waelabdali/consultation'); // Update this after Calendly setup
+  const [calendlyUrl] = useState('https://calendly.com/waelabdali/30min');
 
   useEffect(() => {
     // Fetch current market rates on component mount
