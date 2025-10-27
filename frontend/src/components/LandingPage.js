@@ -91,6 +91,11 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             <div className="flex items-center space-x-4">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                alt="Wael Abdeldayem"
+                className="h-16 w-16 rounded-full object-cover border-2 border-blue-600"
+              />
               <div>
                 <h1 className="text-2xl font-bold text-blue-600">Wael Abdeldayem</h1>
                 <p className="text-xs text-gray-600">Licensed Mortgage Loan Officer</p>
