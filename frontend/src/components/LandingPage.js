@@ -163,13 +163,20 @@ const LandingPage = () => {
                 <div className="text-sm text-gray-600">Quick Approval</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">Licensed</div>
-                <div className="text-sm text-gray-600">NJ & Federal</div>
+                <div className="text-3xl font-bold text-blue-600">20%+</div>
+                <div className="text-sm text-gray-600">No PMI Option</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">Expert</div>
-                <div className="text-sm text-gray-600">Guidance</div>
+                <div className="text-3xl font-bold text-blue-600">Flexible</div>
+                <div className="text-sm text-gray-600">Employment Rules</div>
               </div>
+            </div>
+            
+            {/* Unique Value Proposition */}
+            <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-8">
+              <p className="text-sm text-green-800">
+                <strong>💡 Special Programs Available:</strong> You can qualify for a mortgage even without 2 years of verified employment history when you have enough down payment (20%+) to avoid mortgage insurance. Let's discuss your options!
+              </p>
             </div>
             
             {/* Schedule Consultation Button */}
