@@ -157,7 +157,8 @@ const LandingPage = () => {
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl p-8" data-testid="lead-form-container">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Get Pre-Qualified Today</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Get Pre-Qualified Today</h3>
+            <p className="text-sm text-gray-600 mb-6">Complete this form to get started with your mortgage application</p>
             {submitted && (
               <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-4" data-testid="success-message">
                 Thank you! We'll contact you within 24 hours.
@@ -230,9 +231,38 @@ const LandingPage = () => {
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400"
                 data-testid="submit-lead-button"
               >
-                {loading ? 'Submitting...' : 'Get Started'}
+                {loading ? 'Submitting...' : 'Get Pre-Qualified'}
               </button>
+              
+              {/* Application Link */}
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <a
+                  href="https://181106.my1003app.com/2171794/register?time=1742858528979"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg text-center transition-colors"
+                  data-testid="full-application-link"
+                >
+                  Complete Full Application →
+                </a>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  Ready to apply? Click here for our secure online application
+                </p>
+              </div>
             </form>
+            
+            {/* Compliance Statement */}
+            <div className="mt-4 pt-4 border-t border-gray-200 text-xs text-gray-600">
+              <p className="mb-2">
+                <strong>Equal Housing Opportunity:</strong> We do business in accordance with Federal Fair Lending Laws. 
+                We are committed to ensuring that our services are accessible to all qualified applicants without regard to race, 
+                color, religion, sex, handicap, familial status, or national origin.
+              </p>
+              <p>
+                By submitting this form, you consent to be contacted about mortgage products and services. 
+                Your information will be handled in accordance with applicable privacy laws.
+              </p>
+            </div>
           </div>
         </div>
       </div>
