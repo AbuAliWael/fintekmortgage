@@ -407,6 +407,16 @@ const LandingPage = () => {
               <ul className="space-y-2 text-gray-400">
                 <li>
                   <a 
+                    href={calendlyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white"
+                  >
+                    📅 Schedule Consultation
+                  </a>
+                </li>
+                <li>
+                  <a 
                     href="https://181106.my1003app.com/2171794/register?time=1742858528979"
                     target="_blank"
                     rel="noopener noreferrer"
