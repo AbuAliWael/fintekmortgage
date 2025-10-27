@@ -535,7 +535,6 @@ const LandingPage = () => {
                   </a>
                 </li>
                 <li><button onClick={() => navigate('/calculator')} className="hover:text-white">Mortgage Calculator</button></li>
-                <li><button onClick={() => navigate('/login')} className="hover:text-white">Loan Officer Portal</button></li>
               </ul>
             </div>
             <div>
