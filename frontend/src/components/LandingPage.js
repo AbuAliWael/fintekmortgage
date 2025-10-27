@@ -171,6 +171,22 @@ const LandingPage = () => {
                 <div className="text-sm text-gray-600">Guidance</div>
               </div>
             </div>
+            
+            {/* Schedule Consultation Button */}
+            <div className="mt-8">
+              <a
+                href={calendlyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-center text-lg transition-colors shadow-lg"
+                data-testid="schedule-consultation-button"
+              >
+                📅 Schedule Free 30-Min Consultation
+              </a>
+              <p className="text-xs text-gray-600 mt-2 text-center">
+                Available: Mon, Wed, Fri • 12 PM - 7 PM EST
+              </p>
+            </div>
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl p-8" data-testid="lead-form-container">
