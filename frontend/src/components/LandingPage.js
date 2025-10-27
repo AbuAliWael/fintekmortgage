@@ -306,24 +306,73 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <h4 className="text-xl font-bold mb-4">MortgageMaster</h4>
-              <p className="text-gray-400">Your trusted partner in homeownership.</p>
+              <h4 className="text-xl font-bold mb-4">Wael Abdeldayem</h4>
+              <p className="text-gray-400 mb-2">Licensed Mortgage Loan Officer</p>
+              <p className="text-sm text-gray-400">
+                Licensed in New Jersey. NMLS ID: [Your NMLS ID]
+              </p>
+              <div className="mt-4">
+                <img 
+                  src="https://www.hud.gov/sites/dfiles/Main/images/eho_logo_english.jpg" 
+                  alt="Equal Housing Opportunity" 
+                  className="h-12 bg-white p-1 rounded"
+                />
+              </div>
             </div>
             <div>
               <h5 className="font-semibold mb-4">Quick Links</h5>
               <ul className="space-y-2 text-gray-400">
+                <li>
+                  <a 
+                    href="https://181106.my1003app.com/2171794/register?time=1742858528979"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white"
+                  >
+                    Complete Application
+                  </a>
+                </li>
                 <li><button onClick={() => navigate('/calculator')} className="hover:text-white">Mortgage Calculator</button></li>
                 <li><button onClick={() => navigate('/login')} className="hover:text-white">Loan Officer Portal</button></li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold mb-4">Contact</h5>
-              <p className="text-gray-400">Email: info@mortgagemaster.com</p>
-              <p className="text-gray-400">Phone: (555) 123-4567</p>
+              <p className="text-gray-400">Email: [Your Email]</p>
+              <p className="text-gray-400">Phone: [Your Phone]</p>
+              <p className="text-sm text-gray-400 mt-4">
+                Office located in New Jersey
+              </p>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MortgageMaster. All rights reserved.</p>
+          
+          {/* Federal Compliance Disclosures */}
+          <div className="border-t border-gray-800 mt-8 pt-8 text-xs text-gray-400 space-y-4">
+            <p>
+              <strong>Equal Housing Opportunity Statement:</strong> We are committed to ensuring that our services 
+              are accessible to all qualified applicants without regard to race, color, religion, sex, handicap, 
+              familial status, or national origin. All loan programs are subject to credit approval and property appraisal. 
+              Not all loan programs are available in all states for all loan amounts.
+            </p>
+            <p>
+              <strong>Rate Disclaimer:</strong> The rates displayed are national averages from public market data and 
+              are provided for informational purposes only. Actual rates offered may differ and are based on a variety 
+              of factors including but not limited to: credit score, loan-to-value (LTV) ratio, loan amount, loan purpose, 
+              property location, occupancy type, and documentation requirements. Rates are subject to change without notice. 
+              Contact us for a personalized rate quote.
+            </p>
+            <p>
+              <strong>New Jersey Disclosure:</strong> All mortgage transactions are subject to New Jersey state regulations 
+              including flood risk disclosure requirements. Property condition disclosure statements will be provided in 
+              accordance with New Jersey law.
+            </p>
+            <p>
+              <strong>Licensing Information:</strong> Licensed in New Jersey. NMLS ID: [Your NMLS ID]. 
+              To verify licensing, visit: <a href="https://www.nmlsconsumeraccess.org/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">www.nmlsconsumeraccess.org</a>
+            </p>
+            <p className="text-center pt-4">
+              &copy; 2025 Wael Abdeldayem - Licensed Mortgage Loan Officer. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
