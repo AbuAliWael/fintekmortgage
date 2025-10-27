@@ -387,6 +387,44 @@ const CalculatorPage = () => {
               )}
             </div>
           </div>
+          
+          {/* Rate Disclaimers */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <h4 className="text-sm font-semibold text-gray-800 mb-3">Important Rate Information & Disclaimers</h4>
+            <div className="space-y-2 text-xs text-gray-600">
+              <p>
+                <strong>Rate Accuracy:</strong> The rates displayed are national averages current as of today and are subject to change without notice. 
+                Your actual rate will be determined based on multiple factors and may be higher or lower than the rate shown.
+              </p>
+              <p>
+                <strong>Factors Affecting Your Rate:</strong> Your actual mortgage rate depends on your credit score, loan-to-value ratio (LTV), 
+                debt-to-income ratio (DTI), property location, property type, loan amount, loan purpose (purchase vs. refinance), 
+                occupancy type (primary, second home, investment), documentation type, and current market conditions.
+              </p>
+              <p>
+                <strong>APR:</strong> The interest rates shown do not reflect the Annual Percentage Rate (APR), which includes interest plus 
+                certain closing costs and fees. APR will be higher than the interest rate shown and will be disclosed at application.
+              </p>
+              <p>
+                <strong>Points Buydown:</strong> Discount points are optional and allow you to pay upfront to reduce your interest rate. 
+                One point equals 1% of your loan amount. The value of buying down your rate depends on how long you plan to keep the loan. 
+                Consult with your loan officer to determine if buying points makes sense for your situation.
+              </p>
+              <p>
+                <strong>Estimates Only:</strong> This calculator provides estimates for informational and educational purposes only. 
+                It does not constitute a loan offer, rate quote, or guarantee of terms. All mortgage applications are subject to credit approval, 
+                property appraisal, and underwriting guidelines.
+              </p>
+              <p>
+                <strong>Lender Rights:</strong> The lender reserves the right to modify or withdraw any loan program, rate, or terms without prior notice. 
+                Additional terms and conditions apply.
+              </p>
+              <p className="pt-2 border-t border-gray-200 mt-3">
+                <strong>For Accurate Quote:</strong> Contact Wael Abdeldayem (NMLS #2171794) for a personalized rate quote based on your specific financial situation. 
+                Rates and terms can be locked once you begin the application process.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
