@@ -709,6 +709,51 @@ async def get_chat_history(session_id: str):
     return messages
 
 
+# ==================== DAILY INSIGHTS ROUTES ====================
+@api_router.post("/insights", response_model=DailyInsight)
+async def create_insight(insight_data: DailyInsightCreate):
+    insight = DailyInsight(**insight_data.model_dump())
+    doc = insight.model_dump()
+    doc['date'] = doc['date'].isoformat()
+    
+    await db.daily_insights.insert_one(doc)
+    return insight
+
+
+@api_router.get("/insights/latest", response_model=DailyInsight)
+async def get_latest_insight():
+    insight = await db.daily_insights.find_one(
+        {"published": True},
+        {"_id": 0},
+        sort=[("date", -1)]
+    )
+    if not insight:
+        raise HTTPException(status_code=404, detail="No insights available")
+    
+    if isinstance(insight.get('date'), str):
+        insight['date'] = datetime.fromisoformat(insight['date'])
+    
+    return DailyInsight(**insight)
+
+
+@api_router.get("/insights", response_model=List[DailyInsight])
+async def get_insights(limit: int = 10, category: Optional[str] = None):
+    query = {"published": True}
+    if category:
+        query['category'] = category
+    
+    insights = await db.daily_insights.find(
+        query,
+        {"_id": 0}
+    ).sort("date", -1).limit(limit).to_list(limit)
+    
+    for insight in insights:
+        if isinstance(insight.get('date'), str):
+            insight['date'] = datetime.fromisoformat(insight['date'])
+    
+    return insights
+
+
 # ==================== MORTGAGE CALCULATOR ROUTES ====================
 @api_router.post("/calculator/payment")
 async def calculate_mortgage_payment(calc_data: MortgageCalculation):
