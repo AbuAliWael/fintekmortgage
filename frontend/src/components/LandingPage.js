@@ -434,8 +434,17 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <h4 className="text-xl font-bold mb-4">Wael Abdeldayem</h4>
-              <p className="text-gray-400 mb-2">Licensed Mortgage Loan Officer</p>
+              <div className="flex items-center space-x-3 mb-4">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                  alt="Wael Abdeldayem"
+                  className="h-16 w-16 rounded-full object-cover border-2 border-white"
+                />
+                <div>
+                  <h4 className="text-xl font-bold">Wael Abdeldayem</h4>
+                  <p className="text-gray-400 text-sm">Licensed Mortgage Loan Officer</p>
+                </div>
+              </div>
               <p className="text-sm text-gray-400">
                 NMLS ID: 2171794
               </p>
