@@ -161,11 +161,41 @@ const CalculatorPage = () => {
                     <div className="text-sm text-gray-600 mb-1">Monthly Payment</div>
                     <div className="text-4xl font-bold text-blue-600">${result.monthly_payment.toLocaleString()}</div>
                   </div>
+                  
+                  {/* PMI Warning if applicable */}
+                  {result.has_pmi && (
+                    <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-4" data-testid="pmi-warning">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0">
+                          <svg className="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="text-sm font-bold text-yellow-800">⚠️ Private Mortgage Insurance (PMI) Required</h3>
+                          <div className="mt-2 text-sm text-yellow-700">
+                            <p className="font-semibold">Your down payment is less than 20% ({result.down_payment_percent}%)</p>
+                            <p className="mt-1">This means you'll pay <strong>${result.monthly_pmi.toLocaleString()}/month</strong> in PMI until you reach 22% equity.</p>
+                            <p className="mt-2 text-xs">
+                              💡 <strong>Tip:</strong> With a 20% down payment (${(result.property_value * 0.20).toLocaleString()}), you can eliminate PMI and save approximately ${(result.total_pmi).toLocaleString()} over the loan term!
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Principal & Interest</span>
                       <span className="font-semibold">${result.monthly_principal_interest.toLocaleString()}</span>
                     </div>
+                    {result.has_pmi && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Mortgage Insurance (PMI)</span>
+                        <span className="font-semibold text-yellow-700">${result.monthly_pmi.toLocaleString()}</span>
+                      </div>
+                    )}
                     {result.monthly_tax > 0 && (
                       <div className="flex justify-between">
                         <span className="text-gray-600">Property Tax</span>
@@ -187,6 +217,10 @@ const CalculatorPage = () => {
                   </div>
                   <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                     <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Property Value</span>
+                      <span className="font-semibold">${result.property_value.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Total Loan Amount</span>
                       <span className="font-semibold">${result.total_loan_amount.toLocaleString()}</span>
                     </div>
@@ -194,14 +228,20 @@ const CalculatorPage = () => {
                       <span className="text-gray-600">Total Interest Paid</span>
                       <span className="font-semibold">${result.total_interest.toLocaleString()}</span>
                     </div>
+                    {result.has_pmi && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Total PMI Paid (estimated)</span>
+                        <span className="font-semibold text-yellow-700">${result.total_pmi.toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Total Amount Paid</span>
-                      <span className="font-semibold">${result.total_paid.toLocaleString()}</span>
+                      <span className="font-semibold">${(result.total_paid + (result.total_pmi || 0)).toLocaleString()}</span>
                     </div>
                     {result.down_payment > 0 && (
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
                         <span className="text-gray-600">Down Payment</span>
-                        <span className="font-semibold">${result.down_payment.toLocaleString()} ({result.down_payment_percent}%)</span>
+                        <span className="font-semibold text-green-600">${result.down_payment.toLocaleString()} ({result.down_payment_percent}%)</span>
                       </div>
                     )}
                   </div>
