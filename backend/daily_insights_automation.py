@@ -72,14 +72,14 @@ async def generate_daily_insight():
             system_message=system_message
         )
         
-        messages = [UserMessage(content=prompt)]
+        messages = [UserMessage(text=prompt)]
         response = llm_chat.generate(messages)
         
         content = response.content.strip()
         
         # Generate a title (ask AI to create it)
         title_prompt = f"Based on this mortgage insight content, write a compelling, professional title (8-15 words, no quotes): {content[:200]}"
-        title_messages = [UserMessage(content=title_prompt)]
+        title_messages = [UserMessage(text=title_prompt)]
         title_response = llm_chat.generate(title_messages)
         title = title_response.content.strip().replace('"', '').replace("'", "")
         
