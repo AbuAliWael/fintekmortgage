@@ -63,7 +63,14 @@ async def generate_daily_insight():
         prompt = prompts.get(category, prompts['tips'])
         
         # Generate content using Emergent LLM
-        llm_chat = LlmChat(api_key=EMERGENT_LLM_KEY)
+        session_id = f"insights_{current_date.strftime('%Y%m%d')}"
+        system_message = "You are an expert mortgage broker providing professional, authoritative advice to homebuyers. Write clear, actionable insights that build trust and demonstrate expertise."
+        
+        llm_chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=session_id,
+            system_message=system_message
+        )
         
         messages = [UserMessage(content=prompt)]
         response = llm_chat.generate(messages)
