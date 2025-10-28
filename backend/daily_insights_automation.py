@@ -70,17 +70,16 @@ async def generate_daily_insight():
             api_key=EMERGENT_LLM_KEY,
             session_id=session_id,
             system_message=system_message
-        )
+        ).with_model("openai", "gpt-4o-mini")
         
-        messages = [UserMessage(text=prompt)]
-        response = llm_chat.generate(messages)
-        
-        content = response.content.strip()
+        user_message = UserMessage(text=prompt)
+        content = await llm_chat.send_message(user_message)
+        content = content.strip()
         
         # Generate a title (ask AI to create it)
         title_prompt = f"Based on this mortgage insight content, write a compelling, professional title (8-15 words, no quotes): {content[:200]}"
-        title_messages = [UserMessage(text=title_prompt)]
-        title_response = llm_chat.generate(title_messages)
+        title_user_message = UserMessage(text=title_prompt)
+        title_content = await llm_chat.send_message(title_user_message)
         title = title_response.content.strip().replace('"', '').replace("'", "")
         
         # Create insight document
