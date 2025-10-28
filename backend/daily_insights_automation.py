@@ -53,11 +53,11 @@ async def generate_daily_insight():
         
         # Create AI prompt based on category
         prompts = {
-            'rates': f"Write a professional mortgage insight article (150-250 words) about current interest rate trends and their impact on homebuyers for {date_str}. Focus on actionable advice, market conditions, and what buyers should know. Write as an expert mortgage broker giving professional advice. Do not use Q&A format.",
-            'programs': f"Write a professional mortgage insight article (150-250 words) about mortgage loan programs (FHA, VA, conventional, first-time buyer programs) for {date_str}. Explain benefits and eligibility in an authoritative tone. Write as an expert mortgage broker. Do not use Q&A format.",
-            'refinancing': f"Write a professional mortgage insight article (150-250 words) about refinancing strategies and timing considerations for {date_str}. Include when it makes sense to refinance and what factors to consider. Write as an expert mortgage broker. Do not use Q&A format.",
-            'tips': f"Write a professional mortgage insight article (150-250 words) about mortgage tips, credit scores, or best practices for {date_str}. Provide actionable advice that helps buyers improve their mortgage readiness. Write as an expert mortgage broker. Do not use Q&A format.",
-            'affordability': f"Write a professional mortgage insight article (150-250 words) about affordability strategies and smart home buying decisions for {date_str}. Help buyers navigate high prices and competitive markets. Write as an expert mortgage broker. Do not use Q&A format."
+            'rates': f"Write a professional mortgage insight article (150-200 words) about current interest rate trends and their impact on homebuyers for {date_str}. Focus on actionable advice, market conditions, and what buyers should know. Write as an expert mortgage broker giving professional advice. Do not use Q&A format.",
+            'programs': f"Write a professional mortgage insight article (150-200 words) about mortgage loan programs (FHA, VA, conventional, first-time buyer programs) for {date_str}. Explain benefits and eligibility in an authoritative tone. Write as an expert mortgage broker. Do not use Q&A format.",
+            'refinancing': f"Write a professional mortgage insight article (150-200 words) about refinancing strategies and timing considerations for {date_str}. Include when it makes sense to refinance and what factors to consider. Write as an expert mortgage broker. Do not use Q&A format.",
+            'tips': f"Write a professional mortgage insight article (150-200 words) about mortgage tips, credit scores, or best practices for {date_str}. Provide actionable advice that helps buyers improve their mortgage readiness. Write as an expert mortgage broker. Do not use Q&A format.",
+            'affordability': f"Write a professional mortgage insight article (150-200 words) about affordability strategies and smart home buying decisions for {date_str}. Help buyers navigate high prices and competitive markets. Write as an expert mortgage broker. Do not use Q&A format."
         }
         
         prompt = prompts.get(category, prompts['tips'])
