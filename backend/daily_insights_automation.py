@@ -80,7 +80,7 @@ async def generate_daily_insight():
         title_prompt = f"Based on this mortgage insight content, write a compelling, professional title (8-15 words, no quotes): {content[:200]}"
         title_user_message = UserMessage(text=title_prompt)
         title_content = await llm_chat.send_message(title_user_message)
-        title = title_response.content.strip().replace('"', '').replace("'", "")
+        title = title_content.strip().replace('"', '').replace("'", "")
         
         # Create insight document
         insight_doc = {
