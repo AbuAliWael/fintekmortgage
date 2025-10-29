@@ -224,12 +224,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All new features tested and verified"
-    - "Mobile responsiveness confirmed"
-    - "Regression testing completed"
+    - "Daily Mortgage Insights Read More/Read Less Functionality"
   stuck_tasks: []
-  test_all: true
-  test_priority: "completed"
+  test_all: false
+  test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
