@@ -1240,10 +1240,34 @@ Recommendations:
         # Standard qualification checks
         elif req.creditScore >= min_credit and dti <= max_dti:
             qualified = True
-            message = f"Congratulations! You appear to qualify for a {req.loanType.upper().replace('_', ' ')} loan!"
             
-            # Use LLM for personalized recommendations
-            llm_prompt = f"""You are a mortgage expert. Provide brief, actionable advice for this borrower:
+            # Check if Non-QM would be better option (for FHA, Conventional, First-Time Buyer)
+            if req.loanType in ['fha', 'conventional', 'firsttimebuyer'] and req.creditScore >= 660 and down_payment_percent >= 20:
+                message = f"Great news! You qualify for a {req.loanType.upper().replace('_', ' ')} loan, but Non-QM might be a better option!"
+                recommendations = f"""Your Strong Profile:
+✓ Credit Score: {req.creditScore} (Excellent)
+✓ Down Payment: {down_payment_percent:.1f}% (Strong - 20%+)
+✓ DTI: {dti:.1f}% (Within limits)
+
+Why Non-QM Could Be Better:
+• NO tax returns required
+• NO traditional employment verification
+• Potentially faster processing
+• Simplified documentation
+• Still competitive rates with your strong credit and down payment
+
+Your Current {req.loanType.upper().replace('_', ' ')} Qualification:
+• Monthly Income: ${monthly_income:,.0f}
+• Monthly Housing Payment: ${total_housing_payment:,.0f}
+• You're fully qualified!
+
+Recommendation:
+Consider scheduling a consultation to compare Non-QM vs {req.loanType.upper().replace('_', ' ')} options. With your financial profile, you have excellent choices!"""
+            else:
+                message = f"Congratulations! You appear to qualify for a {req.loanType.upper().replace('_', ' ')} loan!"
+                
+                # Use LLM for personalized recommendations
+                llm_prompt = f"""You are a mortgage expert. Provide brief, actionable advice for this borrower:
 
 Loan Type: {req.loanType.upper()}
 Credit Score: {req.creditScore}
@@ -1254,13 +1278,13 @@ Monthly Housing Payment: ${total_housing_payment:,.0f}
 
 Provide 3-4 bullet points of advice to strengthen their application or next steps. Keep it concise and actionable."""
 
-            try:
-                llm = LlmChat(api_key=EMERGENT_LLM_KEY)
-                llm_response = llm.send_message(UserMessage(content=llm_prompt))
-                recommendations = llm_response.content
-            except Exception as e:
-                logger.error(f"LLM recommendation error: {str(e)}")
-                recommendations = f"""Next Steps:
+                try:
+                    llm = LlmChat(api_key=EMERGENT_LLM_KEY)
+                    llm_response = llm.send_message(UserMessage(content=llm_prompt))
+                    recommendations = llm_response.content
+                except Exception as e:
+                    logger.error(f"LLM recommendation error: {str(e)}")
+                    recommendations = f"""Next Steps:
 • Your DTI of {dti:.1f}% is within acceptable limits for {req.loanType} loans
 • Get pre-approved to lock in your qualification
 • Gather documentation: pay stubs, W2s, bank statements
