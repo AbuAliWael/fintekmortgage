@@ -543,40 +543,38 @@ const LandingPage = () => {
           </div>
           
           {dailyInsight ? (
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6">
               {dailyInsight.map((insight, index) => (
-                <div key={insight.id || index} className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{insight.title}</h3>
-                    <p className="text-gray-700 leading-relaxed">{insight.content}</p>
-                  </div>
-                  <div className="border-t border-gray-200 pt-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <img 
-                          src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
-                          alt="Wael Abdeldayem"
-                          className="h-10 w-10 rounded-full object-cover border-2 border-blue-200"
-                        />
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">Wael Abdeldayem</p>
-                          <p className="text-xs text-gray-500">Licensed Mortgage Broker</p>
-                        </div>
-                      </div>
-                      <span className="text-xs text-blue-600 font-medium">{insight.category?.toUpperCase()}</span>
+                <div key={insight.id || index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs text-blue-600 font-semibold uppercase tracking-wide bg-blue-50 px-3 py-1 rounded-full">
+                      {insight.category}
+                    </span>
+                    <div className="flex items-center space-x-2">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                        alt="Wael Abdeldayem"
+                        className="h-8 w-8 rounded-full object-cover border-2 border-blue-200"
+                      />
                     </div>
                   </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">{insight.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
+                    {insight.content.substring(0, 180)}...
+                  </p>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-white rounded-2xl shadow-xl p-12">
+                <div key={i} className="bg-white rounded-xl shadow-lg p-6">
                   <div className="animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/4 mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-2/3"></div>
                   </div>
                 </div>
               ))}
