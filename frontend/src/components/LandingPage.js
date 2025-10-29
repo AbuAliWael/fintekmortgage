@@ -330,6 +330,202 @@ const LandingPage = () => {
         </div>
       </div>
 
+      {/* Why Choose Me Section */}
+      <div className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose Me?</h2>
+            <p className="text-xl text-gray-600">Expert guidance, proven results, and personalized service</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left side - Professional Bio */}
+            <div>
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg">
+                <div className="flex items-center space-x-4 mb-6">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                    alt="Wael Abdeldayem"
+                    className="h-20 w-20 rounded-full object-cover border-4 border-blue-600 shadow-lg"
+                  />
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">Wael Abdeldayem</h3>
+                    <p className="text-blue-600 font-semibold">Mortgage Loan Officer</p>
+                    <p className="text-sm text-gray-600">Masters in Finance 🎓</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 text-gray-700">
+                  <p className="text-lg font-medium text-blue-900">
+                    "Turning home dreams into reality"
+                  </p>
+                  <p className="leading-relaxed">
+                    Expert advice, trust, and results for every client. Whether you're a first-time homebuyer, 
+                    refinancing, or exploring investment properties, I'm committed to providing personalized 
+                    service tailored to your unique needs and goals.
+                  </p>
+                  
+                  {/* Key Stats */}
+                  <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-blue-200">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">23 Days</div>
+                      <div className="text-xs text-gray-600">Avg Close Time</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">5.0 ★</div>
+                      <div className="text-xs text-gray-600">Client Rating</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right side - Why Choose Features */}
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">🎓</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Masters in Finance</h4>
+                  <p className="text-gray-600">Advanced financial expertise to guide you through complex mortgage decisions and save you money.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">🌍</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Multilingual Team</h4>
+                  <p className="text-gray-600">Fluent in English and Arabic. We serve diverse communities with clear communication in your preferred language.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">⚡</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Fast Processing</h4>
+                  <p className="text-gray-600">Average 23-day close time. Quick approvals with our streamlined process and dedicated service.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-yellow-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">🤝</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Personalized Solutions</h4>
+                  <p className="text-gray-600">Custom mortgage options for unique situations - even without traditional employment history.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-red-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">📚</span>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Educational Approach</h4>
+                  <p className="text-gray-600">Patient guidance through every step. We explain everything clearly so you make informed decisions.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Client Reviews Section */}
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">What My Clients Say</h2>
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-5xl font-bold text-yellow-500">5.0</span>
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <svg key={star} className="w-8 h-8 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                  </svg>
+                ))}
+              </div>
+            </div>
+            <p className="text-gray-600">Based on 6 verified reviews from Experience.com</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            {/* Review 1 */}
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-shadow">
+              <div className="flex mb-4">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <svg key={star} className="w-5 h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                  </svg>
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4 italic">
+                "I would recommend him to everyone, so helpful guided us through the whole process, reached to our accountant to clarify items and get us the best programs to qualify. Smooth process, educational, and reachable loan officer."
+              </p>
+              <div className="border-t pt-4">
+                <p className="font-semibold text-gray-900">Verified Client</p>
+                <p className="text-sm text-gray-600">Garfield, NJ • Oct 2023</p>
+              </div>
+            </div>
+            
+            {/* Review 2 */}
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-shadow">
+              <div className="flex mb-4">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <svg key={star} className="w-5 h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                  </svg>
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4 italic">
+                "He was exceptionally transparent and explained everything. Also, everything went as planned in the time frame we wanted. Speaks Arabic was a bonus to us as we didn't understand much of the mortgage terminology."
+              </p>
+              <div className="border-t pt-4">
+                <p className="font-semibold text-gray-900">Ali A.</p>
+                <p className="text-sm text-gray-600">New York, NY • Oct 2023</p>
+              </div>
+            </div>
+            
+            {/* Review 3 */}
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-shadow">
+              <div className="flex mb-4">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <svg key={star} className="w-5 h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                  </svg>
+                ))}
+              </div>
+              <p className="text-gray-700 mb-4 italic">
+                "Best service! Everything went very easy and fast without any complications. I recommend working with Wael if you're facing difficulties to get a home loan. Thank you Wael Abdeldayem and God bless you for making my dream comes true."
+              </p>
+              <div className="border-t pt-4">
+                <p className="font-semibold text-gray-900">Verified Client</p>
+                <p className="text-sm text-gray-600">New York, NY • May 2023</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <a 
+              href="https://www.experience.com/reviews/wael-12651373"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors shadow-lg"
+            >
+              <span>View All Reviews on Experience.com</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Daily Mortgage Insights Section */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
