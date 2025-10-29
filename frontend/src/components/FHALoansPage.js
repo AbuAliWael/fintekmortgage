@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QualificationForm from './QualificationForm';
+import ComplianceFooter from './ComplianceFooter';
 
 const FHALoansPage = () => {
   const navigate = useNavigate();
