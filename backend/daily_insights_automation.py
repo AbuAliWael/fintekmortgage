@@ -32,9 +32,9 @@ CATEGORIES = ['rates', 'programs', 'refinancing', 'tips', 'affordability']
 
 
 async def generate_daily_insight():
-    """Generate and save a new mortgage insight"""
+    """Generate and save 3 new mortgage insights"""
     try:
-        logger.info("Starting daily insight generation...")
+        logger.info("Starting daily insights generation (3 articles)...")
         
         # Connect to MongoDB
         client = AsyncIOMotorClient(MONGO_URL)
@@ -44,12 +44,11 @@ async def generate_daily_insight():
         current_date = datetime.now(timezone.utc)
         date_str = current_date.strftime("%B %d, %Y")
         
-        # Determine category based on day of week
-        # Monday=0, Sunday=6
-        day_of_week = current_date.weekday()
-        category = CATEGORIES[day_of_week % len(CATEGORIES)]
+        # Generate 3 insights with different categories
+        categories_to_generate = ['rates', 'programs', 'tips']  # Always generate these 3
         
-        logger.info(f"Generating insight for {date_str}, category: {category}")
+        for category in categories_to_generate:
+            logger.info(f"Generating insight {categories_to_generate.index(category) + 1}/3 for {date_str}, category: {category}")
         
         # Create AI prompt based on category
         prompts = {
