@@ -67,7 +67,7 @@ const AIChatbot = ({ onClose }) => {
           </div>
           <div>
             <h3 className="font-bold text-lg">AI Mortgage Assistant</h3>
-            <p className="text-xs text-blue-100">Powered by GPT-4</p>
+            <p className="text-xs text-blue-100">Available 9 AM - 7 PM EST</p>
           </div>
         </div>
         <button
