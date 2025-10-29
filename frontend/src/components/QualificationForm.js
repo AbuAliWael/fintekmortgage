@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 const QualificationForm = ({ loanType = 'conventional' }) => {
+  const isNonQM = loanType === 'nonqm';
+  
   const [formData, setFormData] = useState({
     creditScore: '',
     income2023: '',
@@ -74,7 +76,17 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">See If You Qualify</h3>
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">
+        {isNonQM ? 'Calculate Your Monthly Payment' : 'See If You Qualify'}
+      </h3>
+      
+      {isNonQM && (
+        <div className="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+          <p className="text-purple-900 font-medium">
+            Non-QM loans don't require income verification! We'll calculate your expected monthly payment based on today's rates.
+          </p>
+        </div>
+      )}
       
       {!result ? (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -100,6 +112,8 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
             </select>
           </div>
 
+          {!isNonQM && (
+            <>
           {/* Employment History */}
           <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
             <label className="flex items-center space-x-3 cursor-pointer">
@@ -182,6 +196,8 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
               Include car loans, credit cards, student loans, personal loans, etc.
             </p>
           </div>
+          </>
+          )}
 
           {/* Purchase Information */}
           <div className="grid md:grid-cols-2 gap-4">
