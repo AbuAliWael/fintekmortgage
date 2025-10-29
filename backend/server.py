@@ -930,6 +930,104 @@ class QualificationRequest(BaseModel):
 @api_router.post("/qualify")
 async def analyze_qualification(req: QualificationRequest):
     try:
+        # Special handling for Non-QM - no income verification needed
+        if req.loanType == 'nonqm':
+            # Calculate mortgage payment only
+            loan_amount = req.purchasePrice - req.downPayment
+            down_payment_percent = (req.downPayment / req.purchasePrice) * 100
+            
+            # Assume 6.5% interest rate for Non-QM (typically higher)
+            interest_rate = 7.0  # Non-QM rates slightly higher
+            monthly_rate = interest_rate / 100 / 12
+            num_payments = 30 * 12
+            
+            # Calculate P&I
+            if monthly_rate == 0:
+                monthly_pi = loan_amount / num_payments
+            else:
+                monthly_pi = loan_amount * (monthly_rate * (1 + monthly_rate)**num_payments) / ((1 + monthly_rate)**num_payments - 1)
+            
+            # No PMI with 20% down
+            monthly_pmi = 0
+            
+            # Total housing payment
+            total_housing_payment = monthly_pi + req.propertyTax + req.homeInsurance
+            
+            # Check Non-QM requirements
+            qualified = False
+            message = ""
+            recommendations = ""
+            
+            if req.creditScore >= 660 and down_payment_percent >= 20:
+                qualified = True
+                message = f"Excellent! You meet Non-QM requirements with no income verification needed!"
+                recommendations = f"""Your Non-QM Profile:
+✓ Credit Score: {req.creditScore} (Meets 660+ requirement)
+✓ Down Payment: {down_payment_percent:.1f}% (Meets 20% requirement)
+✓ No tax returns or W2s required
+✓ No traditional employment verification
+
+Your Expected Monthly Payment: ${total_housing_payment:,.0f}
+- Principal & Interest: ${monthly_pi:,.0f}
+- Property Tax: ${req.propertyTax:,.0f}
+- Home Insurance: ${req.homeInsurance:,.0f}
+
+Next Steps:
+1. Prepare 12-24 months of bank statements for alternative income verification
+2. Get pre-approved with Non-QM program
+3. Schedule consultation to discuss your specific situation"""
+            elif req.creditScore < 660:
+                message = f"Your credit score of {req.creditScore} is below the 660 minimum for Non-QM loans."
+                recommendations = f"""Credit Improvement Plan for Non-QM:
+
+Current Score: {req.creditScore}
+Target Score: 660+
+
+Steps to Improve:
+1. Review credit report for errors and dispute inaccuracies
+2. Pay all bills on time (biggest factor)
+3. Pay down credit card balances below 30% utilization
+4. Avoid opening new credit accounts
+
+Your down payment of {down_payment_percent:.1f}% meets the requirement!
+
+Expected Monthly Payment: ${total_housing_payment:,.0f} (once credit improves)
+
+Schedule a consultation to create your credit improvement strategy!"""
+            else:
+                message = f"Your down payment of {down_payment_percent:.1f}% is below the 20% minimum for Non-QM loans."
+                recommendations = f"""Down Payment Requirement:
+
+Current Down Payment: {down_payment_percent:.1f}%
+Required: 20% minimum (${req.purchasePrice * 0.20:,.0f})
+Shortfall: ${(req.purchasePrice * 0.20) - req.downPayment:,.0f}
+
+Your credit score of {req.creditScore} meets the requirement!
+
+Strategies:
+1. Increase savings to reach 20% down payment
+2. Consider a lower-priced property
+3. Explore gift funds from family members
+4. Consider traditional loans (FHA/Conventional) if you have employment history
+
+Schedule a consultation to discuss all your options!"""
+            
+            return {
+                "qualified": qualified,
+                "message": message,
+                "recommendations": recommendations,
+                "calculations": {
+                    "monthlyIncome": 0,  # Not applicable for Non-QM
+                    "totalHousingPayment": round(total_housing_payment, 2),
+                    "monthlyPI": round(monthly_pi, 2),
+                    "monthlyPMI": 0,
+                    "dti": 0,  # Not calculated for Non-QM
+                    "downPaymentPercent": round(down_payment_percent, 1),
+                    "loanAmount": round(loan_amount, 2)
+                }
+            }
+        
+        # Regular qualification logic for other loan types
         # Calculate monthly income using AI-powered analysis
         # Take average of 2-year W2 and project YTD to annual
         import datetime
