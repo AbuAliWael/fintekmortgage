@@ -388,6 +388,120 @@ const LandingPage = () => {
         </div>
       </div>
 
+      {/* Loan Programs Section */}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Explore Our Loan Programs</h2>
+            <p className="text-xl text-gray-600">Find the perfect mortgage solution for your needs</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* FHA Loans */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🏠</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">FHA Loans</h3>
+              <p className="text-gray-600 mb-4 text-center">Low down payment, flexible credit</p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 3.5% down</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 600+ credit</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 55% DTI allowed</li>
+              </ul>
+              <button onClick={() => navigate('/loans/fha')} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* VA Loans */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🇺🇸</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">VA Loans</h3>
+              <p className="text-gray-600 mb-4 text-center">For veterans & military</p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> $0 down</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> No PMI</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Best rates</li>
+              </ul>
+              <button onClick={() => navigate('/loans/va')} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* Conventional Loans */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🏡</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Conventional</h3>
+              <p className="text-gray-600 mb-4 text-center">Flexible, competitive rates</p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 3% down</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 620+ credit</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Remove PMI at 20%</li>
+              </ul>
+              <button onClick={() => navigate('/loans/conventional')} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* Non-QM Loans */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">💰</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Non-QM Loans</h3>
+              <p className="text-gray-600 mb-4 text-center">No tax returns needed</p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> No tax returns</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 660+ credit</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> 20%+ down</li>
+              </ul>
+              <button onClick={() => navigate('/loans/non-qm')} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* First-Time Buyer */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🔑</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">First-Time Buyer</h3>
+              <p className="text-gray-600 mb-4 text-center">Your path to homeownership</p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Special programs</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Low down payment</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Expert guidance</li>
+              </ul>
+              <button onClick={() => navigate('/loans/first-time-buyer')} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* Refinancing */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🔄</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Refinancing</h3>
+              <p className="text-gray-600 mb-4 text-center">Lower rates, access equity</p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Lower payment</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Cash-out option</li>
+                <li className="flex items-center text-gray-700"><span className="text-green-600 mr-2">✓</span> Fast processing</li>
+              </ul>
+              <button onClick={() => navigate('/loans/refinancing')} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Features Section */}
       <div className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
