@@ -915,15 +915,15 @@ async def calculate_affordability(
 # ==================== QUALIFICATION ANALYSIS ROUTE ====================
 class QualificationRequest(BaseModel):
     creditScore: int
-    income2023: float
-    income2024: float
-    incomeYTD2025: float
-    monthlyDebts: float
+    income2023: float = 0  # Optional for Non-QM
+    income2024: float = 0  # Optional for Non-QM
+    incomeYTD2025: float = 0  # Optional for Non-QM
+    monthlyDebts: float = 0  # Optional for Non-QM
     purchasePrice: float
     downPayment: float
     propertyTax: float
     homeInsurance: float
-    hasEmploymentHistory: bool
+    hasEmploymentHistory: bool = True  # Optional
     loanType: str
 
 
