@@ -1053,10 +1053,26 @@ Schedule a consultation to discuss all your options!"""
         else:
             monthly_pi = loan_amount * (monthly_rate * (1 + monthly_rate)**num_payments) / ((1 + monthly_rate)**num_payments - 1)
         
-        # Calculate PMI if needed
+        # Calculate PMI/MIP if needed
         monthly_pmi = 0
-        if down_payment_percent < 20 and req.loanType not in ['va', 'nonqm']:
+        
+        # FHA loans ALWAYS have mortgage insurance (MIP)
+        if req.loanType == 'fha':
+            # FHA has upfront MIP (1.75%) + annual MIP (0.85% for >95% LTV, 0.80% for 90-95%, 0.70% for <90%)
+            if down_payment_percent <= 5:
+                monthly_pmi = loan_amount * 0.0085 / 12  # 0.85% annual
+            elif down_payment_percent <= 10:
+                monthly_pmi = loan_amount * 0.0080 / 12  # 0.80% annual
+            else:
+                monthly_pmi = loan_amount * 0.0070 / 12  # 0.70% annual
+        
+        # Conventional and First-Time Buyer: PMI only if < 20% down
+        elif req.loanType in ['conventional', 'firsttimebuyer'] and down_payment_percent < 20:
             monthly_pmi = loan_amount * 0.005 / 12  # 0.5% annual PMI
+        
+        # VA and Non-QM: No PMI
+        # VA has funding fee instead (paid upfront or financed)
+        # Non-QM requires 20% down minimum
         
         # Total housing payment
         total_housing_payment = monthly_pi + req.propertyTax + req.homeInsurance + monthly_pmi
