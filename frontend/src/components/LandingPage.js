@@ -554,10 +554,13 @@ const LandingPage = () => {
       {!isChatOpen && (
         <button
           onClick={() => setIsChatOpen(true)}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-3 z-40 animate-pulse"
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-3 z-40 animate-pulse"
         >
           <span className="text-2xl">💬</span>
-          <span className="font-semibold">Chat with AI Assistant</span>
+          <div className="text-left">
+            <span className="font-semibold block">Chat with AI Assistant</span>
+            <span className="text-xs opacity-90">9 AM - 7 PM EST</span>
+          </div>
         </button>
       )}
 
