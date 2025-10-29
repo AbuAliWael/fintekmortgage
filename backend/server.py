@@ -971,7 +971,7 @@ async def analyze_qualification(req: QualificationRequest):
         dti_limits = {
             'fha': 53,
             'conventional': 45,
-            'firsttimebuyer': 45,
+            'firsttimebuyer': 45,  # Will provide recommendations
             'va': 41,
             'nonqm': 50,
             'refinancing': 45
@@ -981,7 +981,7 @@ async def analyze_qualification(req: QualificationRequest):
         credit_requirements = {
             'fha': 580,
             'conventional': 620,
-            'firsttimebuyer': 620,
+            'firsttimebuyer': 580,  # Will provide recommendations
             'va': 620,
             'nonqm': 660,
             'refinancing': 620
@@ -989,6 +989,115 @@ async def analyze_qualification(req: QualificationRequest):
         
         max_dti = dti_limits.get(req.loanType, 45)
         min_credit = credit_requirements.get(req.loanType, 620)
+        
+        # Special handling for First-Time Buyer - provide loan recommendations
+        if req.loanType == 'firsttimebuyer':
+            qualified = False
+            
+            # Determine best loan type based on profile
+            can_do_conventional = req.creditScore >= 620 and dti <= 45 and req.hasEmploymentHistory
+            can_do_fha = req.creditScore >= 580 and dti <= 53 and req.hasEmploymentHistory
+            can_do_nonqm = req.creditScore >= 660 and down_payment_percent >= 20
+            
+            if not req.hasEmploymentHistory:
+                if can_do_nonqm:
+                    message = "As a first-time buyer without 2 years employment history, Non-QM is your best option!"
+                    recommendations = f"""Your Profile Analysis:
+• Credit Score: {req.creditScore}
+• Down Payment: {down_payment_percent:.1f}%
+• DTI: {dti:.1f}%
+• Employment History: Less than 2 years
+
+Recommended Loan: Non-QM
+✓ No traditional employment verification needed
+✓ Use bank statements or alternative documentation
+✓ Great for self-employed or recent job changes
+
+Next Steps:
+1. Prepare 12-24 months of bank statements
+2. Schedule consultation to discuss your income documentation
+3. Get pre-approved with a Non-QM program"""
+                else:
+                    message = "Let's work on building your qualification profile for first-time homeownership!"
+                    recommendations = f"""Your Current Profile:
+• Credit Score: {req.creditScore}
+• Down Payment: {down_payment_percent:.1f}%
+• DTI: {dti:.1f}%
+• Employment History: Less than 2 years
+
+Recommendations:
+1. Build 2 years employment history for FHA/Conventional loans
+2. Improve credit to 660+ and save 20% down for Non-QM
+3. Consider a co-borrower to strengthen your application
+
+Let's schedule a consultation to create your path to homeownership!"""
+            elif can_do_conventional:
+                message = f"Great news! You qualify for a Conventional loan as a first-time buyer!"
+                recommendations = f"""Your Profile:
+• Credit Score: {req.creditScore} ✓
+• DTI: {dti:.1f}% ✓
+• Employment History: 2+ years ✓
+
+Recommended Loan: Conventional
+✓ Competitive interest rates
+✓ PMI can be removed at 20% equity
+✓ 3-5% down payment options
+✓ First-time buyer programs available
+
+Next Steps:
+1. Get pre-approved for a Conventional loan
+2. Explore first-time buyer assistance programs
+3. Gather documentation: W2s, pay stubs, bank statements"""
+            elif can_do_fha:
+                message = f"Perfect! You qualify for an FHA loan as a first-time buyer!"
+                recommendations = f"""Your Profile:
+• Credit Score: {req.creditScore} ✓
+• DTI: {dti:.1f}% ✓
+• Employment History: 2+ years ✓
+
+Recommended Loan: FHA
+✓ Only 3.5% down payment required
+✓ Flexible credit requirements
+✓ Gift funds allowed for down payment
+✓ Higher DTI limits (up to 53%)
+
+Next Steps:
+1. Get pre-approved for an FHA loan
+2. Consider FHA first-time buyer advantages
+3. Gather documentation: W2s, pay stubs, bank statements"""
+            elif can_do_nonqm and dti > 53:
+                message = f"Your DTI is high for traditional loans, but Non-QM is an option!"
+                recommendations = f"""Your Profile:
+• Credit Score: {req.creditScore} ✓
+• Down Payment: {down_payment_percent:.1f}% ✓
+• DTI: {dti:.1f}% (Above traditional limits)
+
+Recommended Loan: Non-QM
+✓ Accommodates higher DTI ratios
+✓ Strong credit and down payment compensate
+✓ Alternative income verification
+
+Next Steps:
+1. Schedule consultation to discuss Non-QM options
+2. Prepare bank statements for income verification
+3. We'll help you get pre-approved"""
+            else:
+                message = f"Let's work together to get you qualified for your first home!"
+                recommendations = f"""Your Current Profile:
+• Credit Score: {req.creditScore}
+• DTI: {dti:.1f}%
+• Down Payment: {down_payment_percent:.1f}%
+
+Path to Qualification:
+"""
+                if req.creditScore < 580:
+                    recommendations += "1. Improve credit to 580+ for FHA or 620+ for Conventional\n"
+                if dti > 53:
+                    recommendations += f"2. Reduce DTI by paying down debts or increasing income\n"
+                if down_payment_percent < 3.5:
+                    recommendations += "3. Save for at least 3.5% down payment\n"
+                    
+                recommendations += "\nSchedule a consultation to create your personalized action plan!"
         
         # Qualification logic
         qualified = False
