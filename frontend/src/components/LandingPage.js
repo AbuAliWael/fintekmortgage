@@ -182,12 +182,12 @@ const LandingPage = () => {
 
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">Fast</div>
-                <div className="text-sm text-gray-600">Quick Approval</div>
+                <div className="text-3xl font-bold text-green-600">23 Days</div>
+                <div className="text-sm text-gray-600">Average Close Time</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">20%+</div>
-                <div className="text-sm text-gray-600">No PMI Option</div>
+                <div className="text-3xl font-bold text-blue-600">5.0★</div>
+                <div className="text-sm text-gray-600">Client Rating</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-600">Flexible</div>
