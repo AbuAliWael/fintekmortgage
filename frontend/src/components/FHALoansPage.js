@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import QualificationForm from './QualificationForm';
 
 const FHALoansPage = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
     <div className="min-h-screen bg-gray-50">
