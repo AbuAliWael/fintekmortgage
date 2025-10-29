@@ -534,8 +534,8 @@ const LandingPage = () => {
       </div>
 
       {/* Daily Mortgage Insights Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide">Today's Expert Advice</span>
             <h3 className="text-3xl font-bold text-gray-900 mt-2">Daily Mortgage Insights</h3>
