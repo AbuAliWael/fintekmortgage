@@ -911,6 +911,228 @@ async def calculate_affordability(
         raise HTTPException(status_code=500, detail=f"Calculation error: {str(e)}")
 
 
+
+# ==================== QUALIFICATION ANALYSIS ROUTE ====================
+class QualificationRequest(BaseModel):
+    creditScore: int
+    income2023: float
+    income2024: float
+    incomeYTD2025: float
+    monthlyDebts: float
+    purchasePrice: float
+    downPayment: float
+    propertyTax: float
+    homeInsurance: float
+    hasEmploymentHistory: bool
+    loanType: str
+
+
+@api_router.post("/qualify")
+async def analyze_qualification(req: QualificationRequest):
+    try:
+        # Calculate monthly income using AI-powered analysis
+        # Take average of 2-year W2 and project YTD to annual
+        import datetime
+        current_month = datetime.datetime.now().month
+        projected_2025_annual = (req.incomeYTD2025 / current_month) * 12 if current_month > 0 else req.incomeYTD2025
+        
+        # Average annual income
+        avg_annual_income = (req.income2023 + req.income2024 + projected_2025_annual) / 3
+        monthly_income = avg_annual_income / 12
+        
+        # Calculate mortgage payment
+        loan_amount = req.purchasePrice - req.downPayment
+        down_payment_percent = (req.downPayment / req.purchasePrice) * 100
+        
+        # Assume 6.5% interest rate for calculation (30-year fixed)
+        interest_rate = 6.5
+        monthly_rate = interest_rate / 100 / 12
+        num_payments = 30 * 12
+        
+        # Calculate P&I
+        if monthly_rate == 0:
+            monthly_pi = loan_amount / num_payments
+        else:
+            monthly_pi = loan_amount * (monthly_rate * (1 + monthly_rate)**num_payments) / ((1 + monthly_rate)**num_payments - 1)
+        
+        # Calculate PMI if needed
+        monthly_pmi = 0
+        if down_payment_percent < 20 and req.loanType not in ['va', 'nonqm']:
+            monthly_pmi = loan_amount * 0.005 / 12  # 0.5% annual PMI
+        
+        # Total housing payment
+        total_housing_payment = monthly_pi + req.propertyTax + req.homeInsurance + monthly_pmi
+        
+        # Calculate DTI
+        total_monthly_payments = total_housing_payment + req.monthlyDebts
+        dti = (total_monthly_payments / monthly_income) * 100
+        
+        # Loan-specific DTI limits
+        dti_limits = {
+            'fha': 53,
+            'conventional': 45,
+            'firsttimebuyer': 45,
+            'va': 41,
+            'nonqm': 50,
+            'refinancing': 45
+        }
+        
+        # Credit score requirements
+        credit_requirements = {
+            'fha': 580,
+            'conventional': 620,
+            'firsttimebuyer': 620,
+            'va': 620,
+            'nonqm': 660,
+            'refinancing': 620
+        }
+        
+        max_dti = dti_limits.get(req.loanType, 45)
+        min_credit = credit_requirements.get(req.loanType, 620)
+        
+        # Qualification logic
+        qualified = False
+        message = ""
+        recommendations = ""
+        
+        # Check employment history
+        if not req.hasEmploymentHistory:
+            # Suggest Non-QM if criteria met
+            if req.creditScore >= 660 and down_payment_percent >= 20:
+                qualified = False
+                message = f"While you don't have 2 years of employment history, you may qualify for a Non-QM loan!"
+                recommendations = f"""Based on your profile:
+• Credit Score: {req.creditScore} (Good for Non-QM ✓)
+• Down Payment: {down_payment_percent:.1f}% (Meets 20% requirement ✓)
+• DTI: {dti:.1f}%
+
+Non-QM loans don't require traditional employment verification. You can qualify using:
+- Bank statements (12-24 months)
+- Asset depletion
+- 1099 income verification
+
+Next Steps:
+1. Prepare 12-24 months of bank statements
+2. Schedule a consultation to discuss your income documentation options
+3. We'll help you get pre-approved with a Non-QM program"""
+            else:
+                qualified = False
+                message = "Additional documentation may be needed for qualification."
+                recommendations = f"""Your Current Profile:
+• Credit Score: {req.creditScore}
+• Down Payment: {down_payment_percent:.1f}%
+• DTI: {dti:.1f}%
+• Employment History: Less than 2 years
+
+Recommendations:
+1. Build employment history to 2 years for traditional loans
+2. If you have 660+ credit and can put 20% down, consider Non-QM loans
+3. Work on improving credit score if below 660
+4. Schedule a consultation to explore all available options"""
+        
+        # Standard qualification checks
+        elif req.creditScore >= min_credit and dti <= max_dti:
+            qualified = True
+            message = f"Congratulations! You appear to qualify for a {req.loanType.upper().replace('_', ' ')} loan!"
+            
+            # Use LLM for personalized recommendations
+            llm_prompt = f"""You are a mortgage expert. Provide brief, actionable advice for this borrower:
+
+Loan Type: {req.loanType.upper()}
+Credit Score: {req.creditScore}
+DTI: {dti:.1f}%
+Down Payment: {down_payment_percent:.1f}%
+Monthly Income: ${monthly_income:,.0f}
+Monthly Housing Payment: ${total_housing_payment:,.0f}
+
+Provide 3-4 bullet points of advice to strengthen their application or next steps. Keep it concise and actionable."""
+
+            try:
+                llm = LlmChat(api_key=EMERGENT_LLM_KEY)
+                llm_response = llm.send_message(UserMessage(content=llm_prompt))
+                recommendations = llm_response.content
+            except Exception as e:
+                logger.error(f"LLM recommendation error: {str(e)}")
+                recommendations = f"""Next Steps:
+• Your DTI of {dti:.1f}% is within acceptable limits for {req.loanType} loans
+• Get pre-approved to lock in your qualification
+• Gather documentation: pay stubs, W2s, bank statements
+• Schedule a consultation to discuss your specific situation"""
+        
+        # DTI too high - suggest alternatives
+        elif dti > max_dti:
+            qualified = False
+            if req.creditScore >= 660 and down_payment_percent >= 20:
+                message = f"Your DTI of {dti:.1f}% is above the {max_dti}% limit for {req.loanType} loans, but you may qualify for Non-QM!"
+                recommendations = f"""Your Profile:
+• Credit Score: {req.creditScore} ✓
+• Down Payment: {down_payment_percent:.1f}% ✓
+• DTI: {dti:.1f}% (High for traditional loans)
+
+Non-QM Solution:
+Non-QM loans can accommodate higher DTI ratios (up to 50%) with:
+- Strong credit (660+)
+- Significant down payment (20%+)
+- Alternative income verification
+
+Next Steps:
+1. Schedule consultation to discuss Non-QM options
+2. We can review your complete financial picture
+3. Explore ways to reduce DTI if targeting traditional loans"""
+            else:
+                message = f"Your DTI of {dti:.1f}% exceeds the {max_dti}% limit. Let's work on lowering it!"
+                recommendations = f"""Strategies to Lower Your DTI:
+1. Pay down high-interest debts (credit cards, personal loans)
+2. Increase your down payment to reduce loan amount and monthly payment
+3. Consider a co-borrower to increase household income
+4. Look at homes in a lower price range
+
+Current DTI: {dti:.1f}%
+Target DTI: Below {max_dti}%
+Monthly Payment Reduction Needed: ~${(total_monthly_payments - (monthly_income * max_dti / 100)):,.0f}
+
+Schedule a consultation to create a personalized action plan!"""
+        
+        # Credit score too low
+        else:
+            qualified = False
+            message = f"Your credit score of {req.creditScore} is below the {min_credit} minimum for {req.loanType} loans."
+            recommendations = f"""Credit Improvement Plan:
+1. Review credit report for errors and dispute inaccuracies
+2. Pay all bills on time (biggest factor in credit score)
+3. Pay down credit card balances below 30% utilization
+4. Avoid opening new credit accounts
+5. Consider becoming an authorized user on a family member's account
+
+Current Score: {req.creditScore}
+Target Score: {min_credit}+
+
+Timeframe: Most people can improve 50-100 points in 6-12 months with consistent effort.
+
+Alternative: If you have 20% down and 660+ credit, Non-QM loans may be an option.
+
+Schedule a consultation to create your credit improvement strategy!"""
+        
+        return {
+            "qualified": qualified,
+            "message": message,
+            "recommendations": recommendations,
+            "calculations": {
+                "monthlyIncome": round(monthly_income, 2),
+                "totalHousingPayment": round(total_housing_payment, 2),
+                "monthlyPI": round(monthly_pi, 2),
+                "monthlyPMI": round(monthly_pmi, 2),
+                "dti": round(dti, 1),
+                "downPaymentPercent": round(down_payment_percent, 1),
+                "loanAmount": round(loan_amount, 2)
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Qualification analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis error: {str(e)}")
+
+
 # ==================== ANALYTICS ROUTES ====================
 @api_router.get("/analytics/dashboard")
 async def get_dashboard_analytics():
