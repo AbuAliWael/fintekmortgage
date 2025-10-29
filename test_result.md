@@ -206,15 +206,18 @@ frontend:
 
   - task: "Daily Mortgage Insights Read More/Read Less Functionality"
     implemented: true
-    working: "NA"
+    working: true
     file: "frontend/src/components/LandingPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "user"
         comment: "User requested testing of new Read More/Read Less functionality for Daily Mortgage Insights section. Features: compact view with truncated content (~180 chars), Read More button expands card to full width (spans 3 columns), hides other cards when expanded, shows full content, Read Less button collapses back to compact view."
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Read More/Read Less functionality working perfectly. INITIAL STATE: 3 insight cards displayed in compact view with content truncated to ~183 chars and Read More buttons visible. EXPAND FUNCTIONALITY: Clicking Read More expands card to full width (md:col-span-3), hides other cards, displays full content without truncation, and shows Read Less button. COLLAPSE FUNCTIONALITY: Clicking Read Less returns to compact view with all 3 cards visible and content truncated again. MULTIPLE CARDS: Successfully tested expansion/collapse on all 3 cards (TIPS, PROGRAMS, RATES). All transitions smooth with proper CSS classes. No console errors found. Screenshots captured showing all states working correctly."
 
 metadata:
   created_by: "main_agent"
