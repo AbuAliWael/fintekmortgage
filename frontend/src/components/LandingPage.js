@@ -545,26 +545,62 @@ const LandingPage = () => {
           
           {dailyInsight ? (
             <div className="grid md:grid-cols-3 gap-6">
-              {dailyInsight.map((insight, index) => (
-                <div key={insight.id || index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs text-blue-600 font-semibold uppercase tracking-wide bg-blue-50 px-3 py-1 rounded-full">
-                      {insight.category}
-                    </span>
-                    <div className="flex items-center space-x-2">
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
-                        alt="Wael Abdeldayem"
-                        className="h-8 w-8 rounded-full object-cover border-2 border-blue-200"
-                      />
+              {dailyInsight.map((insight, index) => {
+                const isExpanded = expandedInsight === insight.id;
+                const isOtherExpanded = expandedInsight !== null && !isExpanded;
+                
+                // Hide this card if another card is expanded
+                if (isOtherExpanded) return null;
+                
+                return (
+                  <div 
+                    key={insight.id || index} 
+                    className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                      isExpanded ? 'md:col-span-3 p-8' : 'p-6'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs text-blue-600 font-semibold uppercase tracking-wide bg-blue-50 px-3 py-1 rounded-full">
+                        {insight.category}
+                      </span>
+                      <div className="flex items-center space-x-2">
+                        <img 
+                          src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                          alt="Wael Abdeldayem"
+                          className="h-8 w-8 rounded-full object-cover border-2 border-blue-200"
+                        />
+                      </div>
                     </div>
+                    
+                    <h3 className={`font-bold text-gray-900 mb-3 leading-tight ${
+                      isExpanded ? 'text-2xl' : 'text-lg'
+                    }`}>
+                      {insight.title}
+                    </h3>
+                    
+                    <p className={`text-gray-600 leading-relaxed ${
+                      isExpanded ? 'text-base mb-6' : 'text-sm'
+                    }`}>
+                      {isExpanded ? insight.content : `${insight.content.substring(0, 180)}...`}
+                    </p>
+                    
+                    <button
+                      onClick={() => setExpandedInsight(isExpanded ? null : insight.id)}
+                      className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center space-x-1 transition-colors"
+                    >
+                      <span>{isExpanded ? 'Read Less' : 'Read More'}</span>
+                      <svg 
+                        className={`w-4 h-4 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 leading-tight">{insight.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
-                    {insight.content.substring(0, 180)}...
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
