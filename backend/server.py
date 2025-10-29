@@ -1063,14 +1063,14 @@ Provide 3-4 bullet points of advice to strengthen their application or next step
         elif dti > max_dti:
             qualified = False
             if req.creditScore >= 660 and down_payment_percent >= 20:
-                message = f"Your DTI of {dti:.1f}% is above the {max_dti}% limit for {req.loanType} loans, but you may qualify for Non-QM!"
+                message = f"Your DTI of {dti:.1f}% is above limits for {req.loanType} loans, but you may qualify for Non-QM!"
                 recommendations = f"""Your Profile:
 • Credit Score: {req.creditScore} ✓
 • Down Payment: {down_payment_percent:.1f}% ✓
-• DTI: {dti:.1f}% (High for traditional loans)
+• DTI: {dti:.1f}% (Above limits for traditional loans)
 
 Non-QM Solution:
-Non-QM loans can accommodate higher DTI ratios (up to 50%) with:
+Non-QM loans can accommodate higher DTI ratios with:
 - Strong credit (660+)
 - Significant down payment (20%+)
 - Alternative income verification
@@ -1080,15 +1080,14 @@ Next Steps:
 2. We can review your complete financial picture
 3. Explore ways to reduce DTI if targeting traditional loans"""
             else:
-                message = f"Your DTI of {dti:.1f}% exceeds the {max_dti}% limit. Let's work on lowering it!"
+                message = f"Your DTI of {dti:.1f}% is above limits for this type of loan. Let's work on lowering it!"
                 recommendations = f"""Strategies to Lower Your DTI:
 1. Pay down high-interest debts (credit cards, personal loans)
 2. Increase your down payment to reduce loan amount and monthly payment
 3. Consider a co-borrower to increase household income
 4. Look at homes in a lower price range
 
-Current DTI: {dti:.1f}%
-Target DTI: Below {max_dti}%
+Your Current DTI: {dti:.1f}%
 Monthly Payment Reduction Needed: ~${(total_monthly_payments - (monthly_income * max_dti / 100)):,.0f}
 
 Schedule a consultation to create a personalized action plan!"""
@@ -1096,7 +1095,7 @@ Schedule a consultation to create a personalized action plan!"""
         # Credit score too low
         else:
             qualified = False
-            message = f"Your credit score of {req.creditScore} is below the {min_credit} minimum for {req.loanType} loans."
+            message = f"Your credit score of {req.creditScore} is below minimum requirements for {req.loanType} loans."
             recommendations = f"""Credit Improvement Plan:
 1. Review credit report for errors and dispute inaccuracies
 2. Pay all bills on time (biggest factor in credit score)
