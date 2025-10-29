@@ -104,6 +104,10 @@ const ConventionalLoansPage = () => {
             <a href="https://181106.my1003app.com/2171794/register?time=1742858528979" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Apply Now</a>
           </div>
         </div>
+        </>
+        ) : (
+          <QualificationForm loanType="conventional" />
+        )}
       </div>
     </div>
   );
