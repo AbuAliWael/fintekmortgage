@@ -204,6 +204,18 @@ frontend:
         agent: "testing"
         comment: "✅ VERIFIED: Daily Mortgage Insights section fully functional after API fix. Exactly 3 insight cards displayed with complete content: 'Enhance Your Mortgage Readiness' (TIPS), 'Navigating Mortgage Loan Programs' (PROGRAMS), and 'Navigating Rising Interest Rates' (RATES). All cards show Wael Abdeldayem as author with photo. No loading skeleton present. API endpoint `/api/insights?limit=3` working correctly. Screenshot captured showing proper display."
 
+  - task: "Daily Mortgage Insights Read More/Read Less Functionality"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/LandingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "user"
+        comment: "User requested testing of new Read More/Read Less functionality for Daily Mortgage Insights section. Features: compact view with truncated content (~180 chars), Read More button expands card to full width (spans 3 columns), hides other cards when expanded, shows full content, Read Less button collapses back to compact view."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
