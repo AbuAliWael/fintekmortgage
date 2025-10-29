@@ -340,42 +340,43 @@ const LandingPage = () => {
           </div>
           
           {dailyInsight ? (
-            <div className="bg-white rounded-2xl shadow-xl p-8" data-testid="daily-insight">
-              <div className="flex items-center justify-between mb-4">
-                <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold capitalize">
-                  {dailyInsight.category}
-                </span>
-                <span className="text-sm text-gray-500">
-                  {new Date(dailyInsight.date).toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
-                </span>
-              </div>
-              <h4 className="text-2xl font-bold text-gray-900 mb-4">{dailyInsight.title}</h4>
-              <p className="text-gray-700 leading-relaxed text-lg">{dailyInsight.content}</p>
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex items-center space-x-3">
-                  <img 
-                    src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
-                    alt="Wael Abdeldayem"
-                    className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
-                  />
-                  <p className="text-sm text-gray-600 italic">
-                    💡 Expert advice from Wael Abdeldayem, Licensed Mortgage Broker
-                  </p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {dailyInsight.map((insight, index) => (
+                <div key={insight.id || index} className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{insight.title}</h3>
+                    <p className="text-gray-700 leading-relaxed">{insight.content}</p>
+                  </div>
+                  <div className="border-t border-gray-200 pt-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <img 
+                          src="https://customer-assets.emergentagent.com/job_mortgage-mastery/artifacts/y2wa234f_Wael%27s%20Pic.jpg"
+                          alt="Wael Abdeldayem"
+                          className="h-10 w-10 rounded-full object-cover border-2 border-blue-200"
+                        />
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900">Wael Abdeldayem</p>
+                          <p className="text-xs text-gray-500">Licensed Mortgage Broker</p>
+                        </div>
+                      </div>
+                      <span className="text-xs text-blue-600 font-medium">{insight.category?.toUpperCase()}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
-              <div className="animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6 mx-auto"></div>
-              </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white rounded-2xl shadow-xl p-12">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
           
