@@ -271,7 +271,7 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
             disabled={loading}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {loading ? 'Analyzing Your Qualification...' : 'Check My Qualification'}
+            {loading ? 'Analyzing Your Qualification...' : (isNonQM ? 'Calculate My Monthly Payment' : 'Check My Qualification')}
           </button>
         </form>
       ) : (
