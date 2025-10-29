@@ -46,6 +46,10 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
+          <Route path="/loans/fha" element={<FHALoansPage />} />
+          <Route path="/loans/va" element={<VALoansPage />} />
+          <Route path="/loans/conventional" element={<ConventionalLoansPage />} />
+          <Route path="/loans/non-qm" element={<NonQMLoansPage />} />
           <Route 
             path="/login" 
             element={
