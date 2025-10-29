@@ -13,6 +13,8 @@ import FHALoansPage from '@/components/FHALoansPage';
 import VALoansPage from '@/components/VALoansPage';
 import ConventionalLoansPage from '@/components/ConventionalLoansPage';
 import NonQMLoansPage from '@/components/NonQMLoansPage';
+import FirstTimeBuyerPage from '@/components/FirstTimeBuyerPage';
+import RefinancingPage from '@/components/RefinancingPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
