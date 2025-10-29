@@ -5,34 +5,6 @@ const ComplianceFooter = () => {
     <div className="bg-gray-100 border-t-4 border-blue-600 mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        {/* NMLS and Licensing */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-start space-x-4">
-            <div className="w-16 h-16 flex-shrink-0">
-              <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="100" fill="#0066CC"/>
-                <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" fill="#FFD700" stroke="#000" strokeWidth="2"/>
-                <text x="50" y="58" fontSize="32" fontWeight="bold" fill="#0066CC" textAnchor="middle">⌂</text>
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Licensed Mortgage Broker</h3>
-              <p className="text-sm text-gray-700 mb-2">
-                <strong>Wael Abdeldayem</strong> | NMLS #2171794
-              </p>
-              <p className="text-sm text-gray-700 mb-2">
-                <strong>Barrett Financial Group, L.L.C.</strong>
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                Licensed by the New Jersey Department of Banking and Insurance
-              </p>
-              <p className="text-xs text-gray-500">
-                New Jersey Residential Mortgage Broker License
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Important Disclosures */}
         <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-6">
           <h4 className="font-bold text-gray-900 mb-3 text-sm">IMPORTANT DISCLOSURES</h4>
