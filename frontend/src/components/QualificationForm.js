@@ -296,29 +296,36 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
 
           {/* Financial Summary */}
           <div className="bg-gray-50 rounded-lg p-6">
-            <h5 className="text-lg font-bold text-gray-900 mb-4">Your Financial Summary</h5>
+            <h5 className="text-lg font-bold text-gray-900 mb-4">Your Financial Summary (Estimated)</h5>
             <div className="grid md:grid-cols-2 gap-4">
+              {result.calculations?.monthlyIncome > 0 && (
               <div>
-                <p className="text-sm text-gray-600">Calculated Monthly Income</p>
+                <p className="text-sm text-gray-600">Estimated Monthly Income</p>
                 <p className="text-2xl font-bold text-blue-600">${result.calculations?.monthlyIncome?.toLocaleString()}</p>
               </div>
+              )}
               <div>
-                <p className="text-sm text-gray-600">Total Monthly Housing Payment</p>
+                <p className="text-sm text-gray-600">Estimated Total Monthly Housing Payment</p>
                 <p className="text-2xl font-bold text-gray-900">${result.calculations?.totalHousingPayment?.toLocaleString()}</p>
               </div>
+              {result.calculations?.dti > 0 && (
               <div>
-                <p className="text-sm text-gray-600">Debt-to-Income Ratio (DTI)</p>
+                <p className="text-sm text-gray-600">Estimated Debt-to-Income Ratio (DTI)</p>
                 <p className={`text-2xl font-bold ${
                   result.calculations?.dti <= 45 ? 'text-green-600' : 'text-yellow-600'
                 }`}>
                   {result.calculations?.dti}%
                 </p>
               </div>
+              )}
               <div>
                 <p className="text-sm text-gray-600">Down Payment Percentage</p>
                 <p className="text-2xl font-bold text-gray-900">{result.calculations?.downPaymentPercent}%</p>
               </div>
             </div>
+            <p className="text-xs text-gray-500 mt-4 italic">
+              * All figures are estimates based on current rates and provided information. Actual rates, payments, and terms may vary and will be determined upon formal application and underwriting.
+            </p>
           </div>
 
           {/* AI Recommendations */}
