@@ -121,6 +121,9 @@ backend:
       - working: true
         agent: "main"
         comment: "No backend changes required for this feature set"
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive backend API testing completed successfully. All 4 core endpoints verified: Health check (GET /api/) returned proper message, Daily insights (GET /api/insights?limit=3) returned 3 published articles, Lead creation (POST /api/leads) successfully created lead with ID and proper scoring, AI chatbot (POST /api/ai/chat) returned detailed loan program information. All APIs responding correctly with expected data structures and status codes."
 
 frontend:
   - task: "Hero section stats - Add 23 Days Average Close Time"
