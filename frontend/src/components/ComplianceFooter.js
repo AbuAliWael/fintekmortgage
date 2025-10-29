@@ -8,11 +8,13 @@ const ComplianceFooter = () => {
         {/* NMLS and Licensing */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex items-start space-x-4">
-            <img 
-              src="https://www.hud.gov/sites/dfiles/Main/images/eho_blue-gold.png" 
-              alt="Equal Housing Opportunity" 
-              className="w-16 h-16"
-            />
+            <div className="w-16 h-16 flex-shrink-0">
+              <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" fill="#0066CC"/>
+                <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" fill="#FFD700" stroke="#000" strokeWidth="2"/>
+                <text x="50" y="58" fontSize="32" fontWeight="bold" fill="#0066CC" textAnchor="middle">⌂</text>
+              </svg>
+            </div>
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-900 mb-2">Licensed Mortgage Broker</h3>
               <p className="text-sm text-gray-700 mb-2">
@@ -46,19 +48,6 @@ const ComplianceFooter = () => {
             </p>
             <p>
               <strong>Licensing:</strong> This is not a commitment to lend. All loans are subject to credit approval and property appraisal. Programs, rates, terms, and conditions are subject to change without notice. Other restrictions may apply.
-            </p>
-            <p>
-              <strong>New Jersey Consumers:</strong> The New Jersey Department of Banking and Insurance may be contacted for additional information or to file a complaint at:
-              <br />
-              NJ Department of Banking and Insurance
-              <br />
-              PO Box 325
-              <br />
-              Trenton, NJ 08625-0325
-              <br />
-              Phone: (609) 292-7272
-              <br />
-              Website: <a href="https://www.nj.gov/dobi/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">www.nj.gov/dobi/</a>
             </p>
           </div>
         </div>
