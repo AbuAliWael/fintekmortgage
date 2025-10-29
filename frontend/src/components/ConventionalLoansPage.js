@@ -110,6 +110,8 @@ const ConventionalLoansPage = () => {
           <QualificationForm loanType="conventional" />
         )}
       </div>
+      
+      <ComplianceFooter />
     </div>
   );
 };
