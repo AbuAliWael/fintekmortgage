@@ -141,7 +141,7 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
                 name="income2023"
                 value={formData.income2023}
                 onChange={handleChange}
-                required
+                required={!isNonQM}
                 placeholder="$75,000"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -156,7 +156,7 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
                 name="income2024"
                 value={formData.income2024}
                 onChange={handleChange}
-                required
+                required={!isNonQM}
                 placeholder="$80,000"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -171,7 +171,7 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
                 name="incomeYTD2025"
                 value={formData.incomeYTD2025}
                 onChange={handleChange}
-                required
+                required={!isNonQM}
                 placeholder="$70,000"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -188,7 +188,7 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
               name="monthlyDebts"
               value={formData.monthlyDebts}
               onChange={handleChange}
-              required
+              required={!isNonQM}
               placeholder="$500"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
