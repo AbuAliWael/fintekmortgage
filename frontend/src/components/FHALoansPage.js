@@ -267,6 +267,8 @@ const FHALoansPage = () => {
         )}
 
       </div>
+      
+      <ComplianceFooter />
     </div>
   );
 };
