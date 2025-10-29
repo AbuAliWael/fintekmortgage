@@ -581,7 +581,7 @@ const LandingPage = () => {
             </div>
           )}
           
-          <div className="text-center mt-8">
+          <div className="text-center mt-6">
             <p className="text-sm text-gray-600">
               New insights published daily • Based on current market trends and buyer questions
             </p>
