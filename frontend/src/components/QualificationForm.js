@@ -33,26 +33,40 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
     
     try {
       const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+      
+      // Prepare data - for Non-QM, ensure income fields are 0
+      const submitData = {
+        ...formData,
+        loanType
+      };
+      
+      // For Non-QM, ensure income/debt fields are numbers (0) not empty strings
+      if (isNonQM) {
+        submitData.income2023 = 0;
+        submitData.income2024 = 0;
+        submitData.incomeYTD2025 = 0;
+        submitData.monthlyDebts = 0;
+      }
+      
       const response = await fetch(`${BACKEND_URL}/api/qualify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          loanType
-        })
+        body: JSON.stringify(submitData)
       });
       
       if (response.ok) {
         const data = await response.json();
         setResult(data);
       } else {
-        alert('Error calculating qualification. Please try again.');
+        const errorData = await response.json().catch(() => null);
+        console.error('API Error:', errorData);
+        alert(`Error calculating qualification: ${errorData?.detail || 'Please try again.'}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error calculating qualification. Please try again.');
+      alert('Error calculating qualification. Please check your internet connection and try again.');
     }
     
     setLoading(false);
