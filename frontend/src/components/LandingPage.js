@@ -23,6 +23,7 @@ const LandingPage = () => {
     nonQM: 'Call for Quote'
   });
   const [dailyInsight, setDailyInsight] = useState(null);
+  const [expandedInsight, setExpandedInsight] = useState(null);
   const [calendlyUrl] = useState('https://calendly.com/waelabdali/30min');
 
   useEffect(() => {
