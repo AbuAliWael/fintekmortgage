@@ -9,6 +9,10 @@ import PartnersPage from '@/components/PartnersPage';
 import CalculatorPage from '@/components/CalculatorPage';
 import AuthPage from '@/components/AuthPage';
 import ChatWidget from '@/components/ChatWidget';
+import FHALoansPage from '@/components/FHALoansPage';
+import VALoansPage from '@/components/VALoansPage';
+import ConventionalLoansPage from '@/components/ConventionalLoansPage';
+import NonQMLoansPage from '@/components/NonQMLoansPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
