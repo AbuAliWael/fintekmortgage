@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import QualificationForm from './QualificationForm';
 
 const VALoansPage = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -38,6 +40,35 @@ const VALoansPage = () => {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-8">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8">
+              <button
+                onClick={() => setActiveTab('overview')}
+                className={`${
+                  activeTab === 'overview'
+                    ? 'border-blue-600 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-lg`}
+              >
+                Overview
+              </button>
+              <button
+                onClick={() => setActiveTab('qualify')}
+                className={`${
+                  activeTab === 'qualify'
+                    ? 'border-green-600 text-green-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-lg`}
+              >
+                See If I Qualify
+              </button>
+            </nav>
+          </div>
+        </div>
+        
+        {activeTab === 'overview' ? (
+          <>
         
         {/* Overview */}
         <div className="bg-white rounded-lg shadow-md p-8 mb-8">
