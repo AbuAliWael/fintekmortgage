@@ -49,55 +49,59 @@ async def generate_daily_insight():
         
         for category in categories_to_generate:
             logger.info(f"Generating insight {categories_to_generate.index(category) + 1}/3 for {date_str}, category: {category}")
+        for category in categories_to_generate:
+            logger.info(f"Generating insight {categories_to_generate.index(category) + 1}/3 for {date_str}, category: {category}")
         
-        # Create AI prompt based on category
-        prompts = {
-            'rates': f"Write a professional mortgage insight article (150-200 words) about current interest rate trends and their impact on homebuyers for {date_str}. Focus on actionable advice, market conditions, and what buyers should know. Write as an expert mortgage broker giving professional advice. Do not use Q&A format.",
-            'programs': f"Write a professional mortgage insight article (150-200 words) about mortgage loan programs (FHA, VA, conventional, first-time buyer programs) for {date_str}. Explain benefits and eligibility in an authoritative tone. Write as an expert mortgage broker. Do not use Q&A format.",
-            'refinancing': f"Write a professional mortgage insight article (150-200 words) about refinancing strategies and timing considerations for {date_str}. Include when it makes sense to refinance and what factors to consider. Write as an expert mortgage broker. Do not use Q&A format.",
-            'tips': f"Write a professional mortgage insight article (150-200 words) about mortgage tips, credit scores, or best practices for {date_str}. Provide actionable advice that helps buyers improve their mortgage readiness. Write as an expert mortgage broker. Do not use Q&A format.",
-            'affordability': f"Write a professional mortgage insight article (150-200 words) about affordability strategies and smart home buying decisions for {date_str}. Help buyers navigate high prices and competitive markets. Write as an expert mortgage broker. Do not use Q&A format."
-        }
+            # Create AI prompt based on category
+            prompts = {
+                'rates': f"Write a professional mortgage insight article (150-200 words) about current interest rate trends and their impact on homebuyers for {date_str}. Focus on actionable advice, market conditions, and what buyers should know. Write as an expert mortgage broker giving professional advice. Do not use Q&A format.",
+                'programs': f"Write a professional mortgage insight article (150-200 words) about mortgage loan programs (FHA, VA, conventional, first-time buyer programs) for {date_str}. Explain benefits and eligibility in an authoritative tone. Write as an expert mortgage broker. Do not use Q&A format.",
+                'refinancing': f"Write a professional mortgage insight article (150-200 words) about refinancing strategies and timing considerations for {date_str}. Include when it makes sense to refinance and what factors to consider. Write as an expert mortgage broker. Do not use Q&A format.",
+                'tips': f"Write a professional mortgage insight article (150-200 words) about mortgage tips, credit scores, or best practices for {date_str}. Provide actionable advice that helps buyers improve their mortgage readiness. Write as an expert mortgage broker. Do not use Q&A format.",
+                'affordability': f"Write a professional mortgage insight article (150-200 words) about affordability strategies and smart home buying decisions for {date_str}. Help buyers navigate high prices and competitive markets. Write as an expert mortgage broker. Do not use Q&A format."
+            }
+            
+            prompt = prompts.get(category, prompts['tips'])
+            
+            # Generate content using Emergent LLM
+            session_id = f"insights_{current_date.strftime('%Y%m%d')}_{category}"
+            system_message = "You are an expert mortgage broker providing professional, authoritative advice to homebuyers. Write clear, actionable insights that build trust and demonstrate expertise."
+            
+            llm_chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=session_id,
+                system_message=system_message
+            ).with_model("openai", "gpt-4o-mini")
+            
+            user_message = UserMessage(text=prompt)
+            content = await llm_chat.send_message(user_message)
+            content = content.strip()
+            
+            # Generate a title (ask AI to create it)
+            title_prompt = f"Based on this mortgage insight content, write a compelling, professional title (8-15 words, no quotes): {content[:200]}"
+            title_user_message = UserMessage(text=title_prompt)
+            title_content = await llm_chat.send_message(title_user_message)
+            title = title_content.strip().replace('"', '').replace("'", "")
+            
+            # Create insight document
+            insight_doc = {
+                'id': str(uuid.uuid4()),
+                'title': title,
+                'content': content,
+                'category': category,
+                'date': current_date.isoformat(),
+                'published': True,
+                'auto_generated': True,
+                'generated_at': current_date.isoformat()
+            }
+            
+            # Save to database
+            await db.daily_insights.insert_one(insight_doc)
+            
+            logger.info(f"Successfully generated insight {categories_to_generate.index(category) + 1}/3: {title}")
+            logger.info(f"Category: {category}, Length: {len(content)} characters")
         
-        prompt = prompts.get(category, prompts['tips'])
-        
-        # Generate content using Emergent LLM
-        session_id = f"insights_{current_date.strftime('%Y%m%d')}"
-        system_message = "You are an expert mortgage broker providing professional, authoritative advice to homebuyers. Write clear, actionable insights that build trust and demonstrate expertise."
-        
-        llm_chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=session_id,
-            system_message=system_message
-        ).with_model("openai", "gpt-4o-mini")
-        
-        user_message = UserMessage(text=prompt)
-        content = await llm_chat.send_message(user_message)
-        content = content.strip()
-        
-        # Generate a title (ask AI to create it)
-        title_prompt = f"Based on this mortgage insight content, write a compelling, professional title (8-15 words, no quotes): {content[:200]}"
-        title_user_message = UserMessage(text=title_prompt)
-        title_content = await llm_chat.send_message(title_user_message)
-        title = title_content.strip().replace('"', '').replace("'", "")
-        
-        # Create insight document
-        insight_doc = {
-            'id': str(uuid.uuid4()),
-            'title': title,
-            'content': content,
-            'category': category,
-            'date': current_date.isoformat(),
-            'published': True,
-            'auto_generated': True,
-            'generated_at': current_date.isoformat()
-        }
-        
-        # Save to database
-        await db.daily_insights.insert_one(insight_doc)
-        
-        logger.info(f"Successfully generated and saved insight: {title}")
-        logger.info(f"Category: {category}, Length: {len(content)} characters")
+        logger.info("All 3 insights generated successfully!")
         
         # Close connection
         client.close()
