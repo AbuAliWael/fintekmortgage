@@ -185,6 +185,24 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ VERIFIED: FAQ page fully functional at /faq route. Navigation includes FAQ button with proper data-testid. Hero section with 'Frequently Asked Questions' title displays correctly. Blue info banner with consultation link present. All 6 FAQ categories found: Getting Started, Loan Types, Qualification Requirements, Refinancing, Costs & Payments, Special Situations. Accordion functionality working (expand/collapse). CTA section with working Calendly and mailto links. Back to Home navigation functioning correctly. Page is fully responsive."
+  
+  - task: "Daily Mortgage Insights API Fix"
+    implemented: true
+    working: true
+    file: "frontend/src/components/LandingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User reported Daily Mortgage Insights section not displaying content properly. API endpoint issue suspected."
+      - working: true
+        agent: "main"
+        comment: "Fixed API endpoint from `/api/insights/recent?limit=3` to `/api/insights?limit=3`. Backend has 3 insights in database and API is returning them correctly."
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Daily Mortgage Insights section fully functional after API fix. Exactly 3 insight cards displayed with complete content: 'Enhance Your Mortgage Readiness' (TIPS), 'Navigating Mortgage Loan Programs' (PROGRAMS), and 'Navigating Rising Interest Rates' (RATES). All cards show Wael Abdeldayem as author with photo. No loading skeleton present. API endpoint `/api/insights?limit=3` working correctly. Screenshot captured showing proper display."
 
 metadata:
   created_by: "main_agent"
