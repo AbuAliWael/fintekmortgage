@@ -227,10 +227,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Daily Mortgage Insights Read More/Read Less Functionality"
+    - "Read More/Read Less functionality testing completed successfully"
   stuck_tasks: []
   test_all: false
-  test_priority: "high_first"
+  test_priority: "completed"
 
 agent_communication:
   - agent: "main"
