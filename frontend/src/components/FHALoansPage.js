@@ -259,6 +259,11 @@ const FHALoansPage = () => {
           </div>
           <p className="text-sm text-gray-600 mt-4">NMLS #2171794 | Licensed Mortgage Broker</p>
         </div>
+        
+        </>
+        ) : (
+          <QualificationForm loanType="fha" />
+        )}
 
       </div>
     </div>
