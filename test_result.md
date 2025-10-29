@@ -421,3 +421,47 @@ agent_communication:
       🏆 RESULT: Daily Mortgage Insights compact layout is working perfectly and displays exactly as intended. 
       The layout changes successfully achieved the goal of making cards shorter and wider while maintaining 
       professional appearance and readability.
+  - agent: "testing"
+    message: |
+      ✅ READ MORE/READ LESS FUNCTIONALITY TESTING COMPLETE - ALL SCENARIOS PASSED
+      
+      Conducted comprehensive testing of the new Read More/Read Less functionality for Daily Mortgage Insights section:
+      
+      🎯 TEST SCENARIOS COMPLETED:
+      
+      1. ✅ INITIAL STATE VERIFICATION:
+         - Daily Mortgage Insights section title found and displayed correctly
+         - 3 insight cards displayed in compact view (TIPS, PROGRAMS, RATES)
+         - Content properly truncated to ~183 characters with "..." ending
+         - Read More buttons visible on all 3 cards
+         - Screenshot captured showing initial compact layout
+      
+      2. ✅ EXPAND FUNCTIONALITY (First Card - TIPS):
+         - Clicked Read More on first card successfully
+         - Card expanded to full width (spans 3 columns with md:col-span-3 class)
+         - Other 2 cards properly hidden when first card expanded
+         - Full article content displayed without truncation
+         - Read Less button appeared in expanded view
+         - Screenshot captured showing expanded state
+      
+      3. ✅ COLLAPSE FUNCTIONALITY:
+         - Clicked Read Less button successfully
+         - All 3 cards returned to compact view
+         - Content properly truncated again with "..." ending
+         - Screenshot captured showing collapsed state
+      
+      4. ✅ MULTIPLE CARDS TESTING:
+         - Second card (PROGRAMS): Expanded and collapsed successfully
+         - Third card (RATES): Expanded and collapsed successfully
+         - Only one card can be expanded at a time (others hide correctly)
+         - Smooth transitions between states
+      
+      5. ✅ TECHNICAL VERIFICATION:
+         - Transition classes (.transition-all.duration-300) working properly
+         - No console errors or JavaScript issues found
+         - All CSS classes applied correctly for responsive behavior
+         - Proper state management with expandedInsight React state
+      
+      🎉 FINAL RESULT: Read More/Read Less functionality is fully operational and meets all requirements. 
+      The feature provides excellent user experience with smooth transitions, proper content management, 
+      and responsive design. All test scenarios passed without any critical issues.
