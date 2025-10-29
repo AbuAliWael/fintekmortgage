@@ -236,6 +236,40 @@ agent_communication:
       All features verified via screenshots. Frontend service restarted successfully.
   - agent: "testing"
     message: |
+      ✅ DAILY MORTGAGE INSIGHTS VERIFICATION COMPLETE - API FIX SUCCESSFUL
+      
+      Conducted targeted testing of Daily Mortgage Insights section after API endpoint fix:
+      
+      🎯 VERIFICATION RESULTS:
+      - Section Title: ✅ "Daily Mortgage Insights" properly displayed
+      - API Endpoint: ✅ Fixed from `/api/insights/recent?limit=3` to `/api/insights?limit=3` working correctly
+      - Insight Cards: ✅ Exactly 3 cards displayed with full content
+      - Loading State: ✅ No loading skeleton visible (content loaded successfully)
+      
+      📊 INSIGHT CARDS CONTENT VERIFIED:
+      1. "Enhance Your Mortgage Readiness: Crucial Credit Score Tips for Future Homebuyers"
+         - Category: TIPS ✅
+         - Author: Wael Abdeldayem ✅
+         - Photo: Present ✅
+         - Content: Full mortgage readiness guidance ✅
+      
+      2. "Navigating Mortgage Loan Programs: Essential Insights for Homebuyers in 2025"
+         - Category: PROGRAMS ✅
+         - Author: Wael Abdeldayem ✅
+         - Photo: Present ✅
+         - Content: Comprehensive loan program information ✅
+      
+      3. "Navigating Rising Interest Rates: Strategies for Homebuyers in Late 2025"
+         - Category: RATES ✅
+         - Author: Wael Abdeldayem ✅
+         - Photo: Present ✅
+         - Content: Current market analysis and strategies ✅
+      
+      🎉 FINAL RESULT: Daily Mortgage Insights section is now fully functional. 
+      The API endpoint fix resolved the issue completely. All 3 insights are displaying 
+      with proper titles, content, author information, and categories as expected.
+  - agent: "testing"
+    message: |
       ✅ BACKEND API TESTING COMPLETED - ALL SYSTEMS OPERATIONAL
       
       Conducted comprehensive testing of 4 core backend endpoints as requested:
