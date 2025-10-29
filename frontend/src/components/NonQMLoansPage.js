@@ -105,6 +105,10 @@ const NonQMLoansPage = () => {
           </div>
           <p className="text-sm text-gray-600 mt-4">NMLS #2171794 | Licensed Mortgage Broker | Barrett Financial Group</p>
         </div>
+        </>
+        ) : (
+          <QualificationForm loanType="nonqm" />
+        )}
       </div>
     </div>
   );
