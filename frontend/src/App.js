@@ -55,6 +55,7 @@ function App() {
           <Route path="/loans/non-qm" element={<NonQMLoansPage />} />
           <Route path="/loans/first-time-buyer" element={<FirstTimeBuyerPage />} />
           <Route path="/loans/refinancing" element={<RefinancingPage />} />
+          <Route path="/faq" element={<FAQPage />} />
           <Route 
             path="/login" 
             element={
