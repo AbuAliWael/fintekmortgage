@@ -53,28 +53,11 @@ const ComplianceFooter = () => {
         </div>
 
         {/* Privacy and Additional Info */}
-        <div className="grid md:grid-cols-2 gap-6 text-xs text-gray-600">
+        <div className="text-xs text-gray-600">
           <div>
             <h5 className="font-semibold text-gray-900 mb-2">Fair Lending Notice</h5>
             <p>
               We do business in accordance with the Federal Fair Housing Law and the Equal Credit Opportunity Act. It is illegal to discriminate against any person because of race, color, religion, national origin, sex, marital status, age, or because they receive public assistance or exercised a right under the Consumer Credit Protection Act.
-            </p>
-          </div>
-          <div>
-            <h5 className="font-semibold text-gray-900 mb-2">NMLS Consumer Access</h5>
-            <p className="mb-2">
-              You can verify our licensing status at the Nationwide Mortgage Licensing System & Registry (NMLS) at:
-            </p>
-            <a 
-              href="http://www.nmlsconsumeraccess.org/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-blue-600 underline hover:text-blue-800"
-            >
-              www.nmlsconsumeraccess.org
-            </a>
-            <p className="mt-2">
-              Search for NMLS ID: 2171794
             </p>
           </div>
         </div>
