@@ -44,7 +44,7 @@ const LandingPage = () => {
     const fetchDailyInsight = async () => {
       try {
         const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-        const response = await fetch(`${BACKEND_URL}/api/insights/latest`);
+        const response = await fetch(`${BACKEND_URL}/api/insights/recent?limit=3`);
         if (response.ok) {
           const data = await response.json();
           setDailyInsight(data);
