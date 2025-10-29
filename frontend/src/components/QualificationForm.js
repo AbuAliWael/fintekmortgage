@@ -34,19 +34,22 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
     try {
       const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
       
-      // Prepare data - for Non-QM, ensure income fields are 0
+      // Prepare data - convert all number fields to numbers
       const submitData = {
-        ...formData,
+        creditScore: parseInt(formData.creditScore) || 0,
+        income2023: isNonQM ? 0 : parseFloat(formData.income2023) || 0,
+        income2024: isNonQM ? 0 : parseFloat(formData.income2024) || 0,
+        incomeYTD2025: isNonQM ? 0 : parseFloat(formData.incomeYTD2025) || 0,
+        monthlyDebts: isNonQM ? 0 : parseFloat(formData.monthlyDebts) || 0,
+        purchasePrice: parseFloat(formData.purchasePrice) || 0,
+        downPayment: parseFloat(formData.downPayment) || 0,
+        propertyTax: parseFloat(formData.propertyTax) || 0,
+        homeInsurance: parseFloat(formData.homeInsurance) || 0,
+        hasEmploymentHistory: formData.hasEmploymentHistory,
         loanType
       };
       
-      // For Non-QM, ensure income/debt fields are numbers (0) not empty strings
-      if (isNonQM) {
-        submitData.income2023 = 0;
-        submitData.income2024 = 0;
-        submitData.incomeYTD2025 = 0;
-        submitData.monthlyDebts = 0;
-      }
+      console.log('Submitting data:', submitData);
       
       const response = await fetch(`${BACKEND_URL}/api/qualify`, {
         method: 'POST',
@@ -62,11 +65,11 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
       } else {
         const errorData = await response.json().catch(() => null);
         console.error('API Error:', errorData);
-        alert(`Error calculating qualification: ${errorData?.detail || 'Please try again.'}`);
+        alert(`Error: ${errorData?.detail || 'Please check all fields and try again.'}`);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error calculating qualification. Please check your internet connection and try again.');
+      console.error('Network Error:', error);
+      alert('Network error. Please check your connection and try again.');
     }
     
     setLoading(false);
