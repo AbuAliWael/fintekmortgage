@@ -34,12 +34,24 @@ const ComplianceFooter = () => {
           </div>
         </div>
 
+        {/* Contact + CTA */}
+        <div className="text-center mt-6 py-4 bg-blue-600 rounded-lg">
+          <p className="text-white font-semibold text-sm mb-1">Ready to get pre-approved? Same-day results.</p>
+          <p className="text-blue-100 text-sm">
+            <a href="tel:+19173040234" className="underline font-bold text-white">📞 (917) 304-0234</a>
+            &nbsp;·&nbsp;
+            <a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer" className="underline font-bold text-white">📅 Book Free Call</a>
+            &nbsp;·&nbsp;
+            <a href="/apply" className="underline font-bold text-white">Apply Online</a>
+          </p>
+        </div>
+
         {/* Copyright */}
-        <div className="text-center mt-8 pt-6 border-t border-gray-300">
+        <div className="text-center mt-6 pt-6 border-t border-gray-300">
           <p className="text-xs text-gray-500">
             © {new Date().getFullYear()} Wael Abdeldayem - Licensed Mortgage Broker. All rights reserved.
             <br />
-            NMLS #2171794 | Barrett Financial Group, L.L.C.
+            NMLS #2171794 | Barrett Financial Group, L.L.C. | Equal Housing Lender 🏠
           </p>
         </div>
 
