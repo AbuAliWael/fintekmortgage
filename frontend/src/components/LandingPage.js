@@ -876,7 +876,9 @@ const LandingPage = () => {
             </div>
             <div>
               <h5 className="font-semibold mb-4">Contact</h5>
-              <p className="text-gray-400">Email: Wael@BarrettFinancial.com</p>
+              <p className="text-gray-400"><a href="tel:+19173040234" className="hover:text-white">📞 (917) 304-0234</a></p>
+              <p className="text-gray-400"><a href="mailto:Wael@BarrettFinancial.com" className="hover:text-white">✉️ Wael@BarrettFinancial.com</a></p>
+              <p className="text-gray-400 mt-2"><a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer" className="hover:text-white">📅 Book Free Call</a></p>
             </div>
           </div>
           

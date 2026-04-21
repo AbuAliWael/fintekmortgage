@@ -15,6 +15,7 @@ import uuid
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from enum import Enum
 import resend
+import httpx
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -39,6 +40,14 @@ EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 # Resend Configuration
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
 resend.api_key = RESEND_API_KEY
+
+# HubSpot Configuration
+HUBSPOT_TOKEN = os.environ.get('HUBSPOT_TOKEN', '')
+
+# Mailchimp Configuration
+MAILCHIMP_KEY = os.environ.get('MAILCHIMP_KEY', '')
+MAILCHIMP_DC = os.environ.get('MAILCHIMP_DC', 'us12')
+MAILCHIMP_LIST_ID = os.environ.get('MAILCHIMP_LIST_ID', '')
 
 # Create the main app
 app = FastAPI()
@@ -464,6 +473,53 @@ async def create_lead(lead_data: LeadCreate):
         doc['next_follow_up'] = doc['next_follow_up'].isoformat()
     
     await db.leads.insert_one(doc)
+
+    # Push to HubSpot
+    try:
+        async with httpx.AsyncClient() as client_http:
+            hs_payload = {
+                "properties": {
+                    "firstname": lead_dict.get("first_name", ""),
+                    "lastname": lead_dict.get("last_name", ""),
+                    "email": lead_dict.get("email", ""),
+                    "phone": lead_dict.get("phone", ""),
+                    "hs_lead_status": "NEW",
+                    "lead_score_custom": str(lead_dict.get("score", 0)),
+                    "loan_amount": str(lead_dict.get("loan_amount", "")),
+                    "notes_last_contacted": lead_dict.get("notes", ""),
+                }
+            }
+            await client_http.post(
+                "https://api.hubapi.com/crm/v3/objects/contacts",
+                headers={"Authorization": f"Bearer {HUBSPOT_TOKEN}", "Content-Type": "application/json"},
+                json=hs_payload,
+                timeout=5.0
+            )
+    except Exception as e:
+        logger.warning(f"HubSpot push failed: {e}")
+
+    # Push to Mailchimp
+    try:
+        async with httpx.AsyncClient() as client_http:
+            mc_payload = {
+                "email_address": lead_dict.get("email", ""),
+                "status": "subscribed",
+                "merge_fields": {
+                    "FNAME": lead_dict.get("first_name", ""),
+                    "LNAME": lead_dict.get("last_name", ""),
+                    "PHONE": lead_dict.get("phone", ""),
+                },
+                "tags": ["lead", lead_dict.get("source", "web_form")]
+            }
+            await client_http.post(
+                f"https://{MAILCHIMP_DC}.api.mailchimp.com/3.0/lists/{MAILCHIMP_LIST_ID}/members",
+                auth=("anystring", MAILCHIMP_KEY),
+                json=mc_payload,
+                timeout=5.0
+            )
+    except Exception as e:
+        logger.warning(f"Mailchimp push failed: {e}")
+
     return lead
 
 
