@@ -135,7 +135,7 @@ const RefinancingPage = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Lower Your Rate?</h2>
           <p className="text-xl text-gray-600 mb-6">Let's analyze your current loan and see how much you can save!</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://calendly.com/waelabdali/30min" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Free Refinance Analysis</a>
+            <a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Free Refinance Analysis</a>
             <a href="https://181106.my1003app.com/2171794/register?time=1742858528979" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Apply to Refinance</a>
           </div>
           <p className="text-sm text-gray-600 mt-4">NMLS #2171794 | Licensed Mortgage Broker | Barrett Financial Group</p>

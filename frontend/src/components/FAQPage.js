@@ -172,7 +172,7 @@ const FAQPage = () => {
         <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-12 rounded-r-lg">
           <p className="text-blue-900">
             <strong>💡 Have more questions?</strong> These are the most common questions from homebuyers. 
-            Can't find your answer? <a href="https://calendly.com/waelabdali/30min" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Schedule a free consultation</a> or contact me directly at Wael@BarrettFinancial.com
+            Can't find your answer? <a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Schedule a free consultation</a> or contact me directly at Wael@BarrettFinancial.com
           </p>
         </div>
 
@@ -229,7 +229,7 @@ const FAQPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://calendly.com/waelabdali/30min"
+              href="https://calendly.com/abualiwael/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-lg transition-colors shadow-lg"

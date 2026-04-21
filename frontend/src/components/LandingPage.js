@@ -24,7 +24,7 @@ const LandingPage = () => {
   });
   const [dailyInsight, setDailyInsight] = useState(null);
   const [expandedInsight, setExpandedInsight] = useState(null);
-  const [calendlyUrl] = useState('https://calendly.com/waelabdali/30min');
+  const [calendlyUrl] = useState('https://calendly.com/abualiwael/30min');
 
   useEffect(() => {
     // Fetch current market rates on component mount

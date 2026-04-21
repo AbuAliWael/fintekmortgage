@@ -364,7 +364,7 @@ const QualificationForm = ({ loanType = 'conventional' }) => {
               Check Another Scenario
             </button>
             <a
-              href="https://calendly.com/waelabdali/30min"
+              href="https://calendly.com/abualiwael/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg text-center transition-colors"
