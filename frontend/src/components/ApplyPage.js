@@ -311,8 +311,34 @@ const ApplyPage = () => {
           submitted_at: new Date().toISOString(),
         };
 
-        // Send to backend / webhook (replace URL below with your endpoint)
-        // fetch('/api/leads', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+        // Split fullname into first/last for backend
+        const nameParts = data.fullname.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '-';
+
+        const payload = {
+          first_name: firstName,
+          last_name: lastName,
+          email: data.email,
+          phone: data.phone,
+          source: 'web_form',
+          loan_amount: data.loan_amount ? parseFloat(data.loan_amount) : null,
+          credit_score: data.credit_score ? parseInt(data.credit_score) : null,
+          down_payment: data.down_payment ? parseFloat(data.down_payment) : null,
+          employment_status: data.employment || null,
+          notes: [
+            data.loan_type ? 'Loan type: ' + data.loan_type : '',
+            data.call_time ? 'Best time: ' + data.call_time : '',
+            data.preferred_lang ? 'Language: ' + data.preferred_lang : '',
+            data.notes || ''
+          ].filter(Boolean).join(' | '),
+        };
+
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(function(err) { console.warn('Lead API error:', err); });
 
         setTimeout(() => {
           document.getElementById('form-section').style.display = 'none';
