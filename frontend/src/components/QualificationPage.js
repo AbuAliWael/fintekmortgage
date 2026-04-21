@@ -18,11 +18,11 @@ function getResult(employment, credit, down, property) {
   if ((employment === 'self' || employment === 'other') && creditNum >= 680 && downNum >= 20) {
     return {
       loan: 'Non-QM',
-      path: '/loans/non-qm',
+      path: '/apply',
       color: 'blue',
       headline: 'Great news — you likely qualify for a Non-QM loan.',
       reason: 'Non-QM loans are designed exactly for you: no tax returns required, flexible income documentation. Your credit score and down payment meet the requirements.',
-      cta_label: 'Learn About Non-QM Loans',
+      cta_label: 'Apply for Non-QM Now',
     };
   }
 
@@ -30,11 +30,11 @@ function getResult(employment, credit, down, property) {
   if (employment === 'investor' && creditNum >= 680 && downNum >= 20) {
     return {
       loan: 'Non-QM (DSCR)',
-      path: '/loans/non-qm',
+      path: '/apply',
       color: 'blue',
       headline: 'You may qualify for a DSCR / Non-QM investor loan.',
       reason: 'Investment property loans based on rental income (Debt Service Coverage Ratio), not personal income. No tax returns required.',
-      cta_label: 'Explore Non-QM for Investors',
+      cta_label: 'Start Your Non-QM Application',
     };
   }
 

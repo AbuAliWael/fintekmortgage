@@ -20,10 +20,10 @@ export default function NonQMLoansPage() {
           </button>
           <div className="flex gap-3">
             <button
-              onClick={() => { ga.ctaClick('nonqm_qualify', 'non_qm_page'); navigate('/qualify'); }}
+              onClick={() => { ga.ctaClick('nonqm_qualify', 'non_qm_page'); navigate('/apply'); }}
               className="text-sm border border-blue-600 text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-50"
             >
-              Check My Eligibility
+              Apply Now
             </button>
             <a
               href="https://calendly.com/abualiwael/30min"
@@ -55,10 +55,10 @@ export default function NonQMLoansPage() {
           </p>
           <div className="flex flex-wrap gap-4">
             <button
-              onClick={() => { ga.ctaClick('nonqm_hero_qualify', 'non_qm_page'); navigate('/qualify'); }}
+              onClick={() => { ga.ctaClick('nonqm_hero_apply', 'non_qm_page'); navigate('/apply'); }}
               className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold px-8 py-4 rounded-xl text-lg"
             >
-              See If I Qualify
+              Apply for Non-QM Now
             </button>
             <a
               href="tel:+19173040234"
@@ -163,10 +163,10 @@ export default function NonQMLoansPage() {
           <p className="text-gray-500 mb-8">Takes 60 seconds. No personal info required.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => { ga.ctaClick('nonqm_bottom_qualify', 'non_qm_page'); navigate('/qualify'); }}
+              onClick={() => { ga.ctaClick('nonqm_bottom_apply', 'non_qm_page'); navigate('/apply'); }}
               className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-8 py-4 rounded-xl text-lg"
             >
-              Check My Eligibility
+              Apply for Non-QM Now
             </button>
             <a
               href="https://calendly.com/abualiwael/30min"
