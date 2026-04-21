@@ -1,152 +1,185 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QualificationForm from './QualificationForm';
+import ComplianceFooter from './ComplianceFooter';
+import { ga } from '@/lib/analytics';
 
-const RefinancingPage = () => {
+export default function RefinancingPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('overview');
+
+  useEffect(() => {
+    ga.loanPageView('refinancing');
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <button onClick={() => navigate('/')} className="text-blue-600 hover:text-blue-800 font-semibold">← Back to Home</button>
-            <a href="https://181106.my1003app.com/2171794/register?time=1742858528979" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-semibold">Apply to Refinance</a>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+          <button onClick={() => navigate('/')} className="text-blue-700 font-semibold text-sm hover:text-blue-900">
+            ← Fintek Mortgage
+          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => { ga.ctaClick('refi_apply_header', 'refinancing_page'); navigate('/apply'); }}
+              className="text-sm border border-blue-600 text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-50"
+            >
+              Start My Refi
+            </button>
+            <a
+              href="https://calendly.com/abualiwael/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => ga.bookingClick('refi_header')}
+              className="text-sm bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-lg"
+            >
+              Book Consultation
+            </a>
           </div>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-600 to-purple-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Mortgage Refinancing</h1>
-          <p className="text-xl text-blue-100">Lower Your Rate, Lower Your Payment, Access Your Equity</p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`${
-                  activeTab === 'overview'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-lg`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setActiveTab('qualify')}
-                className={`${
-                  activeTab === 'qualify'
-                    ? 'border-green-600 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-lg`}
-              >
-                See If I Qualify
-              </button>
-            </nav>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="inline-block bg-yellow-400 text-yellow-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">
+            Refinancing
+          </span>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            Lower Your Rate.<br />Access Your Equity.
+          </h1>
+          <p className="text-xl text-blue-200 mb-4 max-w-2xl">
+            If you bought when rates were higher — or you need cash for home improvements, debt consolidation, or investment — refinancing may be the smartest move you can make this year.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => { ga.ctaClick('refi_hero_apply', 'refinancing_page'); navigate('/apply'); }}
+              className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold px-8 py-4 rounded-xl text-lg"
+            >
+              Start My Refinance
+            </button>
+            <a
+              href="tel:+19173040234"
+              onClick={() => ga.callClick('refi_hero')}
+              className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-xl text-lg text-center"
+            >
+              Call (917) 304-0234
+            </a>
           </div>
         </div>
+      </section>
 
-        {activeTab === 'overview' ? (
-          <>
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Should You Refinance?</h2>
-          <p className="text-lg text-gray-700 mb-4">Refinancing can save you thousands of dollars over the life of your loan by lowering your interest rate, reducing your monthly payment, or accessing your home's equity for important expenses.</p>
-          <p className="text-lg text-gray-700">Let's analyze your current loan and see if refinancing makes sense for your financial goals.</p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Types of Refinancing</h2>
-          <div className="space-y-6">
-            <div className="border-l-4 border-blue-600 pl-6 bg-blue-50 p-6">
-              <h3 className="text-2xl font-semibold mb-3">Rate & Term Refinance</h3>
-              <p className="text-gray-700 mb-3">Lower your interest rate or change your loan term to save money.</p>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li><span className="font-semibold">Lower monthly payments</span> with reduced rate</li>
-                <li><span className="font-semibold">Pay off loan faster</span> by shortening term</li>
-                <li><span className="font-semibold">Switch from ARM to fixed</span> rate</li>
-                <li>No cash out - just better terms</li>
-              </ul>
-            </div>
-
-            <div className="border-l-4 border-green-600 pl-6 bg-green-50 p-6">
-              <h3 className="text-2xl font-semibold mb-3">Cash-Out Refinance</h3>
-              <p className="text-gray-700 mb-3">Access your home equity for renovations, debt consolidation, or investments.</p>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li><span className="font-semibold">Get cash</span> from your home's equity</li>
-                <li><span className="font-semibold">Consolidate high-interest debt</span></li>
-                <li><span className="font-semibold">Fund home improvements</span></li>
-                <li>Typically keep 20% equity in home</li>
-              </ul>
-            </div>
-
-            <div className="border-l-4 border-purple-600 pl-6 bg-purple-50 p-6">
-              <h3 className="text-2xl font-semibold mb-3">FHA Streamline Refinance</h3>
-              <p className="text-gray-700 mb-3">Fast, simple refinance for current FHA borrowers.</p>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li><span className="font-semibold">No appraisal</span> required</li>
-                <li><span className="font-semibold">Minimal documentation</span></li>
-                <li><span className="font-semibold">Must reduce payment</span> or switch to fixed</li>
-                <li>Fastest refinance option</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">When Does Refinancing Make Sense?</h2>
-          <div className="space-y-3 text-gray-700">
-            <div className="flex items-start"><span className="text-green-600 text-xl mr-3">✓</span><p><span className="font-semibold">Rates have dropped</span> - You can lower your rate by 0.5% or more</p></div>
-            <div className="flex items-start"><span className="text-green-600 text-xl mr-3">✓</span><p><span className="font-semibold">Credit improved</span> - Your score has increased since you bought</p></div>
-            <div className="flex items-start"><span className="text-green-600 text-xl mr-3">✓</span><p><span className="font-semibold">Remove PMI</span> - You have 20%+ equity and want to drop mortgage insurance</p></div>
-            <div className="flex items-start"><span className="text-green-600 text-xl mr-3">✓</span><p><span className="font-semibold">Need cash</span> - Access equity for important expenses</p></div>
-            <div className="flex items-start"><span className="text-green-600 text-xl mr-3">✓</span><p><span className="font-semibold">Pay off faster</span> - Shorten term from 30 to 15 years</p></div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Refinancing Requirements</h2>
-          <div className="space-y-4">
-            <div><h3 className="text-xl font-semibold mb-2">Credit Score</h3><p className="text-gray-700">620+ for conventional, 600+ for FHA refinance</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">Equity</h3><p className="text-gray-700">Typically 20%+ equity (80% loan-to-value), 5% for FHA streamline</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">Income</h3><p className="text-gray-700">Proof of stable income and employment</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">Payment History</h3><p className="text-gray-700">On-time mortgage payments for past 12 months</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">Debt-to-Income</h3><p className="text-gray-700">45-50% or less depending on loan type</p></div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-8 text-white mb-8">
-          <h2 className="text-3xl font-bold mb-4">Why Refinance with Wael?</h2>
-          <p className="text-lg mb-6">As a Licensed Mortgage Broker at Barrett Financial Group, I have access to multiple lenders to find you the absolute best refinance rates and terms.</p>
+      {/* When to Refi */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">When Does Refinancing Make Sense?</h2>
+          <p className="text-center text-gray-500 mb-12 max-w-2xl mx-auto">
+            Not everyone should refinance. Here's when it typically makes financial sense.
+          </p>
           <div className="grid md:grid-cols-2 gap-6">
-            <div><h3 className="text-xl font-semibold mb-2">✓ Rate Shopping</h3><p>Compare offers from multiple lenders</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">✓ Fast Processing</h3><p>Average 23-day close time</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">✓ No Hidden Fees</h3><p>Transparent pricing and closing costs</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">✓ Multilingual</h3><p>English, Arabic, Spanish, Italian</p></div>
+            {[
+              { icon: '📉', title: 'Rates Have Dropped', body: 'If your current rate is 0.5% or more above today\'s market rate, refinancing can reduce your monthly payment significantly. Even 0.25% makes a difference on a $500K loan.' },
+              { icon: '💰', title: 'You Need Cash', body: 'Cash-out refinance lets you borrow against your equity at mortgage rates — much lower than credit cards or personal loans. Fund renovations, pay off debt, or invest.' },
+              { icon: '📊', title: 'Your Credit Improved', body: 'If your score was 680 when you bought and it\'s now 740+, you may qualify for substantially better rates. Your credit history since purchase matters.' },
+              { icon: '🏦', title: 'Remove Mortgage Insurance', body: 'On an FHA loan with 20%+ equity? You can\'t remove FHA MIP — you have to refinance into a conventional loan to eliminate it. Could save $200–$400/month.' },
+              { icon: '⏰', title: 'Switch to a Shorter Term', body: 'Refinancing from 30 to 15 years means higher monthly payments but massive interest savings and building equity twice as fast.' },
+              { icon: '🔒', title: 'Get Off an ARM', body: 'Adjustable-rate mortgage approaching its adjustment period? Lock in today\'s fixed rate before your payment spikes.' },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 p-6 rounded-2xl border border-gray-100 bg-gray-50 hover:bg-blue-50 hover:border-blue-200 transition-all">
+                <div className="text-3xl flex-shrink-0">{item.icon}</div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{item.body}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
 
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Lower Your Rate?</h2>
-          <p className="text-xl text-gray-600 mb-6">Let's analyze your current loan and see how much you can save!</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Free Refinance Analysis</a>
-            <a href="https://181106.my1003app.com/2171794/register?time=1742858528979" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Apply to Refinance</a>
+      {/* Refi Types */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Types of Refinancing</h2>
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-8 border-2 border-blue-100">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Rate & Term Refinance</h3>
+              <p className="text-gray-600 mb-4">Change your interest rate, loan term, or both. No cash out — just better terms.</p>
+              <div className="flex flex-wrap gap-3">
+                {['Lower monthly payment', 'Shorter loan term', 'Switch ARM to fixed', 'Save on total interest'].map((t, i) => (
+                  <span key={i} className="bg-blue-50 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">{t}</span>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border-2 border-green-100">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Cash-Out Refinance</h3>
+              <p className="text-gray-600 mb-4">Borrow more than you owe and receive the difference as cash at closing.</p>
+              <div className="flex flex-wrap gap-3">
+                {['Home renovations', 'Debt consolidation', 'Investment capital', 'College tuition'].map((t, i) => (
+                  <span key={i} className="bg-green-50 text-green-700 text-sm font-medium px-3 py-1 rounded-full">{t}</span>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border-2 border-purple-100">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">FHA Streamline Refinance</h3>
+              <p className="text-gray-600 mb-4">Already have an FHA loan? Streamline refinance is the fastest option — no appraisal, minimal docs.</p>
+              <div className="flex flex-wrap gap-3">
+                {['No appraisal needed', 'Minimal documentation', 'Fast closing', 'Must lower payment'].map((t, i) => (
+                  <span key={i} className="bg-purple-50 text-purple-700 text-sm font-medium px-3 py-1 rounded-full">{t}</span>
+                ))}
+              </div>
+            </div>
           </div>
-          <p className="text-sm text-gray-600 mt-4">NMLS #2171794 | Licensed Mortgage Broker | Barrett Financial Group</p>
         </div>
-        </>
-        ) : (
-          <QualificationForm loanType="refinancing" />
-        )}
-      </div>
+      </section>
+
+      {/* Requirements */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Refinance Requirements</h2>
+          <div className="space-y-4 max-w-2xl mx-auto">
+            {[
+              { label: 'Credit Score', detail: '620+ for conventional · 580+ for FHA streamline' },
+              { label: 'Equity', detail: '20%+ for conventional cash-out · 5% for FHA streamline' },
+              { label: 'Income', detail: 'Proof of stable income — same docs as a purchase loan' },
+              { label: 'Payment History', detail: 'On-time mortgage payments for past 12 months' },
+              { label: 'DTI Ratio', detail: '45–50% or less depending on loan type' },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 p-5 bg-gray-50 rounded-xl border border-gray-200">
+                <div className="w-36 flex-shrink-0 font-bold text-gray-900 text-sm">{item.label}</div>
+                <div className="text-gray-600 text-sm">{item.detail}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Lower Your Rate?</h2>
+          <p className="text-gray-500 mb-8">I'll analyze your current loan and show you exactly how much you'd save.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => { ga.ctaClick('refi_bottom_apply', 'refinancing_page'); navigate('/apply'); }}
+              className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-8 py-4 rounded-xl text-lg"
+            >
+              Start My Refinance
+            </button>
+            <a
+              href="https://calendly.com/abualiwael/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => ga.bookingClick('refi_bottom')}
+              className="bg-white border-2 border-blue-700 text-blue-700 font-bold px-8 py-4 rounded-xl text-lg hover:bg-blue-50"
+            >
+              Free Refinance Analysis
+            </a>
+          </div>
+          <p className="mt-6 text-sm text-gray-500">Wael Abdeldayem · NMLS #2171794 · Barrett Financial Group · Licensed NJ · NY · CT</p>
+        </div>
+      </section>
+
+      <ComplianceFooter />
     </div>
   );
-};
-
-export default RefinancingPage;
+}
