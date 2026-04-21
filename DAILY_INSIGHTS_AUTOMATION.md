@@ -83,7 +83,7 @@ python daily_insights_automation.py
 
 ### Check Generated Insights
 ```bash
-curl https://fastloanhelp.preview.emergentagent.com/api/insights?limit=3
+curl https://qualify-demo.preview.emergentagent.com/api/insights?limit=3
 ```
 
 ---
@@ -135,7 +135,7 @@ curl https://fastloanhelp.preview.emergentagent.com/api/insights?limit=3
 
 ### If Insights Don't Appear:
 1. Check scheduler service: `sudo supervisorctl status insights_scheduler`
-2. Check API response: `curl https://fastloanhelp.preview.emergentagent.com/api/insights?limit=3`
+2. Check API response: `curl https://qualify-demo.preview.emergentagent.com/api/insights?limit=3`
 3. Check logs: `tail -100 /var/log/supervisor/insights_scheduler.err.log`
 4. Verify EMERGENT_LLM_KEY is set in `/app/backend/.env`
 

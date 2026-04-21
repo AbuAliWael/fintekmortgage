@@ -16,6 +16,7 @@ import NonQMLoansPage from '@/components/NonQMLoansPage';
 import FirstTimeBuyerPage from '@/components/FirstTimeBuyerPage';
 import RefinancingPage from '@/components/RefinancingPage';
 import FAQPage from '@/components/FAQPage';
+import ApplyPage from '@/components/ApplyPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -56,6 +57,7 @@ function App() {
           <Route path="/loans/first-time-buyer" element={<FirstTimeBuyerPage />} />
           <Route path="/loans/refinancing" element={<RefinancingPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/apply" element={<ApplyPage />} />
           <Route 
             path="/login" 
             element={

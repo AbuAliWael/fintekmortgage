@@ -211,7 +211,7 @@ const LandingPage = () => {
             </div>
             
             {/* Schedule Consultation Button */}
-            <div className="mt-8">
+            <div className="mt-8 space-y-4">
               <a
                 href={calendlyUrl}
                 target="_blank"
@@ -224,6 +224,13 @@ const LandingPage = () => {
               <p className="text-xs text-gray-600 mt-2 text-center">
                 Available: Mon, Wed, Fri • 12 PM - 7 PM EST
               </p>
+              <button
+                onClick={() => navigate('/apply')}
+                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-center text-lg transition-colors shadow-lg"
+                data-testid="preapproval-button"
+              >
+                ⚡ Get Pre-Approved — Same Day
+              </button>
             </div>
           </div>
 

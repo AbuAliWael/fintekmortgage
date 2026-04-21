@@ -7,7 +7,7 @@ This guide will help you move your mortgage broker website from the preview URL 
 
 ## 🎯 Quick Summary
 
-**Current URL:** https://fastloanhelp.preview.emergentagent.com
+**Current URL:** https://qualify-demo.preview.emergentagent.com
 **Target URL:** Your custom domain (e.g., waelabdeldayem.com)
 
 **Total Time:** 30-60 minutes
