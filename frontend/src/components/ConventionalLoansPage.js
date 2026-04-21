@@ -1,119 +1,164 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QualificationForm from './QualificationForm';
 import ComplianceFooter from './ComplianceFooter';
+import { ga } from '@/lib/analytics';
 
-const ConventionalLoansPage = () => {
+export default function ConventionalLoansPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('overview');
+
+  useEffect(() => {
+    ga.loanPageView('conventional');
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <button onClick={() => navigate('/')} className="text-blue-600 hover:text-blue-800 font-semibold">← Back to Home</button>
-            <a href="https://181106.my1003app.com/2171794/register?time=1742858528979" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-semibold">Apply Now</a>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+          <button onClick={() => navigate('/')} className="text-blue-700 font-semibold text-sm hover:text-blue-900">
+            ← Fintek Mortgage
+          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => { ga.ctaClick('conv_qualify_header', 'conventional_page'); navigate('/qualify'); }}
+              className="text-sm border border-blue-600 text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-50"
+            >
+              Check My Eligibility
+            </button>
+            <a
+              href="https://calendly.com/abualiwael/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => ga.bookingClick('conventional_header')}
+              className="text-sm bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-lg"
+            >
+              Book Consultation
+            </a>
           </div>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Conventional Loans</h1>
-          <p className="text-xl text-blue-100">Flexible Options for Qualified Buyers</p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`${
-                  activeTab === 'overview'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-lg`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setActiveTab('qualify')}
-                className={`${
-                  activeTab === 'qualify'
-                    ? 'border-green-600 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-lg`}
-              >
-                See If I Qualify
-              </button>
-            </nav>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="inline-block bg-yellow-400 text-yellow-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-6">
+            Conventional Loans
+          </span>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            The Best Rates for<br />Qualified Buyers.
+          </h1>
+          <p className="text-xl text-blue-200 mb-4 max-w-2xl">
+            Conventional loans offer the lowest rates, no mortgage insurance at 20% down, and flexibility for primary homes, second homes, and investment properties.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => { ga.ctaClick('conv_hero_qualify', 'conventional_page'); navigate('/qualify'); }}
+              className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold px-8 py-4 rounded-xl text-lg"
+            >
+              See If I Qualify
+            </button>
+            <a
+              href="tel:+19173040234"
+              onClick={() => ga.callClick('conventional_hero')}
+              className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-xl text-lg text-center"
+            >
+              Call (917) 304-0234
+            </a>
           </div>
         </div>
+      </section>
 
-        {activeTab === 'overview' ? (
-          <>
-        
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">What is a Conventional Loan?</h2>
-          <p className="text-lg text-gray-700 mb-4">Conventional loans are mortgages not backed by a government agency. They offer flexibility in property types and can be used for primary residences, second homes, or investment properties.</p>
-          <p className="text-lg text-gray-700">With competitive rates and the potential to eliminate mortgage insurance, conventional loans are ideal for borrowers with good credit and stable income.</p>
+      {/* Key Numbers */}
+      <section className="py-12 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-blue-100 text-center">
+              <p className="text-4xl font-bold text-blue-700 mb-2">3%</p>
+              <p className="font-semibold text-gray-900">Minimum Down Payment</p>
+              <p className="text-sm text-gray-500 mt-1">Primary residence, 620+ credit</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-blue-100 text-center">
+              <p className="text-4xl font-bold text-blue-700 mb-2">620+</p>
+              <p className="font-semibold text-gray-900">Minimum Credit Score</p>
+              <p className="text-sm text-gray-500 mt-1">740+ unlocks best pricing</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-blue-100 text-center">
+              <p className="text-4xl font-bold text-blue-700 mb-2">$806,500</p>
+              <p className="font-semibold text-gray-900">2025 Conforming Limit</p>
+              <p className="text-sm text-gray-500 mt-1">Jumbo above this amount</p>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Key Benefits</h2>
+      {/* Benefits */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Why Conventional?</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="flex items-start"><div className="bg-green-100 rounded-full p-3 mr-4"><svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg></div><div><h3 className="text-xl font-semibold mb-2">Low Down Payment</h3><p className="text-gray-600">As low as 3% down for qualified buyers</p></div></div>
-            <div className="flex items-start"><div className="bg-green-100 rounded-full p-3 mr-4"><svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg></div><div><h3 className="text-xl font-semibold mb-2">No PMI at 20%</h3><p className="text-gray-600">Eliminate mortgage insurance with 20% down</p></div></div>
-            <div className="flex items-start"><div className="bg-green-100 rounded-full p-3 mr-4"><svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg></div><div><h3 className="text-xl font-semibold mb-2">Property Flexibility</h3><p className="text-gray-600">Primary, second home, or investment property</p></div></div>
-            <div className="flex items-start"><div className="bg-green-100 rounded-full p-3 mr-4"><svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg></div><div><h3 className="text-xl font-semibold mb-2">Competitive Rates</h3><p className="text-gray-600">Best rates for borrowers with strong credit</p></div></div>
+            {[
+              { title: 'No PMI at 20% Down', body: 'Put 20% down and there\'s no private mortgage insurance — ever. This can save hundreds per month compared to FHA, which has permanent MIP regardless of equity.' },
+              { title: 'Property Flexibility', body: 'Use it for your primary residence, a second/vacation home, or an investment property. FHA only allows primary residences — conventional is the tool for investors and second-home buyers.' },
+              { title: 'Cancel PMI at 20% Equity', body: 'Start with less than 20% down? Once you reach 20% equity through payments or appreciation, you can cancel PMI automatically. FHA MIP often stays for life.' },
+              { title: 'Best Rates for Strong Credit', body: 'If your credit score is 740+ and your finances are solid, conventional loans will give you the lowest available rates. No government guarantee means lower costs for low-risk borrowers.' },
+            ].map((item, i) => (
+              <div key={i} className="p-6 rounded-2xl border border-gray-100 bg-gray-50">
+                <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{item.body}</p>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
 
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Requirements</h2>
-          <div className="space-y-6">
-            <div className="border-l-4 border-blue-600 pl-4"><h3 className="text-xl font-semibold mb-2">Credit Score</h3><ul className="list-disc list-inside text-gray-700 space-y-1"><li>Minimum 620 credit score required</li><li>740+ gets best rates and terms</li><li>Strong credit history preferred</li></ul></div>
-            <div className="border-l-4 border-blue-600 pl-4"><h3 className="text-xl font-semibold mb-2">Down Payment</h3><ul className="list-disc list-inside text-gray-700 space-y-1"><li>3% minimum for primary residence</li><li>10% minimum for second homes</li><li>15-25% for investment properties</li></ul></div>
-            <div className="border-l-4 border-blue-600 pl-4"><h3 className="text-xl font-semibold mb-2">Income & Employment</h3><ul className="list-disc list-inside text-gray-700 space-y-1"><li>Steady employment (2+ years typical)</li><li>Tax returns and W-2s required</li><li>Debt-to-income ratio up to 50%</li><li>Verifiable income documentation</li></ul></div>
+      {/* Requirements */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Conventional Requirements</h2>
+          <div className="space-y-4 max-w-2xl mx-auto">
+            {[
+              { label: 'Credit Score', detail: '620+ minimum · 740+ for best rates and lowest PMI' },
+              { label: 'Down Payment', detail: '3% primary · 10% second home · 15–25% investment' },
+              { label: 'Employment', detail: 'Steady 2-year history · W-2s and tax returns required' },
+              { label: 'DTI Ratio', detail: 'Up to 50% with strong compensating factors' },
+              { label: 'Property Types', detail: 'Primary residence, second home, or investment property' },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 p-5 bg-white rounded-xl border border-gray-200">
+                <div className="w-36 flex-shrink-0 font-bold text-gray-900 text-sm">{item.label}</div>
+                <div className="text-gray-600 text-sm">{item.detail}</div>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
 
-        <div className="bg-blue-50 rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">2025 Loan Limits</h2>
-          <p className="text-lg text-gray-700 mb-2"><span className="font-semibold">Conforming Limit:</span> $806,500</p>
-          <p className="text-lg text-gray-700"><span className="font-semibold">High-Cost Areas:</span> Higher limits apply</p>
-        </div>
-
-        <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-8 text-white mb-8">
-          <h2 className="text-3xl font-bold mb-4">Why Choose Wael for Conventional Loans?</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div><h3 className="text-xl font-semibold mb-2">✓ Competitive Rates</h3><p>Access to multiple lenders for best terms</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">✓ Fast Closing</h3><p>Average 23-day close time</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">✓ Expert Guidance</h3><p>Licensed Mortgage Broker at Barrett Financial Group</p></div>
-            <div><h3 className="text-xl font-semibold mb-2">✓ Multilingual</h3><p>English, Arabic, Spanish, Italian</p></div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+      {/* CTA */}
+      <section className="py-16 bg-white">
+        <div className="max-w-2xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Get Pre-Approved?</h2>
-          <p className="text-xl text-gray-600 mb-6">Let's find the perfect conventional loan for your needs!</p>
+          <p className="text-gray-500 mb-8">Check your eligibility in 60 seconds — no personal info required.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Schedule Consultation</a>
-            <a href="https://181106.my1003app.com/2171794/register?time=1742858528979" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-md text-lg font-semibold">Apply Now</a>
+            <button
+              onClick={() => { ga.ctaClick('conv_bottom_qualify', 'conventional_page'); navigate('/qualify'); }}
+              className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-8 py-4 rounded-xl text-lg"
+            >
+              Check My Eligibility
+            </button>
+            <a
+              href="https://calendly.com/abualiwael/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => ga.bookingClick('conventional_bottom')}
+              className="bg-white border-2 border-blue-700 text-blue-700 font-bold px-8 py-4 rounded-xl text-lg hover:bg-blue-50"
+            >
+              Book Free Consultation
+            </a>
           </div>
+          <p className="mt-6 text-sm text-gray-500">Wael Abdeldayem · NMLS #2171794 · Barrett Financial Group · Licensed NJ · NY · CT</p>
         </div>
-        </>
-        ) : (
-          <QualificationForm loanType="conventional" />
-        )}
-      </div>
-      
+      </section>
+
       <ComplianceFooter />
     </div>
   );
-};
-
-export default ConventionalLoansPage;
+}
