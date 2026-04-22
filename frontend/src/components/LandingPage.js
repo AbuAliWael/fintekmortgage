@@ -148,7 +148,7 @@ export default function LandingPage() {
                 {lang === 'en' ? 'عربي' : 'English'}
               </button>
               <button
-                onClick={() => { handleCta('nav_qualify'); navigate('/qualify'); }}
+                onClick={() => { handleCta('nav_qualify'); navigate('/get-started'); }}
                 className="bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded-lg"
               >
                 {T.nav_qualify}
@@ -174,7 +174,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
               <button
-                onClick={() => { handleCta('hero_qualify'); navigate('/qualify'); }}
+                onClick={() => { handleCta('hero_qualify'); navigate('/get-started'); }}
                 className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 font-bold px-8 py-4 rounded-xl text-lg shadow-lg transition-all"
               >
                 {T.hero_cta1}

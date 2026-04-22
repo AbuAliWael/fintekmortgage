@@ -11,6 +11,7 @@ import RefinancingPage from '@/components/RefinancingPage';
 import FAQPage from '@/components/FAQPage';
 import ApplyPage from '@/components/ApplyPage';
 import QualificationPage from '@/components/QualificationPage';
+import PreQualForm from '@/components/PreQualForm';
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           <Route path="/loans/first-time-buyer" element={<FirstTimeBuyerPage />} />
           <Route path="/loans/refinancing" element={<RefinancingPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/get-started" element={<PreQualForm />} />
+          <Route path="/pre-qualify" element={<PreQualForm />} />
         </Routes>
       </BrowserRouter>
     </div>
