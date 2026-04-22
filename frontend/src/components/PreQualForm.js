@@ -142,9 +142,19 @@ export default function PreQualForm() {
 
   const submit = async () => {
     setLoading(true);
-    const payload = { ...form, source: 'prequal_form', submitted_at: new Date().toISOString() };
+    const nameParts = form.name.trim().split(' ');
+    const payload = {
+      first_name: nameParts[0] || form.name,
+      last_name: nameParts.slice(1).join(' ') || '-',
+      email: form.email || `noemail+${Date.now()}@fintekmortgage.com`,
+      phone: form.phone,
+      source: 'web_form',
+      employment_status: form.employment,
+      notes: `loanType:${form.loanType} credit:${form.credit} down:${form.down} lang:${form.lang}`,
+    };
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
     try {
-      await fetch('/api/leads', {
+      await fetch(`${backendUrl}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
