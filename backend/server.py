@@ -12,7 +12,7 @@ import os
 import logging
 from pathlib import Path
 import uuid
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+import anthropic as _anthropic
 from enum import Enum
 import resend
 import httpx
@@ -762,14 +762,14 @@ Be professional, helpful, and concise. When pre-qualifying, gather key informati
 
 Always be encouraging but honest about requirements."""
 
-        chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=chat_request.session_id,
-            system_message=system_message
-        ).with_model("openai", "gpt-4o-mini")
-        
-        user_message = UserMessage(text=chat_request.message)
-        response = await chat.send_message(user_message)
+        _client = _anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", EMERGENT_LLM_KEY))
+        _msg = _client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=512,
+            system=system_message,
+            messages=[{"role": "user", "content": chat_request.message}]
+        )
+        response = _msg.content[0].text
         
         # Save chat to database
         chat_msg = ChatMessage(
@@ -1351,9 +1351,9 @@ Monthly Housing Payment: ${total_housing_payment:,.0f}
 Provide 3-4 bullet points of advice to strengthen their application or next steps. Keep it concise and actionable."""
 
                 try:
-                    llm = LlmChat(api_key=EMERGENT_LLM_KEY)
-                    llm_response = llm.send_message(UserMessage(content=llm_prompt))
-                    recommendations = llm_response.content
+                    _c = _anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", EMERGENT_LLM_KEY))
+                    _r = _c.messages.create(model="claude-haiku-4-5-20251001", max_tokens=256, messages=[{"role":"user","content":llm_prompt}])
+                    recommendations = _r.content[0].text
                 except Exception as e:
                     logger.error(f"LLM recommendation error: {str(e)}")
                     recommendations = f"""Next Steps:
