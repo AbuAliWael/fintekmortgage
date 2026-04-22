@@ -12,6 +12,7 @@ import FAQPage from '@/components/FAQPage';
 import ApplyPage from '@/components/ApplyPage';
 import QualificationPage from '@/components/QualificationPage';
 import PreQualForm from '@/components/PreQualForm';
+import ReferralLanding from '@/components/ReferralLanding';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/get-started" element={<PreQualForm />} />
           <Route path="/pre-qualify" element={<PreQualForm />} />
+          <Route path="/ref/:realtorName" element={<ReferralLanding />} />
         </Routes>
       </BrowserRouter>
     </div>

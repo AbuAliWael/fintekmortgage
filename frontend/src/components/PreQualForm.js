@@ -151,6 +151,8 @@ export default function PreQualForm() {
       source: 'web_form',
       employment_status: form.employment,
       notes: `loanType:${form.loanType} credit:${form.credit} down:${form.down} lang:${form.lang}`,
+      referral_source: sessionStorage.getItem('referral_source') || null,
+      referral_type: sessionStorage.getItem('referral_type') || null,
     };
     const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
     try {
