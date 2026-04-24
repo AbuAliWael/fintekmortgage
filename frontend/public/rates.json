@@ -1,8 +1,8 @@
 {
-  "updated": "2026-04-18",
-  "source": "Freddie Mac Primary Mortgage Market Survey (PMMS)",
+  "updated": "2026-04-24",
+  "source": "Freddie Mac Primary Mortgage Market Survey (PMMS) via FRED",
   "rates": {
     "30yr_fixed": 6.81,
-    "15yr_fixed": 6.10
+    "15yr_fixed": 6.1
   }
 }
