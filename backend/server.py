@@ -1678,3 +1678,70 @@ app.add_middleware(
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
+# ==================== OUTREACH SCHEDULER ====================
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
+import asyncio
+
+_scheduler = None
+
+
+@app.on_event("startup")
+async def start_outreach_scheduler():
+    """Start APScheduler on app startup. All outreach jobs run weekdays only."""
+    global _scheduler
+
+    # Import here to avoid circular import issues
+    from accountant_outreach import seed_accountants, send_daily_accountant_emails
+    from corporate_outreach import seed_corporate_contacts, send_daily_corporate_emails, find_corporate_emails
+    from list_builder import run_nightly_list_builder
+
+    # Seed both collections (no-op if already populated)
+    await seed_accountants(db)
+    await seed_corporate_contacts(db)
+
+    _scheduler = AsyncIOScheduler(timezone="America/New_York")
+
+    # 9:00 AM ET weekdays — send 20 accountant + 20 corporate emails
+    _scheduler.add_job(
+        lambda: asyncio.ensure_future(send_daily_accountant_emails(db)),
+        trigger=CronTrigger(day_of_week="mon-fri", hour=9, minute=0),
+        id="accountant_daily_send",
+        name="Daily Accountant Outreach (20 emails)",
+        replace_existing=True,
+    )
+    _scheduler.add_job(
+        lambda: asyncio.ensure_future(send_daily_corporate_emails(db)),
+        trigger=CronTrigger(day_of_week="mon-fri", hour=9, minute=5),
+        id="corporate_daily_send",
+        name="Daily Corporate Outreach (20 emails)",
+        replace_existing=True,
+    )
+
+    # 11:00 PM ET nightly — find new emails on corporate sites + build new lists
+    _scheduler.add_job(
+        lambda: asyncio.ensure_future(find_corporate_emails(db)),
+        trigger=CronTrigger(hour=23, minute=0),
+        id="corporate_email_finder",
+        name="Nightly Corporate Email Finder",
+        replace_existing=True,
+    )
+    _scheduler.add_job(
+        lambda: asyncio.ensure_future(run_nightly_list_builder(db)),
+        trigger=CronTrigger(hour=23, minute=30),
+        id="nightly_list_builder",
+        name="Nightly List Builder",
+        replace_existing=True,
+    )
+
+    _scheduler.start()
+    logger.info("Outreach scheduler started: 9am ET weekdays (40 emails/day) + 11pm nightly list builder")
+
+
+@app.on_event("shutdown")
+async def stop_outreach_scheduler():
+    global _scheduler
+    if _scheduler and _scheduler.running:
+        _scheduler.shutdown(wait=False)
