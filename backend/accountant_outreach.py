@@ -1,6 +1,6 @@
 """
 Accountant Outreach System
-Sends 10 Non-QM pitch emails/day to NJ CPAs via Resend.
+Sends 20 Non-QM pitch emails/day (weekdays only) to NJ/NYC CPAs via Resend.
 Tracks sent status in MongoDB. RESPA compliant — no compensation offered.
 """
 import os
@@ -11,55 +11,60 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
 
-# Seed list of NJ CPA firms — scraped from public directories
-NJ_CPA_SEED = [
-    {"firm": "Angelo Gallo, CPA", "phone": "973-636-2800", "website": "cpagallo.com", "city": "NJ"},
-    {"firm": "Anthony J. Cucciniello, CPA", "phone": "973-214-7909", "website": "ajc-cpa.com", "city": "NJ"},
-    {"firm": "Bedford Tax Services", "phone": "732-739-2632", "website": "bedfordtaxservices.com", "city": "NJ"},
-    {"firm": "Belbol & Associates", "phone": "201-523-9442", "website": "belbolcpa.com", "city": "NJ"},
-    {"firm": "Edward J. Colville LLC", "phone": "908-367-9005", "website": "ejcolvillecpa.com", "city": "NJ"},
-    {"firm": "Gaines & Associates, PC", "phone": "732-906-9277", "website": "gainescpacfo.com", "city": "NJ"},
-    {"firm": "James M. Sausmer CPA LLC", "phone": "732-261-7710", "website": "jimsausmercpa.com", "city": "NJ"},
-    {"firm": "JG CPA LLC", "phone": "201-396-7323", "website": "jgcpa-llc.com", "city": "NJ"},
-    {"firm": "Magone & Company, P.C.", "phone": "973-301-2300", "website": "magonecpas.com", "city": "NJ"},
-    {"firm": "Martin R. Hoffman, CPA LLC", "phone": "973-699-3872", "website": "martinhoffmancpa.com", "city": "NJ"},
-    {"firm": "Michael DiPede, CPA", "phone": "732-290-9900", "website": "mdipedecpa.com", "city": "NJ"},
-    {"firm": "Rizick & Rizick CPAs", "phone": "732-387-0872", "website": "rizickcpas.com", "city": "NJ"},
-    {"firm": "Russikoff LLC", "phone": "973-564-8080", "website": "russikoffllc.com", "city": "NJ"},
-    {"firm": "SnareFoti LLP", "phone": "908-431-9307", "website": "SnareFoti.com", "city": "NJ"},
-    {"firm": "THT Tax and Accounting", "phone": "973-403-1040", "website": "thttaxandaccounting.com", "city": "NJ"},
-    {"firm": "Urbach & Avraham, CPAs", "phone": "732-777-1158", "website": "ua-cpas.com", "city": "NJ"},
-    {"firm": "123 Accounting Services LLC", "phone": "610-849-2400", "website": "123accountingservices.net", "city": "NJ"},
-]
+CALENDLY_LINK = "https://calendly.com/abualiwael/30min"
 
-NON_QM_EMAIL_TEMPLATE = """Subject: Helping Your Self-Employed Clients Buy a Home — No Tax Returns Required
+ACCOUNTANT_EMAIL_TEMPLATE = """Subject: A Mortgage Resource for Your Self-Employed Clients — No Tax Returns Required
 
-Hi {firm_name},
+Dear {first_name},
 
-I'm Wael Abd El Dayem, a licensed mortgage broker in NJ (NMLS #2171794) specializing in Non-QM loans for self-employed borrowers.
+My name is Wael Abdeldayem, and I'm a licensed mortgage broker specializing in alternative lending solutions for self-employed individuals and business owners in New Jersey and the greater New York area. I wanted to reach out because I believe we may be able to help each other serve a segment of clients that often falls through the cracks of conventional financing.
 
-Many of your clients are highly profitable but struggle to qualify for a mortgage because traditional lenders rely on tax returns — and aggressive write-offs make their income look low on paper.
+Many of your self-employed clients are building profitable businesses — but their tax returns, optimized to minimize liability, tell a very different story to a traditional lender. That gap is where I come in. I specialize in loan programs that don't require tax returns at all:
 
-I offer:
-• Bank Statement Loans — qualify using 12-24 months of deposits, no tax returns
-• P&L Loans — qualify using a CPA-prepared profit & loss statement
-• DSCR Loans — for investment properties, qualify on cash flow, not personal income
+• Bank Statement Loans — qualify using 12–24 months of deposits, no tax returns
+• DSCR Loans — for real estate investors, qualify on rental cash flow
+• Asset-Based Loans — for clients with strong balance sheets
 • ITIN Loans — for non-US citizens with Individual Tax Identification Numbers
 
-When your self-employed clients want to buy or refinance a home, I can help them qualify — even when traditional lenders say no.
+My goal is simple: to be a trusted referral partner you can call when a client is ready to buy. I handle the mortgage side entirely — you continue doing what you do best. Your client relationship stays yours. I also provide bilingual service in both English and Arabic, which is a meaningful advantage for many clients in our region.
 
-This isn't a referral fee arrangement. I simply want to be your go-to mortgage resource so your clients get the financing they need.
+If you'd like to connect, you can grab a time directly on my calendar — 15 minutes, no pressure:
 
-Happy to send over a one-page Non-QM product guide, or schedule a 15-minute call.
+Book a quick call: {calendly_link}
 
-Wael Abd El Dayem
-Licensed Mortgage Broker | NJ | NMLS #2171794
+Or simply reply to this email. There's no obligation — just two professionals looking out for the same clients.
+
+Warm regards,
+
+Wael Abdeldayem
+Licensed Mortgage Broker | NMLS #2171794
 Barrett Financial Group
-(917) 304-0234 | fintekmortgage.com
+fintekmortgage.com | (917) 304-0234
+Serving NJ, NY & CT — English & Arabic
 
-This email was sent to {firm_website}. To opt out of future emails, reply with "unsubscribe."
+---
+To unsubscribe from future emails, reply with "unsubscribe" in the subject line.
 Barrett Financial Group | Licensed by NJDOBI | Not a commitment to lend.
 """
+
+NJ_CPA_SEED = [
+    {"firm": "Amr M. Ibrahim", "first_name": "Amr", "email": "info@cpapai.com", "city": "Clifton, NJ", "website": "cpapai.com", "arabic_priority": True},
+    {"firm": "Ziad Abuhadba - Ramallah Agency", "first_name": "Ziad", "email": "ziadabuhadba@hotmail.com", "city": "Paterson, NJ", "website": "", "arabic_priority": True},
+    {"firm": "Kevin A. Carestia CPA LLC", "first_name": "Kevin", "email": "kevin@carestiacpa.com", "city": "Oakland, NJ", "website": "carestiacpa.com", "arabic_priority": False},
+    {"firm": "Gonzalez Accounting CPA", "first_name": "Ruben", "email": "rgonzalez@gonzalezaccounting.com", "city": "North Bergen, NJ", "website": "gonzalezaccountingcpa.com", "arabic_priority": False},
+    {"firm": "The Marchese Group LLC", "first_name": "Ronald", "email": "info@tmgcpa.net", "city": "Ramsey, NJ", "website": "tmgcpa.net", "arabic_priority": False},
+    {"firm": "Pogogeff & Company CPAs", "first_name": "Team", "email": "admin@pogandco.com", "city": "Fort Lee, NJ", "website": "pogandco.com", "arabic_priority": False},
+    {"firm": "Wurdemann Pinto & Co LLC", "first_name": "Team", "email": "info@wurdtax.com", "city": "Hackensack, NJ", "website": "wurdtax.com", "arabic_priority": False},
+    {"firm": "Four Brothers Financial LLC", "first_name": "Gary", "email": "G.Mehta@fourbrothersfinancial.com", "city": "Jersey City, NJ", "website": "fourbrothersfinancial.com", "arabic_priority": False},
+    {"firm": "Becerra & Associates PA", "first_name": "Ray", "email": "ray@becerraassociates.com", "city": "Hoboken, NJ", "website": "becerraassociates.com", "arabic_priority": False},
+    {"firm": "Marchionda & Ferrer Advisory", "first_name": "Joseph", "email": "cpa@marchiondaferrer.com", "city": "Clifton, NJ", "website": "marchiondaferrer.com", "arabic_priority": False},
+    {"firm": "United Accounting & Financial Services LLC", "first_name": "Team", "email": "info@unitedaccountingservices.com", "city": "Clifton, NJ", "website": "unitedaccountingservices.com", "arabic_priority": True},
+    {"firm": "Fortunato & Pirrello LLC", "first_name": "Bob", "email": "info@fandpcpa.com", "city": "Bloomfield, NJ", "website": "fandpcpa.com", "arabic_priority": False},
+    {"firm": "FIRM1040", "first_name": "Team", "email": "hello@firm1040.com", "city": "Montclair, NJ", "website": "firm1040.com", "arabic_priority": False},
+    {"firm": "Ahad & Co CPA", "first_name": "Ahad", "email": "info@ahadandco.com", "city": "Forest Hills, NY", "website": "ahadandco.com", "arabic_priority": False},
+    {"firm": "Richards Accounting & Financial Services", "first_name": "Genroy", "email": "info@richardscpanyc.com", "city": "Brooklyn, NY", "website": "richardscpanyc.com", "arabic_priority": False},
+    {"firm": "Arrowpoint Tax Services Inc", "first_name": "Team", "email": "info@arrowpointtax.com", "city": "Bronx, NY", "website": "arrowpointtax.com", "arabic_priority": False},
+]
 
 
 async def seed_accountants(db):
@@ -70,50 +75,54 @@ async def seed_accountants(db):
         for cpa in NJ_CPA_SEED:
             docs.append({
                 **cpa,
-                "email": None,
                 "email_sent": False,
                 "email_sent_at": None,
                 "opted_out": False,
                 "replied": False,
+                "source": "seed",
                 "created_at": datetime.now(timezone.utc),
             })
         await db.accountants.insert_many(docs)
-        logger.info(f"Seeded {len(docs)} NJ CPAs into accountants collection")
+        logger.info(f"Seeded {len(docs)} accountants into MongoDB")
+
+
+def _is_weekday():
+    return datetime.now(timezone.utc).weekday() < 5  # Mon=0 ... Fri=4
 
 
 async def send_daily_accountant_emails(db):
-    """
-    APScheduler job: runs daily at 9am ET.
-    Sends up to 10 Non-QM pitch emails to unsent, opted-out=False accountants.
-    Only sends to accountants with a known email address.
-    """
+    """Runs daily at 9am ET on weekdays. Sends up to 20 outreach emails."""
+    if not _is_weekday():
+        logger.info("Skipping accountant outreach — weekend")
+        return
+
     if not os.environ.get("RESEND_API_KEY"):
         logger.warning("RESEND_API_KEY not set — skipping accountant outreach")
         return
 
     resend.api_key = os.environ["RESEND_API_KEY"]
 
-    # Get next 10 unsent accountants that have emails
     cursor = db.accountants.find(
         {"email_sent": False, "opted_out": False, "email": {"$ne": None}}
-    ).limit(10)
-    accountants = await cursor.to_list(length=10)
+    ).sort("arabic_priority", -1).limit(20)
+    accountants = await cursor.to_list(length=20)
 
     if not accountants:
-        logger.info("No more accountants to email today")
+        logger.info("Accountant queue empty — list builder will add more tonight")
         return
 
     sent_count = 0
     for acct in accountants:
         try:
-            body = NON_QM_EMAIL_TEMPLATE.format(
-                firm_name=acct["firm"],
-                firm_website=acct.get("website", "your firm"),
+            first_name = acct.get("first_name") or acct.get("firm", "there")
+            body = ACCOUNTANT_EMAIL_TEMPLATE.format(
+                first_name=first_name,
+                calendly_link=CALENDLY_LINK,
             )
             resend.Emails.send({
-                "from": "Wael Abd El Dayem <wael@fintekmortgage.com>",
+                "from": "Wael Abdeldayem <wael@fintekmortgage.com>",
                 "to": [acct["email"]],
-                "subject": "Helping Your Self-Employed Clients Buy a Home — No Tax Returns Required",
+                "subject": "A Mortgage Resource for Your Self-Employed Clients — No Tax Returns Required",
                 "text": body,
             })
             await db.accountants.update_one(
@@ -121,28 +130,25 @@ async def send_daily_accountant_emails(db):
                 {"$set": {"email_sent": True, "email_sent_at": datetime.now(timezone.utc)}}
             )
             sent_count += 1
-            logger.info(f"Sent Non-QM pitch to {acct['firm']} ({acct['email']})")
+            logger.info(f"Sent to {acct.get('firm')} ({acct['email']})")
         except Exception as e:
-            logger.error(f"Failed to email {acct['firm']}: {e}")
+            logger.error(f"Failed to email {acct.get('firm')}: {e}")
 
-    logger.info(f"Daily accountant outreach: {sent_count} emails sent")
+    logger.info(f"Accountant outreach: {sent_count} emails sent today")
 
 
-async def add_accountant(db, firm: str, email: str, phone: str = "", city: str = "NJ", website: str = ""):
-    """API endpoint helper: manually add an accountant to the outreach list."""
-    existing = await db.accountants.find_one({"email": email})
-    if existing:
+async def add_accountant(db, firm: str, email: str, first_name: str = "there",
+                         phone: str = "", city: str = "NJ", website: str = "",
+                         arabic_priority: bool = False):
+    """Add a new accountant to the outreach queue."""
+    if await db.accountants.find_one({"email": email}):
         return {"status": "exists"}
     await db.accountants.insert_one({
-        "firm": firm,
-        "email": email,
-        "phone": phone,
-        "city": city,
-        "website": website,
-        "email_sent": False,
-        "email_sent_at": None,
-        "opted_out": False,
-        "replied": False,
-        "created_at": datetime.now(timezone.utc),
+        "firm": firm, "first_name": first_name, "email": email,
+        "phone": phone, "city": city, "website": website,
+        "arabic_priority": arabic_priority,
+        "email_sent": False, "email_sent_at": None,
+        "opted_out": False, "replied": False,
+        "source": "manual", "created_at": datetime.now(timezone.utc),
     })
     return {"status": "added"}
