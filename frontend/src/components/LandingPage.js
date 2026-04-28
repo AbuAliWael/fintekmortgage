@@ -216,7 +216,7 @@ const NEWS_AR = [
 
 // ─── HUBSPOT CONFIG ────────────────────────────────────────────────────────────
 const HS_PORTAL_ID = '245970533';
-const HS_FORM_GUID = '2xl01hBCYT_WsgHpWDte2QQ';
+const HS_FORM_GUID = 'c65d3584-1098-4ff5-ac80-7a560ed7b641';
 
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function LandingPage() {
@@ -238,42 +238,21 @@ export default function LandingPage() {
   // ── GA helper
   const handleCta = (button) => ga.ctaClick(button, 'landing');
 
-  // ── Load HubSpot form embed
+  // ── Load HubSpot embed script (new div-based method)
   useEffect(() => {
-    const existing = document.getElementById('hs-embed-script');
-    if (existing) {
-      // Script already loaded — just create form
-      createHsForm();
-      return;
-    }
+    if (document.getElementById('hs-embed-script')) return;
     const script = document.createElement('script');
     script.id = 'hs-embed-script';
-    script.src = '//js.hsforms.net/forms/embed/v2.js';
-    script.charset = 'utf-8';
-    script.type = 'text/javascript';
-    script.onload = createHsForm;
+    script.src = 'https://js-na2.hsforms.net/forms/embed/245970533.js';
+    script.defer = true;
     document.body.appendChild(script);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  function createHsForm() {
-    if (window.hbspt) {
-      window.hbspt.forms.create({
-        region: 'na2',
-        portalId: HS_PORTAL_ID,
-        formId: HS_FORM_GUID,
-        target: '#hs-lead-form',
-        onFormSubmit: () => {
-          ga.ctaClick('hubspot_form_submit', 'landing');
-        },
-      });
-    }
-  }
+  }, []);
 
   // ── Rate alert submission
   const handleRateAlert = () => {
     if (!rateAlertEmail || !rateAlertEmail.includes('@')) return;
     // Submit to HubSpot via Forms API
-    fetch(`https://api-na2.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL_ID}/${HS_FORM_GUID}`, {
+    fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL_ID}/${HS_FORM_GUID}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -594,8 +573,13 @@ export default function LandingPage() {
             <div className="bg-white rounded-2xl p-8 shadow-2xl">
               <h3 className="text-xl font-bold text-gray-900 mb-1">{T.form_card_title}</h3>
               <p className="text-sm text-gray-500 mb-6">{T.form_card_sub}</p>
-              {/* HubSpot mounts here via useEffect */}
-              <div id="hs-lead-form" className="min-h-[320px]" />
+              {/* HubSpot div-based embed — auto-renders on script load */}
+              <div
+                className="hs-form-frame"
+                data-region="na2"
+                data-form-id="c65d3584-1098-4ff5-ac80-7a560ed7b641"
+                data-portal-id="245970533"
+              />
               <p className="text-xs text-gray-400 text-center mt-4 leading-relaxed">{T.form_compliance}</p>
             </div>
 
