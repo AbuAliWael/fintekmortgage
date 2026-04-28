@@ -2,307 +2,354 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ga } from '@/lib/analytics';
 
-const T = {
-  en: {
-    badge: '⚡ 60 Seconds · No Credit Pull · 100% Free',
-    title: 'See If You Pre-Qualify',
-    sub: 'Get an instant answer — no SSN, no credit check, no commitment.',
-    step1: 'Your Info',
-    step2: 'Loan Details',
-    step3: 'Your Result',
-    name: 'Full Name',
-    phone: 'Phone Number',
-    email: 'Email Address (optional)',
-    lang: 'Preferred Language',
-    langEn: 'English',
-    langAr: 'Arabic (عربي)',
-    loanType: 'What are you looking to do?',
-    buy: 'Buy a Home',
-    refi: 'Refinance',
-    invest: 'Investment Property',
-    nonqm: 'Self-Employed / Non-QM',
-    credit: 'Credit Score Range',
-    c1: 'Below 580',
-    c2: '580 – 619',
-    c3: '620 – 679',
-    c4: '680 – 719',
-    c5: '720 – 759',
-    c6: '760+',
-    down: 'Down Payment Available',
-    d1: 'Less than 3%',
-    d2: '3% – 4%',
-    d3: '5% – 9%',
-    d4: '10% – 19%',
-    d5: '20% or more',
-    emp: 'Employment Type',
-    e1: 'W-2 Employee',
-    e2: 'Self-Employed / Business Owner',
-    e3: 'Retired',
-    e4: 'Real Estate Investor',
-    next: 'Next →',
-    back: '← Back',
-    submit: 'Get My Result →',
-    processing: 'Checking...',
-    qualTitle: 'Great news — you look like a strong candidate!',
-    qualBody: "Based on your answers, you're likely pre-qualifiable. Book a free call and I'll have a real answer for you same day — no obligation.",
-    nonqmTitle: 'Good news — you may qualify for a Non-QM loan.',
-    nonqmBody: "Non-QM loans are built for self-employed borrowers like you. No tax returns, no W-2s. Let's talk — it takes 15 minutes.",
-    disqTitle: "Let's talk — I may still be able to help.",
-    disqBody: "Every situation is different. I've helped people others turned away. Book a free call and we'll look at your options together.",
-    book: '📅 Book Free Call with Wael',
-    call: '📞 Call (917) 304-0234',
-    restart: 'Start Over',
-    nmls: 'Wael Abd El Dayem | NMLS #2171794 | Barrett Financial Group | Not a commitment to lend.',
-  },
-  ar: {
-    badge: '⚡ 60 ثانية · بدون سحب ائتمان · مجاني 100%',
-    title: 'اكتشف إذا كنت مؤهلاً مسبقاً',
-    sub: 'احصل على إجابة فورية — بدون رقم ضمان اجتماعي، بدون فحص ائتماني، بدون التزام.',
-    step1: 'معلوماتك',
-    step2: 'تفاصيل القرض',
-    step3: 'نتيجتك',
-    name: 'الاسم الكامل',
-    phone: 'رقم الهاتف',
-    email: 'البريد الإلكتروني (اختياري)',
-    lang: 'اللغة المفضلة',
-    langEn: 'English',
-    langAr: 'العربية',
-    loanType: 'ماذا تريد أن تفعل؟',
-    buy: 'شراء منزل',
-    refi: 'إعادة تمويل',
-    invest: 'عقار استثماري',
-    nonqm: 'عمل حر / Non-QM',
-    credit: 'نطاق درجة الائتمان',
-    c1: 'أقل من 580',
-    c2: '580 – 619',
-    c3: '620 – 679',
-    c4: '680 – 719',
-    c5: '720 – 759',
-    c6: '760+',
-    down: 'الدفعة الأولى المتاحة',
-    d1: 'أقل من 3%',
-    d2: '3% – 4%',
-    d3: '5% – 9%',
-    d4: '10% – 19%',
-    d5: '20% أو أكثر',
-    emp: 'نوع التوظيف',
-    e1: 'موظف W-2',
-    e2: 'عمل حر / صاحب عمل',
-    e3: 'متقاعد',
-    e4: 'مستثمر عقاري',
-    next: 'التالي →',
-    back: '← رجوع',
-    submit: 'احصل على نتيجتي →',
-    processing: 'جارٍ الفحص...',
-    qualTitle: 'أخبار رائعة — تبدو مؤهلاً بشكل قوي!',
-    qualBody: 'بناءً على إجاباتك، من المرجح أنك مؤهل مسبقاً. احجز مكالمة مجانية وسأعطيك إجابة حقيقية في نفس اليوم.',
-    nonqmTitle: 'أخبار جيدة — قد تكون مؤهلاً لقرض Non-QM.',
-    nonqmBody: 'قروض Non-QM مصممة للعاملين لحسابهم الخاص مثلك. بدون إقرارات ضريبية، بدون W-2. لنتحدث.',
-    disqTitle: 'لنتحدث — قد أتمكن من مساعدتك.',
-    disqBody: 'كل حالة مختلفة. ساعدت أشخاصاً رفضهم آخرون. احجز مكالمة مجانية ونستعرض خياراتك معاً.',
-    book: '📅 احجز مكالمة مجانية مع وائل',
-    call: '📞 اتصل (917) 304-0234',
-    restart: 'ابدأ من جديد',
-    nmls: 'وائل عبد الدايم | NMLS #2171794 | Barrett Financial Group | ليس التزاماً بالإقراض.',
-  },
-};
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const OFFICIAL_APP_URL = 'https://181106.my1003app.com/2171794/register';
+const HS_PORTAL_ID     = '245970533';
+const HS_FORM_GUID     = 'c65d3584-1098-4ff5-ac80-7a560ed7b641';
 
-function getResult(data) {
-  const creditMap = { 'below580': 560, '580-619': 599, '620-679': 649, '680-719': 699, '720-759': 739, '760plus': 780 };
-  const downMap = { 'lt3': 2, '3-4': 3.5, '5-9': 7, '10-19': 15, '20plus': 20 };
-  const credit = creditMap[data.credit] || 0;
-  const down = downMap[data.down] || 0;
-  const isSE = data.employment === 'selfemployed' || data.loanType === 'nonqm';
-
-  if (isSE && credit >= 680 && down >= 20) return 'nonqm';
-  if (credit >= 620 && down >= 3) return 'qualified';
-  return 'disqualified';
+// ─── QUALIFICATION LOGIC ──────────────────────────────────────────────────────
+function getRecommendation(answers) {
+  const { goal, income, credit } = answers;
+  if (income === 'itin')         return { program: 'ITIN Loan',            route: '/loans/non-qm', color: 'bg-purple-50 border-purple-200 text-purple-900', icon: '🌐' };
+  if (income === 'self')         return { program: 'Non-QM Bank Statement', route: '/loans/non-qm', color: 'bg-blue-50 border-blue-200 text-blue-900',   icon: '🏠' };
+  if (income === '1099')         return { program: 'Non-QM 1099 Loan',      route: '/loans/non-qm', color: 'bg-blue-50 border-blue-200 text-blue-900',   icon: '🏠' };
+  if (goal === 'investment')     return { program: 'DSCR Investor Loan',    route: '/loans/non-qm', color: 'bg-amber-50 border-amber-200 text-amber-900', icon: '📈' };
+  if (goal === 'heloc')          return { program: 'HELOC / Cash-Out Refi', route: '/loans/non-qm', color: 'bg-green-50 border-green-200 text-green-900', icon: '💰' };
+  if (credit === '580' || credit === 'below')
+                                 return { program: 'FHA Loan',              route: '/loans/fha',    color: 'bg-green-50 border-green-200 text-green-900', icon: '🔑' };
+  if (credit === '760' || credit === '720' || credit === '680')
+                                 return { program: 'Conventional Loan',     route: '/loans/conventional', color: 'bg-indigo-50 border-indigo-200 text-indigo-900', icon: '📊' };
+  return                                { program: 'FHA Loan',              route: '/loans/fha',    color: 'bg-green-50 border-green-200 text-green-900', icon: '🔑' };
 }
 
+// ─── QUESTIONS ────────────────────────────────────────────────────────────────
+const QUESTIONS = {
+  en: [
+    {
+      id: 'goal',
+      question: "What are you looking to do?",
+      options: [
+        { value: 'purchase',   label: 'Purchase a Home',        icon: '🏡' },
+        { value: 'refinance',  label: 'Refinance',              icon: '🔄' },
+        { value: 'investment', label: 'Investment Property',    icon: '📈' },
+        { value: 'heloc',      label: 'HELOC / Cash-Out',       icon: '💰' },
+        { value: 'unsure',     label: "Not sure yet",           icon: '🤔' },
+      ],
+    },
+    {
+      id: 'income',
+      question: "How do you earn your income?",
+      options: [
+        { value: 'w2',    label: 'W-2 Employee',         icon: '💼' },
+        { value: 'self',  label: 'Self-Employed',         icon: '🧾' },
+        { value: '1099',  label: '1099 / Freelance',      icon: '📄' },
+        { value: 'itin',  label: 'ITIN (no SSN)',         icon: '🌐' },
+        { value: 'mixed', label: 'Mixed / Other',         icon: '🔀' },
+      ],
+    },
+    {
+      id: 'credit',
+      question: "What's your estimated credit score?",
+      options: [
+        { value: '760',   label: '760+',               icon: '⭐' },
+        { value: '720',   label: '720 – 759',          icon: '✅' },
+        { value: '680',   label: '680 – 719',          icon: '👍' },
+        { value: '640',   label: '640 – 679',          icon: '➡️' },
+        { value: '580',   label: '580 – 639',          icon: '⚠️' },
+        { value: 'below', label: 'Below 580 / Not sure', icon: '❓' },
+      ],
+    },
+    {
+      id: 'amount',
+      question: "Estimated loan amount?",
+      options: [
+        { value: 'u200',  label: 'Under $200K',        icon: '💵' },
+        { value: '200',   label: '$200K – $400K',      icon: '💵' },
+        { value: '400',   label: '$400K – $600K',      icon: '💵' },
+        { value: '600',   label: '$600K – $800K',      icon: '💵' },
+        { value: '800',   label: 'Over $800K',         icon: '💵' },
+      ],
+    },
+  ],
+  ar: [
+    {
+      id: 'goal',
+      question: "ماذا تريد أن تفعل؟",
+      options: [
+        { value: 'purchase',   label: 'شراء منزل',             icon: '🏡' },
+        { value: 'refinance',  label: 'إعادة تمويل',           icon: '🔄' },
+        { value: 'investment', label: 'عقار استثماري',         icon: '📈' },
+        { value: 'heloc',      label: 'HELOC / سحب نقدي',      icon: '💰' },
+        { value: 'unsure',     label: 'لست متأكداً بعد',       icon: '🤔' },
+      ],
+    },
+    {
+      id: 'income',
+      question: "كيف تكسب دخلك؟",
+      options: [
+        { value: 'w2',    label: 'موظف W-2',            icon: '💼' },
+        { value: 'self',  label: 'صاحب عمل حر',         icon: '🧾' },
+        { value: '1099',  label: '1099 / مستقل',         icon: '📄' },
+        { value: 'itin',  label: 'ITIN (بدون SSN)',      icon: '🌐' },
+        { value: 'mixed', label: 'مختلط / أخرى',         icon: '🔀' },
+      ],
+    },
+    {
+      id: 'credit',
+      question: "ما هو تقديرك لدرجة الائتمان؟",
+      options: [
+        { value: '760',   label: '760+',                 icon: '⭐' },
+        { value: '720',   label: '720 – 759',            icon: '✅' },
+        { value: '680',   label: '680 – 719',            icon: '👍' },
+        { value: '640',   label: '640 – 679',            icon: '➡️' },
+        { value: '580',   label: '580 – 639',            icon: '⚠️' },
+        { value: 'below', label: 'أقل من 580 / غير متأكد', icon: '❓' },
+      ],
+    },
+    {
+      id: 'amount',
+      question: "المبلغ التقديري للقرض؟",
+      options: [
+        { value: 'u200',  label: 'أقل من $200K',         icon: '💵' },
+        { value: '200',   label: '$200K – $400K',        icon: '💵' },
+        { value: '400',   label: '$400K – $600K',        icon: '💵' },
+        { value: '600',   label: '$600K – $800K',        icon: '💵' },
+        { value: '800',   label: 'أكثر من $800K',        icon: '💵' },
+      ],
+    },
+  ],
+};
+
+// ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function PreQualForm() {
-  const navigate = useNavigate();
-  const [lang, setLang] = useState('en');
-  const [step, setStep] = useState(1);
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    name: '', phone: '', email: '', lang: 'en',
-    loanType: '', credit: '', down: '', employment: '',
-  });
+  const [lang, setLang]       = useState('en');
+  const [step, setStep]       = useState(1);       // 1 = questions, 2 = contact form
+  const [qIndex, setQIndex]   = useState(0);       // which question in step 1
+  const [answers, setAnswers] = useState({});
+  const navigate              = useNavigate();
+  const isAr                  = lang === 'ar';
+  const questions             = QUESTIONS[lang];
+  const totalQ                = questions.length;
+  const currentQ              = questions[qIndex];
+  const recommendation        = getRecommendation(answers);
 
-  useEffect(() => { ga.loanPageView('prequal'); }, []);
+  // ── Load HubSpot embed script
+  useEffect(() => {
+    if (step !== 2) return;
+    if (document.getElementById('hs-prequal-script')) return;
+    const script = document.createElement('script');
+    script.id    = 'hs-prequal-script';
+    script.src   = `https://js-na2.hsforms.net/forms/embed/${HS_PORTAL_ID}.js`;
+    script.defer = true;
+    document.body.appendChild(script);
+  }, [step]);
 
-  const S = T[lang];
-  const isRTL = lang === 'ar';
+  const toggleLang = () => setLang(l => l === 'en' ? 'ar' : 'en');
 
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const handleAnswer = (value) => {
+    const newAnswers = { ...answers, [currentQ.id]: value };
+    setAnswers(newAnswers);
+    ga.ctaClick(`prequal_q${qIndex + 1}_${value}`, 'prequal');
 
-  const step1Valid = form.name.trim().length >= 2 && form.phone.replace(/\D/g, '').length >= 10;
-  const step2Valid = form.loanType && form.credit && form.down && form.employment;
-
-  const submit = async () => {
-    setLoading(true);
-    const nameParts = form.name.trim().split(' ');
-    const payload = {
-      first_name: nameParts[0] || form.name,
-      last_name: nameParts.slice(1).join(' ') || '-',
-      email: form.email || `noemail+${Date.now()}@fintekmortgage.com`,
-      phone: form.phone,
-      source: 'web_form',
-      employment_status: form.employment,
-      notes: `loanType:${form.loanType} credit:${form.credit} down:${form.down} lang:${form.lang}`,
-      referral_source: sessionStorage.getItem('referral_source') || null,
-      referral_type: sessionStorage.getItem('referral_type') || null,
-    };
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
-    try {
-      await fetch(`${backendUrl}/api/leads`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } catch (e) { console.warn('Lead API:', e); }
-    setTimeout(() => {
-      setResult(getResult(form));
-      setLoading(false);
-      setStep(3);
-    }, 800);
+    if (qIndex < totalQ - 1) {
+      setQIndex(i => i + 1);
+    } else {
+      // All questions answered — move to contact form
+      setStep(2);
+      ga.ctaClick('prequal_step2_reached', 'prequal');
+    }
   };
 
-  const radio = (name, val, label) => (
-    <label key={val} className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${form[name] === val ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-blue-300'}`}>
-      <input type="radio" name={name} value={val} checked={form[name] === val} onChange={() => set(name, val)} className="sr-only" />
-      <span className="text-sm font-medium text-gray-800">{label}</span>
-    </label>
-  );
+  const handleBack = () => {
+    if (qIndex > 0) setQIndex(i => i - 1);
+  };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 flex items-center justify-center p-4" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="w-full max-w-lg">
-        {/* Lang toggle */}
-        <div className="flex justify-end mb-4 gap-2">
-          {['en','ar'].map(l => (
-            <button key={l} onClick={() => { setLang(l); set('lang', l); }}
-              className={`text-xs font-bold px-3 py-1 rounded-full transition-all ${lang === l ? 'bg-white text-blue-900' : 'bg-white/20 text-white hover:bg-white/30'}`}>
-              {l === 'en' ? 'EN' : 'عربي'}
-            </button>
-          ))}
-        </div>
+  const progressPct = Math.round((qIndex / totalQ) * 100);
 
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-700 to-blue-600 px-8 py-6 text-center">
-            <span className="inline-block bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full mb-3">{S.badge}</span>
-            <h1 className="text-2xl font-bold text-white mb-1">{S.title}</h1>
-            <p className="text-blue-200 text-sm">{S.sub}</p>
-            {/* Progress */}
-            <div className="flex gap-2 mt-4 justify-center">
-              {[1,2,3].map(n => (
-                <div key={n} className={`h-1.5 rounded-full transition-all ${n <= step ? 'bg-yellow-400' : 'bg-white/30'} ${n === 2 ? 'w-16' : 'w-8'}`} />
-              ))}
+  // ─── STEP 1 — Qualification questions ─────────────────────────────────────
+  if (step === 1) {
+    return (
+      <div className={`min-h-screen bg-gray-50 ${isAr ? 'rtl' : 'ltr'}`} dir={isAr ? 'rtl' : 'ltr'}>
+
+        {/* Mini nav */}
+        <nav className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+          <button onClick={() => navigate('/')} className="flex items-center gap-2 text-gray-600 hover:text-blue-700 text-sm font-medium">
+            ← {isAr ? 'العودة' : 'Back'}
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-blue-800 rounded-md flex items-center justify-center">
+              <span className="text-white font-bold text-xs">FM</span>
+            </div>
+            <span className="font-bold text-blue-900 text-sm">Fintek Mortgage</span>
+          </div>
+          <button onClick={toggleLang} className="text-xs border border-gray-300 rounded px-2 py-1 text-gray-600 hover:border-blue-500">
+            {lang === 'en' ? 'عربي' : 'English'}
+          </button>
+        </nav>
+
+        <div className="max-w-xl mx-auto px-4 py-12">
+
+          {/* Progress bar */}
+          <div className="mb-8">
+            <div className="flex justify-between text-xs text-gray-400 mb-2">
+              <span>{isAr ? `السؤال ${qIndex + 1} من ${totalQ}` : `Question ${qIndex + 1} of ${totalQ}`}</span>
+              <span>{progressPct}%</span>
+            </div>
+            <div className="w-full h-1.5 bg-gray-200 rounded-full">
+              <div
+                className="h-1.5 bg-blue-700 rounded-full transition-all duration-500"
+                style={{ width: `${progressPct}%` }}
+              />
             </div>
           </div>
 
-          <div className="px-8 py-6">
-            {/* Step 1 — Contact */}
-            {step === 1 && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-bold text-gray-900 mb-4">{S.step1}</h2>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">{S.name} *</label>
-                  <input value={form.name} onChange={e => set('name', e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-blue-500 focus:outline-none"
-                    placeholder="John Smith" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">{S.phone} *</label>
-                  <input value={form.phone} onChange={e => set('phone', e.target.value)} type="tel"
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-blue-500 focus:outline-none"
-                    placeholder="(917) 000-0000" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">{S.email}</label>
-                  <input value={form.email} onChange={e => set('email', e.target.value)} type="email"
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-blue-500 focus:outline-none"
-                    placeholder="you@email.com" />
-                </div>
-                <button onClick={() => { if (step1Valid) setStep(2); }}
-                  disabled={!step1Valid}
-                  className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${step1Valid ? 'bg-blue-700 hover:bg-blue-800 text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>
-                  {S.next}
-                </button>
-              </div>
-            )}
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-3">
+              {isAr ? 'خطوة 1 من 2 — أسئلة التأهيل' : 'Step 1 of 2 — Qualification'}
+            </span>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+              {currentQ.question}
+            </h1>
+            <p className="text-gray-500 text-sm mt-2">
+              {isAr ? 'اختر الخيار الأنسب لك' : 'Select the option that best fits you'}
+            </p>
+          </div>
 
-            {/* Step 2 — Loan Details */}
-            {step === 2 && (
-              <div className="space-y-5">
-                <h2 className="text-lg font-bold text-gray-900 mb-2">{S.step2}</h2>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">{S.loanType}</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[['buy', S.buy], ['refi', S.refi], ['invest', S.invest], ['nonqm', S.nonqm]].map(([v, l]) => radio('loanType', v, l))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">{S.credit}</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[['below580', S.c1], ['580-619', S.c2], ['620-679', S.c3], ['680-719', S.c4], ['720-759', S.c5], ['760plus', S.c6]].map(([v, l]) => radio('credit', v, l))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">{S.down}</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[['lt3', S.d1], ['3-4', S.d2], ['5-9', S.d3], ['10-19', S.d4], ['20plus', S.d5]].map(([v, l]) => radio('down', v, l))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">{S.emp}</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[['w2', S.e1], ['selfemployed', S.e2], ['retired', S.e3], ['investor', S.e4]].map(([v, l]) => radio('employment', v, l))}
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <button onClick={() => setStep(1)} className="flex-1 py-3 rounded-xl font-semibold border-2 border-gray-200 text-gray-600 hover:border-blue-300">{S.back}</button>
-                  <button onClick={submit} disabled={!step2Valid || loading}
-                    className={`flex-[2] py-3 rounded-xl font-bold text-lg transition-all ${step2Valid && !loading ? 'bg-blue-700 hover:bg-blue-800 text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}>
-                    {loading ? S.processing : S.submit}
-                  </button>
-                </div>
-              </div>
-            )}
+          {/* Options */}
+          <div className="grid grid-cols-1 gap-3 mb-8">
+            {currentQ.options.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => handleAnswer(opt.value)}
+                className="flex items-center gap-4 bg-white border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 rounded-2xl p-4 text-left transition-all group"
+              >
+                <span className="text-2xl w-8 text-center flex-shrink-0">{opt.icon}</span>
+                <span className="font-semibold text-gray-800 group-hover:text-blue-800 text-base">
+                  {opt.label}
+                </span>
+                <span className="ml-auto text-gray-300 group-hover:text-blue-400 text-lg">→</span>
+              </button>
+            ))}
+          </div>
 
-            {/* Step 3 — Result */}
-            {step === 3 && result && (
-              <div className="text-center space-y-4">
-                <div className={`inline-block text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full mb-2 ${result === 'qualified' ? 'bg-green-100 text-green-800' : result === 'nonqm' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'}`}>
-                  {result === 'qualified' ? '✅ Pre-Qualified' : result === 'nonqm' ? '🏦 Non-QM Eligible' : '💬 Let\'s Talk'}
-                </div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  {result === 'qualified' ? S.qualTitle : result === 'nonqm' ? S.nonqmTitle : S.disqTitle}
-                </h2>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  {result === 'qualified' ? S.qualBody : result === 'nonqm' ? S.nonqmBody : S.disqBody}
-                </p>
-                <a href="https://calendly.com/abualiwael/30min" target="_blank" rel="noopener noreferrer"
-                  onClick={() => ga.bookingClick('prequal_result')}
-                  className="block w-full py-4 rounded-xl font-bold text-lg bg-blue-700 hover:bg-blue-800 text-white">
-                  {S.book}
-                </a>
-                <a href="tel:+19173040234" className="block w-full py-3 rounded-xl font-semibold text-gray-600 hover:text-blue-700 border-2 border-gray-200 hover:border-blue-300">
-                  {S.call}
-                </a>
-                <button onClick={() => { setStep(1); setResult(null); setForm({ name:'', phone:'', email:'', lang, loanType:'', credit:'', down:'', employment:'' }); }}
-                  className="text-sm text-gray-400 hover:text-gray-600 mt-2">
-                  {S.restart}
-                </button>
-                <p className="text-xs text-gray-400 mt-4 leading-relaxed">{S.nmls}</p>
-              </div>
-            )}
+          {/* Back button */}
+          {qIndex > 0 && (
+            <div className="text-center">
+              <button onClick={handleBack} className="text-sm text-gray-400 hover:text-gray-600 underline">
+                {isAr ? '← السؤال السابق' : '← Previous question'}
+              </button>
+            </div>
+          )}
+
+          {/* Trust line */}
+          <div className="mt-10 text-center text-xs text-gray-400 space-y-1">
+            <p>{isAr ? 'لا يتطلب سحب ائتماني · مجاني تماماً · NMLS #2171794' : 'No credit pull · 100% free · NMLS #2171794'}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── STEP 2 — Contact form + recommendation ────────────────────────────────
+  return (
+    <div className={`min-h-screen bg-gray-50 ${isAr ? 'rtl' : 'ltr'}`} dir={isAr ? 'rtl' : 'ltr'}>
+
+      {/* Mini nav */}
+      <nav className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <button onClick={() => { setStep(1); setQIndex(totalQ - 1); }} className="flex items-center gap-2 text-gray-600 hover:text-blue-700 text-sm font-medium">
+          ← {isAr ? 'تعديل إجاباتي' : 'Edit answers'}
+        </button>
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 bg-blue-800 rounded-md flex items-center justify-center">
+            <span className="text-white font-bold text-xs">FM</span>
+          </div>
+          <span className="font-bold text-blue-900 text-sm">Fintek Mortgage</span>
+        </div>
+        <button onClick={toggleLang} className="text-xs border border-gray-300 rounded px-2 py-1 text-gray-600 hover:border-blue-500">
+          {lang === 'en' ? 'عربي' : 'English'}
+        </button>
+      </nav>
+
+      <div className="max-w-2xl mx-auto px-4 py-10">
+
+        {/* Progress — complete */}
+        <div className="mb-8">
+          <div className="flex justify-between text-xs text-gray-400 mb-2">
+            <span>{isAr ? 'اكتملت الأسئلة' : 'Questions complete'}</span>
+            <span>100%</span>
+          </div>
+          <div className="w-full h-1.5 bg-gray-200 rounded-full">
+            <div className="h-1.5 bg-green-500 rounded-full w-full" />
           </div>
         </div>
 
-        <p className="text-center text-blue-300 text-xs mt-4">fintekmortgage.com · Equal Housing Lender 🏠</p>
+        {/* Recommendation card */}
+        <div className={`border-2 rounded-2xl p-5 mb-8 ${recommendation.color}`}>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-2xl">{recommendation.icon}</span>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide opacity-70">
+                {isAr ? 'البرنامج الموصى به' : 'Recommended program'}
+              </p>
+              <p className="text-xl font-bold">{recommendation.program}</p>
+            </div>
+          </div>
+          <p className="text-sm opacity-80 mb-3">
+            {isAr
+              ? 'بناءً على إجاباتك، هذا البرنامج هو الأنسب لوضعك. وائل سيتواصل معك لتأكيد التفاصيل.'
+              : "Based on your answers, this program fits your profile. Wael will confirm the details when he reaches out."}
+          </p>
+          <button
+            onClick={() => navigate(recommendation.route)}
+            className="text-sm font-bold underline opacity-80 hover:opacity-100"
+          >
+            {isAr ? 'تعرف على هذا البرنامج ←' : 'Learn about this program →'}
+          </button>
+        </div>
+
+        {/* Step 2 header */}
+        <div className="text-center mb-8">
+          <span className="inline-block bg-blue-100 text-blue-800 text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-3">
+            {isAr ? 'خطوة 2 من 2 — معلومات التواصل' : 'Step 2 of 2 — Contact Info'}
+          </span>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {isAr ? 'كيف يتواصل معك وائل؟' : 'How should Wael reach you?'}
+          </h2>
+          <p className="text-gray-500 text-sm mt-2">
+            {isAr
+              ? 'يراجع وائل كل ملف شخصياً ويتواصل خلال يوم عمل واحد.'
+              : 'Wael reviews every file personally and reaches out within 1 business day.'}
+          </p>
+        </div>
+
+        {/* HubSpot form card */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+          {/* HubSpot div-based embed */}
+          <div
+            className="hs-form-frame"
+            data-region="na2"
+            data-form-id={HS_FORM_GUID}
+            data-portal-id={HS_PORTAL_ID}
+          />
+        </div>
+
+        {/* Or apply directly */}
+        <div className="text-center">
+          <p className="text-sm text-gray-500 mb-3">
+            {isAr ? 'أو قدّم طلبك الرسمي مباشرة:' : 'Or go straight to the official application:'}
+          </p>
+          <a
+            href={OFFICIAL_APP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => ga.ctaClick('prequal_official_app', 'prequal')}
+            className="inline-block bg-blue-700 hover:bg-blue-800 text-white font-bold px-8 py-3 rounded-xl transition-all"
+          >
+            {isAr ? 'ابدأ طلبي الرسمي ←' : 'Start Official Application →'}
+          </a>
+          <p className="text-xs text-gray-400 mt-3">NMLS #2171794 · {isAr ? 'مرخص في NJ' : 'Licensed in NJ'} · Equal Housing Lender</p>
+        </div>
       </div>
     </div>
   );

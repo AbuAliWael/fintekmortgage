@@ -632,14 +632,17 @@ export default function LandingPage() {
               <span className="text-green-700 text-sm mt-1">calendly.com/abualiwael</span>
             </a>
 
-            <button
-              onClick={() => { handleCta('contact_apply'); navigate('/apply'); }}
+            <a
+              href="https://181106.my1003app.com/2171794/register"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => handleCta('contact_apply')}
               className="flex flex-col items-center bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-2xl p-6 transition-all"
             >
               <span className="text-3xl mb-2">📋</span>
               <span className="font-bold text-gray-900">{T.contact_apply}</span>
-              <span className="text-gray-500 text-sm mt-1">fintekmortgage.com/apply</span>
-            </button>
+              <span className="text-gray-500 text-sm mt-1">Official Application →</span>
+            </a>
           </div>
 
           {/* Licensing disclosures covered by ComplianceFooter below */}
