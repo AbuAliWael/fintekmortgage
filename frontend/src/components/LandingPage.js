@@ -75,9 +75,6 @@ const t = {
     qualify_banner_cta: 'Check My Eligibility in 60 Seconds',
     calc_banner: 'Estimate your monthly payment',
     calc_banner_cta: 'Open Mortgage Calculator',
-    trust_nmls: 'NMLS #2171794',
-    trust_licensed: 'Licensed in NJ',
-    trust_company: 'Barrett Financial Group',
     contact_title: 'Ready to Talk?',
     contact_sub: 'No pressure. No commitment. Just a conversation about your options.',
     contact_call: 'Call or Text',
@@ -154,9 +151,6 @@ const t = {
     qualify_banner_cta: 'تحقق من أهليتي في 60 ثانية',
     calc_banner: 'احسب قسطك الشهري',
     calc_banner_cta: 'افتح حاسبة القرض',
-    trust_nmls: 'NMLS #2171794',
-    trust_licensed: 'مرخص في NJ',
-    trust_company: 'Barrett Financial Group',
     contact_title: 'هل أنت مستعد للتحدث؟',
     contact_sub: 'بدون ضغط. بدون التزام. فقط محادثة حول خياراتك.',
     contact_call: 'اتصل أو أرسل رسالة',
@@ -664,12 +658,7 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* ── Compliance trust line — NJ ONLY (corrected) */}
-          <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-            <span>✓ {T.trust_nmls}</span>
-            <span>✓ {T.trust_licensed}</span>
-            <span>✓ {T.trust_company}</span>
-          </div>
+          {/* Licensing disclosures covered by ComplianceFooter below */}
         </div>
       </section>
 
