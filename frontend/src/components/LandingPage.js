@@ -258,7 +258,7 @@ export default function LandingPage() {
   function createHsForm() {
     if (window.hbspt) {
       window.hbspt.forms.create({
-        region: 'na1',
+        region: 'na2',
         portalId: HS_PORTAL_ID,
         formId: HS_FORM_GUID,
         target: '#hs-lead-form',
@@ -273,7 +273,7 @@ export default function LandingPage() {
   const handleRateAlert = () => {
     if (!rateAlertEmail || !rateAlertEmail.includes('@')) return;
     // Submit to HubSpot via Forms API
-    fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL_ID}/${HS_FORM_GUID}`, {
+    fetch(`https://api-na2.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL_ID}/${HS_FORM_GUID}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
