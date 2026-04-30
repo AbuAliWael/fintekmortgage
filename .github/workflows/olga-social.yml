@@ -1,0 +1,132 @@
+name: Olga Social Publishing
+
+on:
+  schedule:
+    - cron: '0 15 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  olga-social:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install anthropic requests
+      - name: Generate + Publish via Buffer
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          python3 - <<'EOF'
+          import anthropic, requests, json, os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          et = ZoneInfo("America/New_York")
+          now = datetime.now(et)
+          today = now.strftime("%Y-%m-%d")
+          weekday = now.weekday()
+          COUNTY   = {0:"Bergen",1:"Essex",2:"Middlesex",3:"Monmouth",4:"Morris"}[weekday]
+          INDUSTRY = {0:"Healthcare",1:"Engineering",2:"Financial Services",3:"Legal",4:"Technology"}[weekday]
+
+          # AUTO-DISCOVER Buffer profile IDs at runtime
+          buffer_token = os.environ["BUFFER_ACCESS_TOKEN"]
+          r = requests.get(f"https://api.bufferapp.com/1/profiles.json?access_token={buffer_token}")
+          profiles = r.json()
+          channel_map = {}
+          for p in profiles:
+              svc = p.get("service","").lower()
+              if svc in ["linkedin","facebook","instagram","twitter","tiktok"]:
+                  channel_map[svc] = p["id"]
+          print(f"Found channels: {list(channel_map.keys())}")
+
+          # Generate content
+          PROMPT = f"""You are SAGE for Fintek Mortgage. Write social posts for Wael Abd El Dayem (NMLS #2171794, NJ only).
+          Date: {today} | County: {COUNTY} | Audience: {INDUSTRY} + Arabic NJ community
+
+          [LINKEDIN POST] 150 words max. Non-QM authority. B2B2C. End: NMLS #2171794 | Licensed in NJ | Equal Housing Lender
+          [FACEBOOK POST - ENGLISH] 100 words max. Community tip. End: NMLS #2171794 | Licensed in NJ | Equal Housing Lender
+          [FACEBOOK POST - ARABIC] Egyptian/Levantine Arabic. No halal/haram. End: NMLS #2171794 | مرخص في نيو جيرسي
+          [INSTAGRAM CAPTION] 80 words. Hook first. 5 hashtags incl #NJMortgage #NonQMLoans. End: NMLS #2171794 | Licensed in NJ
+          [WHATSAPP BROADCAST - ARABIC] 60 words. Personal. Arabic first.
+          Rules: No guaranteed approval, no lowest rates, no NY/CT."""
+
+          client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+          resp = client.messages.create(
+              model="claude-haiku-4-5-20251001", max_tokens=2048,
+              tools=[{"type":"web_search_20250305","name":"web_search"}],
+              messages=[{"role":"user","content":PROMPT}]
+          )
+          content = "\n".join(b.text for b in resp.content if hasattr(b,"text"))
+
+          def extract(text, tag):
+              s = text.find(f"[{tag}]")
+              if s==-1: return ""
+              e = text.find("[",s+len(tag)+2)
+              return text[s+len(tag)+2:e].strip() if e>-1 else text[s+len(tag)+2:].strip()
+
+          posts = {
+              "linkedin": extract(content,"LINKEDIN POST"),
+              "facebook_en": extract(content,"FACEBOOK POST - ENGLISH"),
+              "facebook_ar": extract(content,"FACEBOOK POST - ARABIC"),
+              "instagram": extract(content,"INSTAGRAM CAPTION"),
+              "whatsapp": extract(content,"WHATSAPP BROADCAST - ARABIC"),
+          }
+
+          os.makedirs("content/social",exist_ok=True)
+          with open(f"content/social/olga_{today}.json","w") as f:
+              json.dump({"date":today,"county":COUNTY,"industry":INDUSTRY,"channels":list(channel_map.keys()),**posts},f,indent=2,ensure_ascii=False)
+
+          # Publish via Buffer using auto-discovered IDs
+          results = []
+          platform_to_post = [
+              ("linkedin", posts["linkedin"]),
+              ("facebook", posts["facebook_en"]),
+              ("instagram", posts["instagram"]),
+          ]
+          for platform, text in platform_to_post:
+              if platform in channel_map and text:
+                  r = requests.post(
+                      "https://api.bufferapp.com/1/updates/create.json",
+                      headers={"Authorization":f"Bearer {buffer_token}"},
+                      data={"profile_ids[]":channel_map[platform],"text":text,
+                            "scheduled_at":f"{today}T15:30:00Z"}
+                  )
+                  ok = r.status_code in [200,201]
+                  results.append(f"{'OK' if ok else 'ERR'} {platform}: {r.status_code}")
+                  print(f"Buffer {platform}: {r.status_code}")
+              else:
+                  results.append(f"SKIP {platform}: not connected in Buffer")
+
+          # Email summary to Wael
+          resend_key = os.environ.get("RESEND_API_KEY","")
+          if resend_key:
+              body = f"DATE: {today} | COUNTY: {COUNTY} | INDUSTRY: {INDUSTRY}\nCHANNELS: {list(channel_map.keys())}\n\n"
+              body += "\n\n".join([f"=== {k.upper()} ===\n{v}" for k,v in posts.items()])
+              body += f"\n\nBUFFER STATUS:\n"+"\n".join(results)
+              requests.post("https://api.resend.com/emails",
+                  headers={"Authorization":f"Bearer {resend_key}","Content-Type":"application/json"},
+                  json={"from":"Olga <olga@fintekmortgage.com>","to":["AbuAliWael@icloud.com"],
+                        "subject":f"OLGA SOCIAL - {today}","text":body,
+                        "html":f"<pre style='font-family:monospace'>{body}</pre>"})
+              print("Email sent to Wael")
+          print(f"Tokens: {resp.usage.input_tokens}in / {resp.usage.output_tokens}out")
+          EOF
+      - name: Commit content
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "olga: social ${{ github.run_id }}"
+          file_pattern: content/social/*.json
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: olga-social-${{ github.run_id }}
+          path: content/social/
+          retention-days: 30
