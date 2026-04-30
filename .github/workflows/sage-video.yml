@@ -1,0 +1,123 @@
+ame: Sage Video Script Generator
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+    - cron: '0 14 * * 3'
+    - cron: '0 14 * * 5'
+  workflow_dispatch:
+    inputs:
+      video_type:
+        description: 'Video type'
+        required: false
+        default: 'auto'
+        type: choice
+        options: ['auto','rate_update','program_spotlight','client_qa','fed_reaction']
+
+jobs:
+  sage-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic requests
+
+      - name: Generate Script + Submit to HeyGen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          python3 - <<'EOF'
+          import anthropic, requests, json, os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          et = ZoneInfo("America/New_York")
+          now = datetime.now(et)
+          today = now.strftime("%Y-%m-%d")
+          weekday = now.weekday()
+
+          override = os.environ.get("INPUT_VIDEO_TYPE","auto")
+          if override != "auto":
+              video_type = override
+          elif weekday == 0:
+              video_type = "rate_update"
+          elif weekday == 2:
+              video_type = "program_spotlight"
+          else:
+              video_type = "client_qa"
+
+          PROMPTS = {
+              "rate_update": "Write a HeyGen teleprompter script for Wael Abd El Dayem (NMLS #2171794, NJ only). Topic: Today NJ mortgage rate update. 30 seconds each. Write [ENGLISH VERSION] and [ARABIC VERSION - Egyptian/Levantine]. End: NMLS #2171794 | Licensed in NJ | Equal Housing Lender",
+              "program_spotlight": "Write a HeyGen teleprompter script for Wael Abd El Dayem (NMLS #2171794, NJ only). Topic: Bank Statement loan program spotlight for self-employed NJ buyers. 60 seconds each. Write [ENGLISH VERSION] and [ARABIC VERSION - Egyptian/Levantine]. End: NMLS #2171794 | Licensed in NJ | Equal Housing Lender",
+              "client_qa": "Write a HeyGen teleprompter script for Wael Abd El Dayem (NMLS #2171794, NJ only). Topic: Answer - Can I get a mortgage if self-employed with low tax returns? 60 seconds each. Write [ENGLISH VERSION] and [ARABIC VERSION - Egyptian/Levantine]. End: NMLS #2171794 | Licensed in NJ | Equal Housing Lender",
+              "fed_reaction": "Write a HeyGen teleprompter script for Wael Abd El Dayem (NMLS #2171794, NJ only). Topic: Federal Reserve news impact on NJ buyers. 30 seconds each. [ENGLISH VERSION] and [ARABIC VERSION]. End: NMLS #2171794 | Licensed in NJ | Equal Housing Lender",
+          }
+
+          client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+          response = client.messages.create(
+              model="claude-haiku-4-5-20251001",
+              max_tokens=2048,
+              tools=[{"type":"web_search_20250305","name":"web_search"}],
+              messages=[{"role":"user","content":PROMPTS[video_type]}]
+          )
+          script = "\n".join(b.text for b in response.content if hasattr(b,"text"))
+          print(f"VIDEO TYPE: {video_type}\n{script}")
+
+          os.makedirs("content/scripts",exist_ok=True)
+          with open(f"content/scripts/sage_{today}_{video_type}.txt","w") as f:
+              f.write(f"TYPE: {video_type}\nDATE: {today}\n\n{script}")
+
+          # HeyGen submission
+          heygen_key = os.environ.get("HEYGEN_API_KEY","")
+          if heygen_key:
+              en_start = script.find("[ENGLISH VERSION")
+              ar_start = script.find("[ARABIC VERSION")
+              en_script = script[en_start:ar_start].strip() if en_start>-1 and ar_start>-1 else script[:400]
+              r = requests.post(
+                  "https://api.heygen.com/v2/video/generate",
+                  headers={"X-Api-Key":heygen_key,"Content-Type":"application/json"},
+                  json={"video_inputs":[{"character":{"type":"avatar","avatar_id":"wael_avatar"},
+                        "voice":{"type":"text","input_text":en_script,"voice_id":"en-US-GuyNeural"},
+                        "background":{"type":"color","value":"#ffffff"}}],
+                        "test":False,"aspect_ratio":"16:9","caption":True}
+              )
+              print(f"HeyGen EN: {r.status_code}")
+              os.makedirs("logs",exist_ok=True)
+              with open(f"logs/heygen_{today}.json","w") as f:
+                  json.dump({"video_id":r.json().get("data",{}).get("video_id",""),"type":video_type,"date":today},f)
+          else:
+              print("HEYGEN_API_KEY not set - add to GitHub Secrets")
+
+          resend_key = os.environ.get("RESEND_API_KEY","")
+          if resend_key:
+              r = requests.post("https://api.resend.com/emails",
+                  headers={"Authorization":f"Bearer {resend_key}","Content-Type":"application/json"},
+                  json={"from":"Sage <sage@fintekmortgage.com>","to":["AbuAliWael@icloud.com"],
+                        "subject":f"SAGE VIDEO SCRIPT - {video_type.upper()} | {today}","text":script,
+                        "html":f"<pre style='font-family:monospace;font-size:12px'>{script}</pre>"})
+              print(f"Email: {r.status_code}")
+          EOF
+
+      - name: Commit scripts
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "sage: video script ${{ github.run_id }}"
+          file_pattern: "content/scripts/*.txt"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-script-${{ github.run_id }}
+          path: content/scripts/
+          retention-days: 30
