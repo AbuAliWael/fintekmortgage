@@ -155,27 +155,37 @@ def get_buffer_analytics():
         return
 
     print('[Olga] Pulling Buffer analytics...')
-    url = 'https://api.bufferapp.com/1/profiles.json'
-    req = urllib.request.Request(
-        f'{url}?access_token={BUFFER_ACCESS_TOKEN}',
-        headers={'Content-Type': 'application/json'}
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as r:
-            profiles = json.loads(r.read())
-            activity_log['social']['buffer_status'] = 'connected'
-            by_platform = {}
-            for p in profiles:
-                service = p.get('service', 'unknown')
-                by_platform[service] = {
-                    'id': p.get('id'),
-                    'username': p.get('formatted_username', ''),
-                    'follower_count': p.get('statistics', {}).get('followers', 0),
-                }
-            activity_log['social']['posts_by_platform'] = by_platform
-            print(f'[Olga] Buffer: {len(profiles)} profiles connected — {list(by_platform.keys())}')
-    except Exception as e:
-        log_error('buffer_analytics', e)
+    # Try Bearer auth first, fall back to query param
+    for auth_method in ['bearer', 'query']:
+        if auth_method == 'bearer':
+            url = 'https://api.bufferapp.com/1/profiles.json'
+            req = urllib.request.Request(url, headers={
+                'Authorization': f'Bearer {BUFFER_ACCESS_TOKEN}',
+                'Content-Type': 'application/json',
+            })
+        else:
+            url = f'https://api.bufferapp.com/1/profiles.json?access_token={BUFFER_ACCESS_TOKEN}'
+            req = urllib.request.Request(url, headers={'Content-Type': 'application/json'})
+        try:
+            with urllib.request.urlopen(req, timeout=15) as r:
+                profiles = json.loads(r.read())
+                activity_log['social']['buffer_status'] = 'connected'
+                by_platform = {}
+                for p in profiles:
+                    service = p.get('service', 'unknown')
+                    by_platform[service] = {
+                        'id': p.get('id'),
+                        'username': p.get('formatted_username', ''),
+                        'follower_count': p.get('statistics', {}).get('followers', 0),
+                    }
+                activity_log['social']['posts_by_platform'] = by_platform
+                print(f'[Olga] Buffer ({auth_method}): {len(profiles)} profiles — {list(by_platform.keys())}')
+                break  # success — stop trying
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode('utf-8', errors='replace')
+            log_error(f'buffer_analytics_{auth_method}', f'HTTP {e.code}: {detail[:200]}')
+        except Exception as e:
+            log_error(f'buffer_analytics_{auth_method}', e)
 
 def schedule_post_via_buffer(content_item):
     """Schedule a social post via Buffer API."""
@@ -200,18 +210,22 @@ def schedule_post_via_buffer(content_item):
 
         url = 'https://api.bufferapp.com/1/updates/create.json'
         body = urllib.parse.urlencode({
-            'access_token': BUFFER_ACCESS_TOKEN,
             'text': text,
             'now': 'false',  # Add to queue
         }).encode()
 
-        req = urllib.request.Request(url, data=body)
+        req = urllib.request.Request(url, data=body, headers={
+            'Authorization': f'Bearer {BUFFER_ACCESS_TOKEN}',
+        })
         try:
             with urllib.request.urlopen(req, timeout=10) as r:
                 result = json.loads(r.read())
                 if result.get('success'):
                     scheduled += 1
                     print(f'[Olga] Scheduled on {platform}: {content_item["title"][:40]}')
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode('utf-8', errors='replace')
+            log_error(f'buffer_schedule_{platform}', f'HTTP {e.code}: {detail[:200]}')
         except Exception as e:
             log_error(f'buffer_schedule_{platform}', e)
 

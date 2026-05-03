@@ -129,19 +129,5 @@
                 <p style="color:#000;font-size:12px!important;margin-bottom:0">Made with Emergent</p>
             </div>
         </a>
-<!-- ═══ APEX CHATBOT LAUNCHER (added by deploy.sh) ═══ -->
-<style>
-#apex-chat-launcher{position:fixed;bottom:24px;right:24px;z-index:9998;background:#B8862C;color:#fff;padding:14px 22px;border-radius:999px;font-weight:700;font-size:14px;box-shadow:0 4px 16px rgba(0,0,0,.15);cursor:pointer;border:none;font-family:inherit}
-#apex-chat-launcher:hover{background:#a37722}
-#apex-chat-frame{position:fixed;bottom:90px;right:24px;z-index:9999;width:380px;height:600px;max-width:calc(100vw - 32px);max-height:calc(100vh - 120px);border:none;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:none;background:#fff}
-#apex-chat-frame.open{display:block}
-#apex-chat-close{position:fixed;bottom:680px;right:32px;z-index:10000;width:28px;height:28px;border-radius:50%;border:none;background:#0A1628;color:#fff;font-size:16px;line-height:28px;cursor:pointer;display:none}
-#apex-chat-close.open{display:block}
-@media(max-width:480px){#apex-chat-frame{width:100vw;height:calc(100vh - 80px);right:0;bottom:80px;border-radius:0}#apex-chat-close{right:12px;bottom:calc(100vh - 110px)}}
-</style>
-<button id="apex-chat-launcher" onclick="apexChatToggle()">💬 Self-Employed Mortgage AI · Free 30-sec pre-qual</button>
-<button id="apex-chat-close" onclick="apexChatToggle()">×</button>
-<iframe id="apex-chat-frame" src="/chat.html" title="Fintek Mortgage AI"></iframe>
-<script>function apexChatToggle(){var f=document.getElementById("apex-chat-frame");var c=document.getElementById("apex-chat-close");var l=document.getElementById("apex-chat-launcher");var open=f.classList.toggle("open");c.classList.toggle("open",open);l.style.display=open?"none":"block"}</script>
     </body>
 </html>

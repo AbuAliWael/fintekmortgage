@@ -1,0 +1,39 @@
+{
+  "agent": "Bri",
+  "date": "2026-04-28",
+  "runs": [
+    {
+      "task": "nj_courts_queue",
+      "leads": 0,
+      "details": "Queued 3 manual court research tasks"
+    }
+  ],
+  "leads_found": 0,
+  "leads_by_type": {},
+  "flags": [
+    "[MANUAL ACTION] 3 NJ court record searches queued \u2014 requires portal login at njcourts.gov"
+  ],
+  "planned_tomorrow": [
+    "Search njcourts.gov for divorce filings filed 04/28/2026. Export names + addresses.",
+    "Search njcourts.gov Chancery Division for foreclosure filings 04/28/2026.",
+    "Search njcourts.gov Surrogate Court for probate cases filed this week.",
+    "Run NJ court record queue (Wednesday 7:00am)",
+    "Community data refresh \u2014 mosques, WhatsApp groups, Arabic orgs",
+    "LinkedIn relocator intercept via Apify (8:00am)",
+    "ARM expiration + deed transfer data arbitrage (11:00pm)"
+  ],
+  "errors": [
+    {
+      "task": "deed_transfers",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "task": "construction_permits",
+      "error": "HTTP Error 400: Bad Request"
+    },
+    {
+      "task": "linkedin_intercept",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ]
+}

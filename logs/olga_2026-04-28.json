@@ -1,0 +1,58 @@
+{
+  "agent": "Olga",
+  "date": "2026-04-28",
+  "email": {
+    "sequences_active": 11,
+    "sends_24h": 0,
+    "avg_open_rate": null,
+    "avg_ctr": null,
+    "bounces": 0,
+    "unsubscribes": 0,
+    "flags": []
+  },
+  "social": {
+    "posts_scheduled": 0,
+    "posts_by_platform": {},
+    "buffer_status": "unknown"
+  },
+  "video": {
+    "uploads_24h": 0,
+    "youtube_status": "unknown"
+  },
+  "hubspot": {
+    "leads_advanced": 0,
+    "bookings_24h": 0
+  },
+  "queue_processed": [
+    {
+      "title": "LinkedIn Daily Post \u2014 Tuesday",
+      "status": "SCHEDULED \u2014 0 platforms",
+      "platforms": [
+        "linkedin"
+      ]
+    }
+  ],
+  "planned_tomorrow": [
+    "Process Sage queue for Wednesday",
+    "Distribute HeyGen video across all channels when render completes",
+    "Pull Mailchimp + Buffer reports",
+    "HubSpot pipeline update check"
+  ],
+  "errors": [
+    {
+      "task": "buffer_analytics_bearer",
+      "error": "HTTP 401: {\"error\":\"OIDC tokens are not accepted for direct API access\",\"code\":401}"
+    },
+    {
+      "task": "buffer_analytics_query",
+      "error": "HTTP 401: {\"error\":\"OIDC tokens are not accepted for direct API access\",\"code\":401}"
+    },
+    {
+      "task": "buffer_schedule_linkedin",
+      "error": "HTTP 401: {\"error\":\"OIDC tokens are not accepted for direct API access\",\"code\":401}"
+    }
+  ],
+  "flags": [
+    "[CREDENTIAL NEEDED] YOUTUBE_API_KEY not set \u2014 YouTube stats skipped. Provide Google API credentials."
+  ]
+}
